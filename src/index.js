@@ -4,9 +4,10 @@ const morgan = require('morgan')
 const app = express()
 const mysql = require('mysql')
 const myConnection = require('express-myconnection')
+const session = require('express-session')
+const flash = require('connect-flash')
 //imports
 const routes = require('./routes/rutas')
-const bodyparser = require('body-parser')
 const bodyParser = require('body-parser')
 //seting
 app.set('port', process.env.PORT || 3000)
@@ -23,11 +24,24 @@ app.use(myConnection(mysql,{
     database: 'ohmydog'
 },'single'))
 
+
+app.use(express.json())
+app.use(session({
+    secret: 'ohmydog',
+    resave: false,
+    saveUninitialized: false,
+}))
+
+
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(flash())
 
+//globar variables
 
-//app.use(express.urlencoded({extended: false}))
-
+app.use((req,res,next)=>{
+    app.locals.user=req.flash('login')
+    next()
+})
 // routes
 app.use('/', routes)
 
