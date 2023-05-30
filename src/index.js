@@ -21,7 +21,8 @@ app.use(myConnection(mysql,{
     user: 'root',
     password: '',
     port: 3306,
-    database: 'ohmydog'
+    database: 'ohmydog',
+    multipleStatements: true
 },'single'))
 
 

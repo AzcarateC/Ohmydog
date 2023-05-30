@@ -2,7 +2,18 @@ const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/rutasController')
 
+router.get('/paseadores',controller.listarPaseadores)
 router.get('/',controller.list)
+router.get('/solicitudes',controller.listarSolicitudes)
+router.get('/modificar',controller.modificar)
+router.post('/eliminarSolicitudes',controller.eliminarSolicitud)
+router.post('/solicitud',controller.solicitarPaseador)
+router.post('/eliminarPaseador',controller.eliminarPaseador)
+router.post('/agregarPaseador',controller.agregarPaseador)
+router.post('/calificarPaseador',controller.calificarPaseador)
+router.post('/modificarPaseador',controller.modificarPaseador)
+router.get('/agregarPaseador',controller.agregarPaseadores)
+
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
         
@@ -10,12 +21,12 @@ router.post('/login',(req, res) => {
         var pas = req.body.password
         var sql ="SELECT * FROM `clientes` WHERE email = ? AND password = ?"
         conn.query(sql,[mail,pas],(err,rows)=>{
-            if(rows.length<1){
-                mensaje = "Usuario y contraseña incorrectas"
+            if(rows.length<1){ 
+                msj = "Usuario y/o contraseña incorrectas"
+                
                 res.render('vistas',{
-                    mensaje
+                    msj 
                 })
-                console.log(mensaje)
                 return
             }
        

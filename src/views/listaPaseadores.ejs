@@ -1,0 +1,29 @@
+<%- include ('partials/_header')  %>  
+<style>
+    tr,td {
+      border: 1px solid;
+    }
+    </style>
+      <button onclick='ordenarPor("rating")' id="botonOrdenar" class="float-left submit-button" >Ordenar por calificacion</button>  
+<ul id="lista">
+  <% for(var i=0; i<data.length; i++) { %>
+    <%- include('partials/_publicacionPaseador', {data: data[i]}); %>
+
+ <% } %>
+
+
+</ul> 
+<div id="botones" >
+  <% if (previo > 0) { %>
+    <button onclick='cambiarPagina(<%= previo %>) ' id="botonPrevio<%= previo %>" class="float-left submit-button" >Previo</button>
+    <% } %>
+    <% if (siguiente > 0) { %>
+      <button onclick='cambiarPagina(<%=siguiente%>)' id="botonSiguiente<%= siguiente %>" class="float-left submit-button" >Siguiente</button>
+      <% } %>
+
+
+
+</div>
+<script src="testlista.js" ></script>
+
+<%- include ('partials/_footer') %>
