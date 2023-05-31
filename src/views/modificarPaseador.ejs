@@ -1,0 +1,12 @@
+<%- include ('partials/_header')  %>
+<form action="/modificarPaseador?id=<%=data[0].id%>" method="post" >
+    <label for="nombre">Nombre y apellido:</label>
+    <input type="text" id="nombre" name="nombre" value="<%=data[0].nombre%>"><br><br>
+    <label for="zonas">Zonas:</label>
+    <input type="text" id="zonas" name="zonas" value="<%=data[0].zonas%>"><br><br>
+    <label for="descripcion">Descripcion:</label>
+    <input type="text" id="descripcion" name="descripcion" value="<%=data[0].descripcion%>"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+<%- include ('partials/_footer') %>
+

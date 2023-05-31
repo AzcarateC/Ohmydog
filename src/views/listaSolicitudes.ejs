@@ -1,0 +1,25 @@
+<%- include ('partials/_header')  %>  
+<table>
+    <tbody>
+        <tr>
+        <td>Solicitante</td>
+        <td>Telefono</td>
+        <td>Paseador</td>
+        <td>Paseador</td>
+    </tr>
+<% for(var i=0; i<data.length; i++) { %>
+    <tr>
+        <td><%= data[i].nombre %></td>
+        <td><%= data[i].telefono %></td>
+        <td><%= data[i].nombrePaseador %></td>
+        <td>  <button type='button' onclick='eliminarSolicitud(<%= data[i].id%>,"<%=data[i].telefono%>")'>Solicitud procesada  </button></td>
+        
+    </tr>
+    <% } %>
+    <script src="publicjs.js" ></script>
+
+
+</tbody>
+</table>
+<%- include ('partials/_footer') %>
+

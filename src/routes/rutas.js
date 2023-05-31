@@ -17,6 +17,18 @@ router.get('/',(req,res) =>{
         })
     })
 })
+router.get('/paseadores',controller.listarPaseadores)
+router.get('/',controller.list)
+router.get('/solicitudes',controller.listarSolicitudes)
+router.get('/modificar',controller.modificar)
+router.post('/eliminarSolicitudes',controller.eliminarSolicitud)
+router.post('/solicitud',controller.solicitarPaseador)
+router.post('/eliminarPaseador',controller.eliminarPaseador)
+router.post('/agregarPaseador',controller.agregarPaseador)
+router.post('/calificarPaseador',controller.calificarPaseador)
+router.post('/modificarPaseador',controller.modificarPaseador)
+router.get('/agregarPaseador',controller.agregarPaseadores)
+
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
@@ -31,6 +43,7 @@ router.post('/login',(req, res) => {
                 user= req.session.mi_sesion
                 res.render('vistaContainer',{
                     msj,data,user
+
                 })
                 return
             }
@@ -41,17 +54,8 @@ router.post('/login',(req, res) => {
             res.render('vistaContainer',{
                 user: rows,msj,data,text,text2
             })
-            
-           // req.flash('login',rows)
-           //console.log(req.flash.login)
-           /* if(rows[0] && rows[0].esAdmin === 0){
-
-                res.redirect('/veterinaria_panel')
-            }
-            else 
-                res.redirect('/cliente_panel')*/
-        })
     })
+})
 })
 router.get('/close',(req, res)=>{
     delete req.session.mi_sesion

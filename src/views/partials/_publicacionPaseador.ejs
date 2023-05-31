@@ -1,0 +1,21 @@
+<%
+promedio = function (puntos,calificaciones){
+    if (calificaciones==0){ 
+        return 0;
+    }else{
+        return(puntos/calificaciones).toFixed(1);
+    }}%>
+    <script src="publicjs.js" ></script>
+<li>
+    <div id="nombre<%= data.id%>"> <%= data.nombre %> </div> 
+    <div id='zona<%= data.id%>'>   <%=data.zonas%>  </div>
+    <div id='rating<%= data.id%>'> Calificaciones=   <%= promedio(data.puntos,data.calificaciones)%>/5 (<%=data.calificaciones%> opiniones)  </div> 
+    <form id="calificar<%= data.id%>"><input type="text" id="calificacion<%= data.id%>" size="1" maxlength="1" ><button onclick="calificar(<%= data.id%>)">CALIFICAR</button> </form>
+    <div id='descripcion<%= data.id%>'> <%=data.descripcion%></div>
+    <div id='horarios<%= data.id%>'><%- include ('_tablaHorarios',{data: data}) %> </div>
+    <div id='contacto<%=data.id%>'>
+    <button type='button' onclick='contactar(<%= data.id%>)'id='boton<%=data.id%>'>Contactar con <%=data.nombre%></button>
+    <button type='button' onclick='eliminar(<%= data.id%>,"<%=data.nombre%>")'id='eliminar<%=data.id%>'>Eliminar publicacion de <%=data.nombre%></button>
+
+   </div>
+  </li>
