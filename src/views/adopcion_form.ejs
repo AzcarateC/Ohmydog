@@ -1,0 +1,21 @@
+<%- include ('cliente_panel') %>
+
+<form class ="registro" action="/add_adopcion" method="post">
+    <div class="form-group">
+        <input type="text" class="form-control" name="titulo" placeholder="Ingrese titulo de la publicacion" required>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" name="txtArea" placeholder="Ingrese texto"required rows="3"></textarea>
+    </div>
+ 
+    <button type="submit" class="btn btn-info-orange">Confirmar</button>
+    <a href ="/" type="submit" class="btn btn-info-orange">Cancelar</a>
+    
+
+
+</form>
+
+
+
+
+<%- include ('partials/_footer') %>

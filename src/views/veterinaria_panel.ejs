@@ -15,25 +15,25 @@
 </head>
 <header>
   <div class="dropdown text-end">
-    <% if(user){   %> 
+    <% if (user) { %> 
       <button class="btn  btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <%= user[0].nombre %>
+        Veterinario: <%= user[0].nombre %>
       </button>
     <% }  %>
      
 
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="/add_cliente">Agregar cliente</a></li>
-      <li><a class="dropdown-item" href="#">Agregar mascota a cliente</a></li>
+      <li><a class="dropdown-item" href="/add_mascota">Agregar mascota a cliente</a></li>
       <li><a class="dropdown-item" href="#">Agregar campaña de donacion</a></li>
-      <li><a class="dropdown-item" href="#">Ver perros de mis clientes</a></li>
+      <li><a class="dropdown-item" href="/list_perros">Ver perros de mis clientes</a></li>
       <li><a class="dropdown-item" href="#">Dar turnos</a></li>
       <li><a class="dropdown-item" href="#">Agregar paseadores y cuidadores</a></li>
-      <li><a class="dropdown-item" href="/">Cerrar sesion</a></li>
+      <li><a class="dropdown-item" href="/close">Cerrar sesion</a></li>
     </ul>
   </div>
   <div class="container">
-    <a href="#" id="logo-empresa">
+    <a href="/" id="logo-empresa">
       <img class="img-responsive" src="Logo1.png" alt="Logo Oh my dog"></img>
 
     </a>
@@ -45,7 +45,7 @@
    
     <ul class="nav justify-content-center">
       <li class="nav-item">
-        <a type="button "class="btn btn-info-orange" href="#">Perros en adopcion</a>
+        <a type="button "class="btn btn-info-orange" href="/adopcion">Perros en adopcion</a>
     </li>
       <li class="nav-item">
         <a type="button " class="btn btn-info-orange" href="#">Paseadores y cuidadores</a>
@@ -60,9 +60,15 @@
 
 </header>
 <body>
-  <div class="message">
-    <a> <%= text %></a>
-    <a> <%= text2 %></a>
-  </div>
-
-<%- include ('partials/_footer') %>
+  <% if (text || text2) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= text %>
+    </div>
+      <% if (text2){ %>
+        <div class="alert alert-success" role="alert">
+          <%= text2 %>
+        </div>  
+       <%  } %>
+    
+    <% } %>
+    

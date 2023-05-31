@@ -1,0 +1,29 @@
+<%- include('vistas') %>
+
+<form class=" registro" action="/add_mascota" method="POST">
+    <div class="form-group">
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="edad" placeholder="Ingrese edad"required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="tamaño" placeholder="Ingrese tamaño"required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="cliente" placeholder="Ingrese cliente"required>
+    </div>
+    <div class="form-group">
+        <input type="file" class="form-control" name="foto"required>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control"name="detalle" placeholder="Ingrese detalles"required rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-info-orange">Agregar mascota</button>
+    
+    <a type="button " class="btn btn-info-orange" href="/">Cancelar</a>
+
+
+</form>
+
+<%- include ('partials/_footer') %>

@@ -1,0 +1,34 @@
+<%- include ('vistas') %>
+
+    <% if (msj) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= msj %>
+        </div>
+    <%  } %>
+    
+    <table class="container">
+        <tr>
+          
+          <% for (var i =0; i<data.length;i++) {%>   
+          <td>
+            <div class="card" style="width: 18rem;">
+              <div class="card-header">
+                  Perro adoptado
+              </div>
+              <div class="card-body">
+              <h5 class="card-title"><%= data[i].titulo %></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><%= data[i].nombre %></h6>
+              <p class="card-text"><%=data[i].texto%></p>
+              </div>
+          </div>
+          </div>
+          
+        </td>
+        <% } %>
+        </td>
+        </tr>
+       </div>
+      </table>
+
+
+<%- include ('partials/_footer') %>

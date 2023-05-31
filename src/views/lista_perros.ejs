@@ -1,0 +1,29 @@
+<%- include ('vistas') %>
+
+
+<div class= "container">
+<table class="">
+    <tr>
+      
+      <% for (var i =0; i<data.length;i++) {%>   
+      <td>
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Perro del cliente <%=data[i].cliente%>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title"><%= data[i].nombre %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= data[i].detalle %></h6>
+            </div>
+        </div>
+        </div>
+      
+    </td>
+    <% } %>
+    </td>
+    </tr>
+   </div>
+  </table>
+</div>
+
+    

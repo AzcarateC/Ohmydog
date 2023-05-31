@@ -1,0 +1,24 @@
+<%- include ('vistas') %>
+<body>
+    <table class="container">
+        <tr>
+          
+          <% for (var i =0; i<data.length;i++) {%>   
+          <td>
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Adopcion
+                </div>
+                <div class="card-body">
+                <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
+                <p class="card-text"><%=data[i].texto%></p>
+                <a href="#" class="card-link">Contactar</a>
+                </div>
+            </div>
+            </div>
+          
+        </td>
+        <% } %>
+        
+
+    <%- include ('partials/_footer') %>
