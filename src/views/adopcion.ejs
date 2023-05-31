@@ -1,4 +1,5 @@
 <%- include ('vistas') %>
+
 <body>
     <table class="container">
         <tr>
@@ -13,6 +14,12 @@
                 <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
                 <p class="card-text"><%=data[i].texto%></p>
                 <a href="#" class="card-link">Contactar</a>
+                <% if (user){%>
+                    <% if(user[0].email == data[0].cliente){%>
+                        <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
+                    <% } %>
+                <%} %>
+                
                 </div>
             </div>
             </div>

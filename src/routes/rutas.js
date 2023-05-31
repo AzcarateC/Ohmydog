@@ -28,7 +28,7 @@ router.post('/agregarPaseador',controller.agregarPaseador)
 router.post('/calificarPaseador',controller.calificarPaseador)
 router.post('/modificarPaseador',controller.modificarPaseador)
 router.get('/agregarPaseador',controller.agregarPaseadores)
-
+router.get('/delete/:id',controller.delete_adopcion)
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
@@ -84,10 +84,6 @@ router.get('/veterinaria_panel', (req, res)=>{
     var data= req.session.adoptados
     text=""
     text2=""
-    //delete req.session.mi_sesion
-    //console.log(user[0])
-    //const user = req.flash('login')
-    //console.log(user)
     res.render('veterinaria_panel',{
         user,text,text2,data
 
@@ -115,15 +111,16 @@ router.post('/add_adopcion', (req, res)=>{
         var texto = req.body.txtArea
         req.getConnection((err,conn)=>{          
         sql = "INSERT INTO `perrosenadopcion`(`nombredepublicacion`, `id`, `texto`, `cliente`) VALUES (?,?,?,?)"
-        conn.query(sql,[titulo,null,texto,user[0].email], (err,res)=>{
+        conn.query(sql,[titulo,null,texto,user[0].email], (err,rows)=>{
             if(err) {
                 res.send('hubo un error')
                 return
             }
-            data= req.session.adopcion
-            res.render('vistaContainer', {user,data})
+            data=req.session.adoptados
+          res.render('vistaContainer', {user,data})
         })
     })
+    
 })
 
 router.get('/add_mascota',(req, res) => {
@@ -223,9 +220,6 @@ router.get('/cliente_panel', (req, res)=>{
     var user= req.session.mi_sesion
     var data= req.session.adoptados
     var data2 = req.session.adopcion
-    
-   // const user = req.flash('login')
-   // console.log(user)
     res.render('cliente_panel',{
         
        user,data

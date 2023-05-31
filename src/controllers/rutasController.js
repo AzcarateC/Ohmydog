@@ -169,6 +169,7 @@ controller.eliminarPaseador = (req, res) => {
         })
     })
 }
+
 controller.modificar = (req, res) => {
     id = req.query.id;
     console.log('id= '+id)
@@ -184,7 +185,19 @@ controller.modificar = (req, res) => {
         })
     })
 }
-
+controller.delete_adopcion = (req, res) => {
+    const {id} = req.params
+    const user =req.session.mi_sesion
+    const msj=""
+    const data= req.session.adoptados
+    req.getConnection((err, conn) => {
+        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?', [id],(err, rows) => {
+            res.render('vistaContainer',{
+                user,msj,data
+            })
+        })
+    })
+}
 module.exports = controller;
 
 
