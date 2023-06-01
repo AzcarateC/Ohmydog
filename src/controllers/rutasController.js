@@ -13,6 +13,70 @@ controller.list = (req, res) => {
         })
     })
 }
+controller.listarClientes = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        user =req.session.mi_sesion
+        conn.query('SELECT * FROM clientes',(err,clientes)=>{
+            if(err){
+                res.json(err)
+            }
+            console.log(clientes)
+            res.render('listaClientes',{
+                data1:clientes,user
+            });
+        })
+    })
+}
+controller.PagePublicaciones = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+            res.render('publicaciones',{
+               user
+            });
+        
+    })
+}
+
+controller.UserPublics = (req,res) => {
+    req.getConnection((err,conn)=>{
+         user = req.session.mi_sesion 
+         email = user[0].email
+        conn.query('SELECT * FROM adopcion   JOIN clientes ON adopcion.nombre = clientes.email WHERE clientes.email = ?',[email],(err,rows)=>{
+            res.render('misPublics',{
+                data:rows,user 
+            });
+        })
+    })
+}
+
+
+controller.verTurnos = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        conn.query('SELECT * FROM turnos',(err,clientes)=>{
+            if(err){
+                res.json(err)
+            }
+            res.render('turnos',{
+                data:turnos,user
+            });
+        })
+    })
+}
+controller.calendarioTurnos = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        conn.query('SELECT * FROM turnos',(err,rows)=>{
+            if(err){
+                res.json(err)
+            }
+            res.render('calendarioTurnos',{
+                data1:rows,user
+            });
+        })
+    })
+}
 controller.listarPaseadores = (req, res) => {
     var user= req.session.mi_sesion
     orderBy = req.query.orderBy;
@@ -83,6 +147,115 @@ controller.listarSolicitudes = (req, res) => {
     }
 
 }
+
+controller.solicitarTurno = (req,res) => {
+    req.getConnection((err,conn)=>{
+      tipoTurno = req.query['tipo-turno'];
+      tipoServicio = req.query['tipo-servicio'];
+      usuario = req.query['usuario'];
+      sqlQuery = 'INSERT INTO solicitudesTurno (tipoTurno, tipoServicio, usuario) VALUES (?, ?, ?)';
+     conn.query(sqlQuery, [tipoTurno, tipoServicio, usuario],(err,rows)=>{
+         res.render('darTurno')
+     })
+    })
+ }
+ 
+ controller.solicitarVentanaTurno = (req,res) => {
+     req.getConnection((err,conn)=>{
+         user = req.session.mi_sesion
+         res.render('solicitarTurno',{
+             user
+         })
+     })
+ }
+ controller.verSolicitudesTurnoVentana = (req,res) => {
+     req.getConnection((err,conn)=>{
+         user = req.session.mi_sesion
+         conn.query('SELECT * FROM solicitudesTurno',(err,rows)=>{
+             if(err){
+                 res.json(err)
+             }
+             res.render('verSolicitudesTurnos',{
+                 data:rows,user
+             });
+         })
+     })
+ }
+ 
+ controller.darTurnos = (req, res) => {
+     req.getConnection((err, conn) => {
+         user=req.session.mi_sesion
+         res.render('darTurno',{
+             user
+         });
+     })
+ }
+ 
+ 
+ controller.darTurnoSolicitud = (req,res) => {
+     req.getConnection((err,conn)=>{
+         user = req.session.mi_sesion
+         usuario= req.body.usuario
+         tipo = req.body.tipo
+         servicio = req.body.servicio
+         res.render('darTSolicitud',{
+             usuario,servicio,tipo
+         })
+ 
+     })
+ }
+ 
+ 
+ 
+ controller.Turnos= (req, res) => {
+     req.getConnection((err,conn)=>{
+         msj=""
+         user =req.session.mi_sesion
+         conn.query('SELECT * FROM turnos',(err,rows)=>{
+             if(err){
+                 res.json(err)
+             }
+             console.log(rows)
+             res.render('turnos',{
+                 
+                 data: rows,user
+             });
+         })
+     })
+ }
+ 
+ controller.misTurnos= (req, res) => {
+     req.getConnection((err,conn)=>{
+         user = req.session.mi_sesion
+         email = user[0].email
+         conn.query('SELECT * FROM turnos WHERE turnos.email = ?',[email],(err,rows)=>{
+             res.render('misTurnos',{
+                 data:rows           
+             });
+         })
+     })
+ }
+ controller.nuevoTurno=((req, res) => {
+     const cliente = req.body.cliente;
+     const descripcion = req.body.descripcion;
+     const tipo = req.body.tipo;
+     const dia = req.body.dia;
+     const hora = req.body.hora;
+     const sqlQuery = 'INSERT INTO turnos (cliente, descripcion, tipo, dia, hora) VALUES (?, ?, ?, ?, ?)';
+     const values = [cliente, descripcion, tipo, dia, hora]; 
+     connection.query(sqlQuery, values, (err, result) => {
+       if (err) {
+         console.error('Error al guardar el turno: ', err);
+         res.status(500).json({ error: 'Ocurrió un error al guardar el turno' });
+       } else {
+         res.redirect('/darTurno'); 
+       }
+     });
+   });
+ 
+
+
+
 controller.eliminarSolicitud = (req, res) => {
     req.getConnection((err, conn) => {
 
