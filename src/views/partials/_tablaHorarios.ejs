@@ -1,55 +1,61 @@
-<table>
-    <tbody>
-    <tr >
-    <td></td>
-    <td>Lu</td>
-    <td>Ma</td>
-    <td>Mi</td>
-    <td>Ju</td>
-    <td>Vi</td>
-    <td>Sa</td>
-    <td>Do</td>
+<style type="text/css">
+    th{ text-align: center;}
+    td{width: 60;height: 60;}
+    table{
+        table-layout: fixed;
+    }
+   </style>
+
+<table >
+    <tr>
+    <th scope="col">Horarios</th>
+    <th scope="col">Lu</th>
+    <th scope="col">Ma</th>
+    <th scope="col">Mi</th>
+    <th scope="col">Ju</th>
+    <th scope="col">Vi</th>
+    <th scope="col">Sa</th>
+    <th scope="col">Do</th>
     </tr>
     <tr>
-    <td>Mañana</td>
-    <td><% if (1== data.lunesMañana) { %>
+    <th scope="row">Mañana</th>
+    <td><% if (1== data.lunesManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td>
-    <td><% if (1== data.martesMañana) { %>
+    <td><% if (1== data.martesManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
-    <td><% if (1== data.miercolesMañana) { %>
+    <td><% if (1== data.miercolesManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
-    <td><% if (1== data.juevesMañana) { %>
+    <td><% if (1== data.juevesManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
-    <td><% if (1== data.viernesMañana) { %>
+    <td><% if (1== data.viernesManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
-    <td><% if (1== data.sabadoMañana) { %>
+    <td><% if (1== data.sabadoManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
-    <td><% if (1== data.domingoMañana) { %>
+    <td><% if (1== data.domingoManiana) { %>
         <img src="tick.png" width="50" height="50"  >
         <%} else { %>
             <img src="cross.png" width="50" height="50">
         <% } %></td></td>
     </tr>
-    <tr><tr>
-        <td>Tarde</td>
+        <th scope="row">Tarde</th>
         <td><% if (1== data.lunesTarde) { %>
             <img src="tick.png" width="50" height="50"  >
             <%} else { %>
@@ -89,7 +95,7 @@
     </tr>
     <tr>
         <tr>
-            <td>Noche</td>
+            <th scope="row">Noche</th>
             <td><% if (1== data.lunesNoche) { %>
                 <img src="tick.png" width="50" height="50"  >
                 <%} else { %>
@@ -127,5 +133,4 @@
                 <% } %></td></td>
             </tr>
     </tr>
-    </tbody>
     </table>

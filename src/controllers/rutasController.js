@@ -1,27 +1,28 @@
 const controller = {}
 
-controller.list = (req,res)=>{
-    req.getConnection((err,conn)=>{
-        msj=""
-        conn.query('SELECT * FROM clientes',(err,rows)=>{
-            if(err){
+controller.list = (req, res) => {
+    req.getConnection((err, conn) => {
+        msj = ""
+        conn.query('SELECT * FROM clientes', (err, rows) => {
+            if (err) {
                 res.json(err)
             }
-            res.render('vistaContainer',{
-                data: rows,msj
+            res.render('vistaContainer', {
+                data: rows, msj
             });
         })
     })
 }
 controller.listarPaseadores = (req, res) => {
+    var user= req.session.mi_sesion
     orderBy = req.query.orderBy;
     pagina = parseInt(req.query.pagina);
     if (!(Number(pagina) > 0)) {
         pagina = 1;
     }
     var sql = 'SELECT * FROM paseadores ORDER BY id DESC LIMIT ? ,10;'
-    if (orderBy=='rating'){
-        sql='SELECT * FROM paseadores ORDER BY puntos/calificaciones DESC LIMIT ? ,10;';
+    if (orderBy == 'rating') {
+        sql = 'SELECT * FROM paseadores ORDER BY puntos/calificaciones DESC LIMIT ? ,10;';
     }
     sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id<(SELECT id FROM paseadores  LIMIT ? ,1 );'
     sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id>(SELECT id FROM paseadores  LIMIT ? ,1 )'
@@ -43,25 +44,44 @@ controller.listarPaseadores = (req, res) => {
             res.render('listaPaseadores', {
                 data: rows[0],
                 previo: previo,
-                siguiente: siguiente
+                siguiente: siguiente,
+                user : user
             });
         })
     })
 }
 controller.listarSolicitudes = (req, res) => {
+    // var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id FROM `solicitudescontacto` s INNER JOIN `paseadores` p ON s.idPaseador=p.id;"
+    // req.getConnection((err, conn) => {
+    //     conn.query(sql, (err, rows) => {
+    //         if (err) {
+    //             res.json(err)
+    //         }
+    //         console.log(rows);
+    //         res.render('listaSolicitudes', {
+    //             data: rows
+    //         });
 
-    var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id FROM `solicitudescontacto` s INNER JOIN `paseadores` p ON s.idPaseador=p.id;"
-    req.getConnection((err, conn) => {
-        conn.query(sql, (err, rows) => {
-            if (err) {
-                res.json(err)
-            }
-            console.log(rows)
-            res.render('listaSolicitudes', {
-                data: rows
-            });
+    //     })
+    // })
+    var user= req.session.mi_sesion
+    if ((!user) || (user.esAdmin==1)){
+        res.redirect('/')
+    }else{
+        var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id FROM `solicitudescontacto` s INNER JOIN `paseadores` p ON s.idPaseador=p.id;"
+        req.getConnection((err, conn) => {
+            conn.query(sql, (err, rows) => {
+                if (err) {
+                    res.json(err)
+                } 
+                res.render('listaSolicitudes', {
+                    data: rows,
+                       user:user,
+                });
+            })
         })
-    })
+    }
+
 }
 controller.eliminarSolicitud = (req, res) => {
     req.getConnection((err, conn) => {
@@ -69,7 +89,7 @@ controller.eliminarSolicitud = (req, res) => {
         var id = req.body.id;
         var telefono = req.body.telefono;
         var sql = "DELETE FROM `solicitudescontacto` WHERE idPaseador= ? AND telefono= ? "
-        conn.query(sql, [id,telefono], (err, rows) => {
+        conn.query(sql, [id, telefono], (err, rows) => {
             console.log(rows)
             if (err) {
                 res.json(err)
@@ -87,7 +107,7 @@ controller.solicitarPaseador = (req, res) => {
         var sql = "INSERT INTO `solicitudescontacto` (`telefono`, `idPaseador`, `nombre`) VALUES (?, ?, ?) "
         conn.query(sql, [telefono, id, nombre], (err, rows) => {
             if (err) {
-                res.json(err)
+                res.send(err)
             }
             res.send(rows)
         })
@@ -114,8 +134,30 @@ controller.agregarPaseador = (req, res) => {
         var nombre = req.body.nombre;
         var descripcion = req.body.descripcion;
         var zonas = req.body.zonas;
-        var sql = 'INSERT INTO `paseadores`(`nombre`, `descripcion`, `zonas`) VALUES (?,?,?)'
-        conn.query(sql, [nombre, descripcion, zonas], (err, rows) => {
+        var lunesManiana = req.body.lunesManiana ? 1 : 0;
+        console.log(lunesManiana);
+        var martesManiana = req.body.martesManiana ? 1 : 0;
+        var miercolesManiana = req.body.miercolesManiana ? 1 : 0;
+        var juevesManiana = req.body.juevesManiana ? 1 : 0;
+        var viernesManiana = req.body.viernesManiana ? 1 : 0;
+        var sabadoManiana = req.body.sabadoManiana ? 1 : 0;
+        var domingoManiana = req.body.domingoManiana ? 1 : 0;
+        var lunesTarde = req.body.lunesTarde ? 1 : 0;
+        var martesTarde = req.body.martesTarde ? 1 : 0;
+        var miercolesTarde = req.body.miercolesTarde ? 1 : 0;
+        var juevesTarde = req.body.juevesTarde ? 1 : 0;
+        var viernesTarde = req.body.viernesTarde ? 1 : 0;
+        var sabadoTarde = req.body.sabadoTarde ? 1 : 0;
+        var domingoTarde = req.body.domingoTarde ? 1 : 0;
+        var lunesNoche = req.body.lunesNoche ? 1 : 0;
+        var martesNoche = req.body.martesNoche ? 1 : 0;
+        var miercolesNoche = req.body.miercolesNoche ? 1 : 0;
+        var juevesNoche = req.body.juevesNoche ? 1 : 0;
+        var viernesNoche = req.body.viernesNoche ? 1 : 0;
+        var sabadoNoche = req.body.sabadoNoche ? 1 : 0;
+        var domingoNoche = req.body.domingoNoche ? 1 : 0;
+        var sql = 'INSERT INTO `paseadores`(`nombre`, `descripcion`, `zonas`, `lunesManiana`, `lunesTarde`, `lunesNoche`, `martesManiana`, `martesTarde`, `martesNoche`, `miercolesManiana`, `miercolesTarde`, `miercolesNoche`, `juevesManiana`, `juevesTarde`, `juevesNoche`, `viernesManiana`, `viernesTarde`, `viernesNoche`, `sabadoManiana`, `sabadoTarde`, `sabadoNoche`, `domingoManiana`, `domingoTarde`, `domingoNoche`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        conn.query(sql, [nombre, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche], (err, rows) => {
             if (err) {
                 res.json(err)
             }
@@ -124,18 +166,38 @@ controller.agregarPaseador = (req, res) => {
     })
 }
 controller.modificarPaseador = (req, res) => {
-    var id= req.query.id
+    var id = req.query.id
     var nombre = req.body.nombre;
     var descripcion = req.body.descripcion;
     var zonas = req.body.zonas;
-
+    var lunesManiana = req.body.lunesManiana ? 1 : 0;
+    var martesManiana = req.body.martesManiana ? 1 : 0;
+    var miercolesManiana = req.body.miercolesManiana ? 1 : 0;
+    var juevesManiana = req.body.juevesManiana ? 1 : 0;
+    var viernesManiana = req.body.viernesManiana ? 1 : 0;
+    var sabadoManiana = req.body.sabadoManiana ? 1 : 0;
+    var domingoManiana = req.body.domingoManiana ? 1 : 0;
+    var lunesTarde = req.body.lunesTarde ? 1 : 0;
+    var martesTarde = req.body.martesTarde ? 1 : 0;
+    var miercolesTarde = req.body.miercolesTarde ? 1 : 0;
+    var juevesTarde = req.body.juevesTarde ? 1 : 0;
+    var viernesTarde = req.body.viernesTarde ? 1 : 0;
+    var sabadoTarde = req.body.sabadoTarde ? 1 : 0;
+    var domingoTarde = req.body.domingoTarde ? 1 : 0;
+    var lunesNoche = req.body.lunesNoche ? 1 : 0;
+    var martesNoche = req.body.martesNoche ? 1 : 0;
+    var miercolesNoche = req.body.miercolesNoche ? 1 : 0;
+    var juevesNoche = req.body.juevesNoche ? 1 : 0;
+    var viernesNoche = req.body.viernesNoche ? 1 : 0;
+    var sabadoNoche = req.body.sabadoNoche ? 1 : 0;
+    var domingoNoche = req.body.domingoNoche ? 1 : 0;
     req.getConnection((err, conn) => {
-        var sql = "UPDATE `paseadores` SET `nombre`= ?,`descripcion`=?,`zonas`=? WHERE id= ?"
-        conn.query(sql, [nombre, descripcion, zonas,id], (err, rows) => {
+        var sql = "UPDATE `paseadores` SET `nombre`=?,`descripcion`=?,`zonas`=?,`lunesManiana`=?,`lunesTarde`=?,`lunesNoche`=?,`martesManiana`=?,`martesTarde`=?,`martesNoche`=?,`miercolesManiana`=?,`miercolesTarde`=?,`miercolesNoche`=?,`juevesManiana`=?,`juevesTarde`=?,`juevesNoche`=?,`viernesManiana`=?,`viernesTarde`=?,`viernesNoche`=?,`sabadoManiana`=?,`sabadoTarde`=?,`sabadoNoche`=?,`domingoManiana`=?,`domingoTarde`=?,`domingoNoche`=? WHERE id=?"
+        conn.query(sql, [nombre, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche, id], (err, rows) => {
             if (err) {
                 res.json(err)
             }
-            res.send(rows)
+            res.redirect('/paseadores')
         })
     })
 }
@@ -148,13 +210,19 @@ controller.calificarPaseador = (req, res) => {
             if (err) {
                 res.json(err)
             }
-            res.redirect(req.get('referer'));
+            res.send(rows);
         })
     })
 }
 controller.agregarPaseadores = (req, res) => {
-    res.render('agregarPaseador')
+    var user= req.session.mi_sesion
+    if ((!user) || (user.esAdmin==1)){
+        res.redirect('/')
+    }else{
+        res.render('agregarPaseador',{user: user})
 }
+    }
+    
 controller.eliminarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
 
@@ -171,19 +239,24 @@ controller.eliminarPaseador = (req, res) => {
 }
 
 controller.modificar = (req, res) => {
-    id = req.query.id;
-    console.log('id= '+id)
-    var sql = 'SELECT * FROM paseadores WHERE id = ?';
-    req.getConnection((err, conn) => {
-        conn.query(sql, id, (err, rows) => {
-            if (err) {
-                res.json(err)
-            }
-            res.render('modificarPaseador', {
-                data: rows
-            });
+    var user= req.session.mi_sesion
+    if ((!user) || (user.esAdmin==1)){
+        res.redirect('/')
+    }else{
+        id = req.query.id;
+        var sql = 'SELECT * FROM paseadores WHERE id = ?';
+        req.getConnection((err, conn) => {
+            conn.query(sql, id, (err, rows) => {
+                if (err) {
+                    res.json(err)
+                }
+                res.render('modificarPaseador', {
+                    data:rows ,
+                    user:user
+                });
+            })
         })
-    })
+}
 }
 controller.delete_adopcion = (req, res) => {
     const {id} = req.params

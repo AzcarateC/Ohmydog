@@ -11,6 +11,7 @@ router.get('/',(req,res) =>{
             }
             req.session.adoptados=rows
             user=req.session.mi_sesion
+            console.log(rows);
             res.render('vistaContainer',{
                 data: rows,msj,user
             });

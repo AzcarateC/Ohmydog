@@ -42,7 +42,8 @@ background-color:#f1965b ;
 footer{
 background-color: #7abbca;
 margin-top: 0%;
-position: absolute;
+position: fixed;
+display: block;
 bottom: 0;
 width: 100%;
 height: 20px;
