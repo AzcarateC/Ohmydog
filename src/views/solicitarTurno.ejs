@@ -1,0 +1,21 @@
+<%- include ('vistas')  %>  
+  <form action="/solicitarTurno" method="POST">
+    <label for="tipo-turno">Tipo de Turno:</label><br>
+    <input type="radio" id="turno-manana" name="tipo-turno" value="mañana">
+    <label for="turno-manana">Preferencia Mañana</label><br>
+    <input type="radio" id="turno-tarde" name="tipo-turno" value="tarde">
+    <label for="turno-tarde">Preferencia Tarde</label><br>
+
+    <label for="tipo-servicio">Tipo de Servicio:</label><br>
+    <select name="tipo-servicio" id="tipo-servicio">
+      <option value="vacunacion">Vacunación</option>
+      <option value="esterilizacion">Esterilización</option>
+      <option value="aseo">Cauterizacion</option>
+    </select><br>
+
+    <label for="usuario">Usuario:</label><br>
+    <input type="text" id="usuario" name="usuario"><br>
+
+    <button type="submit">Enviar Solicitud</button>
+  </form>
+  <%- include ('partials/_footer') %>

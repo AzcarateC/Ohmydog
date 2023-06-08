@@ -1,0 +1,15 @@
+
+<% if (user) {%>
+        
+    <%  if(user[0].esAdmin === 0){%>
+            <%- include ('veterinaria_panel') %>
+        <% } else{ %>
+            <%- include ('cliente_panel') %>
+        <% } %>
+
+<% }else{ %>
+    <%- include('partials/_header') %>
+<%} %>
+
+<body>
+

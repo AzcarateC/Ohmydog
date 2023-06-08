@@ -1,0 +1,32 @@
+<%- include ('vistas') %>
+
+<body>
+    <table class="container">
+        <tr>
+          
+          <% for (var i =0; i<data.length;i++) {%>   
+          <td>
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Adopcion
+                </div>
+                <div class="card-body">
+                <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
+                <p class="card-text"><%=data[i].texto%></p>
+                <p class="card-text"><%= data[i].telefono %></p>
+                <% if (user){%>
+                    <% if(user[0].email == data[i].cliente){%>
+                        <a href="/delete/<%= data[i].id %>" class="card-link" onclick="Confirmar()">Eliminar</a>
+                        
+                    <% } %>
+                <%} %>
+                
+                </div>
+            </div>
+            </div>
+          
+        </td>
+        <% } %>
+        
+<script type="text/javascript
+    <%- include ('partials/_footer') %>

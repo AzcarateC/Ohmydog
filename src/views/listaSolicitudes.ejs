@@ -1,0 +1,21 @@
+<%- include ('vistas')  %>  
+<h1 class="text-center">Solicitudes de paseadores y cuidadores.</h1>
+<table class="container">
+        <tr>
+        <th scope="col" >Solicitante</th scope="col">
+        <th scope="col">Telefono</th scope="col">
+        <th scope="col">Paseador</th scope="col">
+        <th scope="col"></th scope="col">
+    </tr>
+<% for(var i=0; i<data.length; i++) { %>
+    <tr>
+        <td><%= data[i].nombre %></td>
+        <td><%= data[i].telefono %></td>
+        <td><%= data[i].nombrePaseador %></td>
+        <td>  <button type='button' class="btn btn-info-orange" onclick='eliminarSolicitud(<%= data[i].id%>,"<%=data[i].telefono%>")'>Eliminar solicitud de la lista  </button></td>
+        
+    </tr>
+    <% } %>
+    <script src="publicjs.js" ></script>
+</table>
+<%- include ('partials/_footer') %>

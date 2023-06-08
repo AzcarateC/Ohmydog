@@ -1,0 +1,15 @@
+<%- include ('vistas')  %>
+<h1 class="text-center">Modificar datos del paseador <%=data[0].nombre%></h1>
+<form class=" registro" action="/modificarPaseador?id=<%=data[0].id%>" method="post" >
+  <div class="form-group"><label for="nombre">Nombre y apellido:</label><br>
+    <input type="text"class="form-control" id="nombre" value="<%=data[0].nombre%>" name="nombre"></div>
+    <br><br>
+    <div class="form-group"><label for="zonas" maxlength="300" size="300">Zonas:</label><br>
+    <textarea  class="form-control" required rows="3" type="text" id="zonas" value="" name="zonas"><%=data[0].zonas%></textarea></div>
+    <div class="form-group"><label for="descripcion">Descripcion:</label><br>
+    <textarea class="form-control" type="text" maxlength="700" size="300" id="descripcion" name="descripcion" value=""><%=data[0].descripcion%></textarea></div>
+    <%- include('partials/_tablaAgregarHorarios', {user: data[0]}); %>
+    <input type="submit" value="Modificar">
+  </form>
+<%- include ('partials/_footer') %>
+

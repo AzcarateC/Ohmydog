@@ -1,0 +1,43 @@
+
+<table class="table" style="table-layout: fixed;">
+    <tr>
+        <th scope="col"></th>
+        <th scope="col">Lu</th>
+        <th scope="col">Ma</th>
+        <th scope="col">Mi</th>
+        <th scope="col">Ju</th>
+        <th scope="col">Vi</th>
+        <th scope="col">Sa</th>
+        <th scope="col">Do</th>
+    </tr>
+    <tr>
+        <td>Mañana</td>
+        <td> <input type="checkbox" id="lunesManiana" name="lunesManiana" value="1" <% if(locals.user && user.lunesManiana==1){%> checked <%} %></td>
+        <td> <input type="checkbox" id="martesManiana" name="martesManiana" value="1" <% if(locals.user && user.martesManiana==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="miercolesManiana" name="miercolesManiana" value="1" <% if(locals.user && user.miercolesManiana==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="juevesManiana" name="juevesManiana" value="1" <% if(locals.user && user.juevesManiana==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="viernesManiana" name="viernesManiana" value="1" <% if(locals.user && user.viernesManiana==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="sabadoManiana" name="sabadoManiana" value="1" <% if(locals.user && user.sabadoManiana==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="domingoManiana" name="domingoManiana" value="1" <% if(locals.user && user.domingoManiana==1){%> checked <%} %>></td>
+    </tr>
+    <tr>
+        <td>Tarde</td>
+        <td> <input type="checkbox" id="lunesTarde" name="lunesTarde" value="1" <% if(locals.user && user.lunesTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="martesTarde" name="martesTarde" value="1" <% if(locals.user && user.martesTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="miercolesTarde" name="miercolesTarde" value="1" <% if(locals.user && user.miercolesTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="juevesTarde" name="juevesTarde" value="1" <% if(locals.user && user.juevesTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="viernesTarde" name="viernesTarde" value="1" <% if(locals.user && user.viernesTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="sabadoTarde" name="sabadoTarde" value="1" <% if(locals.user && user.sabadoTarde==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="domingoTarde" name="domingoTarde" value="1" <% if(locals.user && user.domingoTarde==1){%> checked <%} %>></td>
+    </tr>
+    <tr>
+        <td>Noche</td>
+        <td> <input type="checkbox" id="lunesNoche" name="lunesNoche" value="1" <% if(locals.user && user.lunesNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="martesNoche" name="martesNoche" value="1"<% if(locals.user && user.martesNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="miercolesNoche" name="miercolesNoche" value="1" <% if(locals.user && user.miercolesNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="juevesNoche" name="juevesNoche" value="1" <% if(locals.user && user.juevesNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="viernesNoche" name="viernesNoche" value="1" <% if(locals.user && user.viernesNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="sabadoNoche" name="sabadoNoche" value="1" <% if(locals.user && user.sabadoNoche==1){%> checked <%} %>></td>
+        <td> <input type="checkbox" id="domingoNoche" name="domingoNoche" value="1" <% if(locals.user && user.domingoNoche==1){%> checked <%} %>></td>
+    </tr>
+</table>

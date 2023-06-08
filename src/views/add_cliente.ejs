@@ -1,0 +1,24 @@
+
+<%- include('veterinaria_panel') %>
+
+<form class=" registro" action="/add_cliente" method="POST">
+    <div class="form-group">
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" placeholder="Ingrese correo" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="password" placeholder="Ingrese contraseña"required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="telefono" placeholder="Ingrese telefono"required>
+    </div>
+    <button type="submit" class="btn btn-info-orange">Agregar</button>
+    
+    <a type="button " class="btn btn-info-orange" href="veterinaria_panel">Cancelar</a>
+
+
+</form>
+
+

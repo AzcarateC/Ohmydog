@@ -1,0 +1,37 @@
+<table class="container">
+  <tr>
+    
+    <% for (var i =0; i<data.length;i++) {%>   
+    <td>
+      <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            Perro adoptado
+        </div>
+        <div class="card-body">
+        <h5 class="card-title"><%= data[i].titulo %></h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%= data[i].nombre %></h6>
+        <p class="card-text"><%=data[i].texto%></p>
+        </div>
+    </div>
+    </div>
+    
+  </td>
+  <% } %>
+ 
+ 
+ 
+  <!--<td>
+    <div class="card" style="width: 18rem;">
+      <div class="card-header">
+          Perro adoptado
+      </div>
+      <div class="card-body">
+      <h5 class="card-title"><%= data[0].nombredepublicacion %></h5>
+      <p class="card-text"><%=data[0].texto%></p>
+      </div>
+  </div>
+
+  </td>-->
+  </tr>
+ </div>
+</table>

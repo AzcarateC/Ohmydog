@@ -1,0 +1,30 @@
+<%- include ('vistas') %>  
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Descripcion</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <%if (data){%>
+                    <% for (i=0;i<data.length;i++){%>
+                      <tr>
+                    <td><%=data[i].paciente%></td>      
+                    <td><%=data[i].tipo%></td>
+                    <td><%=data[i].dia%></td>        
+                    <td><%=data[i].hora%></td>
+                    <td><%=data[i].descripcion%></td>
+                    
+                  </tr>  
+                <%}%> 
+            <%}%>   
+        </tbody>
+    </table>
+</body>
+</html>
+<%- include ('partials/_footer') %>
