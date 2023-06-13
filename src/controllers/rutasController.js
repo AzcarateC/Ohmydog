@@ -42,7 +42,7 @@ controller.UserPublics = (req,res) => {
     req.getConnection((err,conn)=>{
          user = req.session.mi_sesion 
          email = user[0].email
-        conn.query('SELECT * FROM adopcion   JOIN clientes ON adopcion.nombre = clientes.email WHERE clientes.email = ?',[email],(err,rows)=>{
+        conn.query('SELECT * FROM perrosenadopcion   JOIN clientes ON perrosenadopcion.nombre = clientes.email WHERE clientes.email = ?',[email],(err,rows)=>{
             res.render('misPublics',{
                 data:rows,user 
             });
@@ -230,7 +230,7 @@ controller.solicitarTurno = (req,res) => {
          email = user[0].email
          conn.query('SELECT * FROM turnos WHERE turnos.email = ?',[email],(err,rows)=>{
              res.render('misTurnos',{
-                 data:rows           
+                 data:rows,user           
              });
          })
      })
