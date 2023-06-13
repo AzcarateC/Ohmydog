@@ -1,21 +1,22 @@
 <%- include ('vistas') %>
-  <form action="/solicitarTurno" method="POST">
-    <label for="tipo-turno">Tipo de Turno:</label><br>
-    <input type="radio" id="turno-manana" name="tipo-turno" value="mañana">
-    <label for="turno-manana">Preferencia Mañana</label><br>
-    <input type="radio" id="turno-tarde" name="tipo-turno" value="tarde">
-    <label for="turno-tarde">Preferencia Tarde</label><br>
+  <form class="registro" action="/solicitarTurno" method="POST">
+    <label for="tipo-turno" >Preferencia Franja Horarias</label><br>
+      <input type="radio" id="turno-manana" name="tipoTurno" value="mañana">
+      <label for="turno-manana" >Preferencia Mañana</label><br>
+      <input type="radio" id="turno-tarde" name="tipoTurno" value="tarde">
+      <label for="turno-tarde" >Preferencia Tarde</label><br>
 
-    <label for="tipo-servicio">Tipo de Servicio:</label><br>
-    <select name="tipo-servicio" id="tipo-servicio">
+    <label for="tipo-servicio" >Tipo de Servicio:</label><br>
+    <select name="tipo-servicio" id="tipoServicio">
       <option value="vacunacion">Vacunación</option>
       <option value="esterilizacion">Esterilización</option>
       <option value="aseo">Cauterizacion</option>
     </select><br>
 
-    <label for="usuario">Usuario:</label><br>
-    <input type="text" id="usuario" name="usuario"><br>
+    <label for="usuario" >Usuario:</label><br>
+    <input type="text" id="usuario" name="usuario" value="<%-user[0].email%>"><br>
 
-    <button type="submit">Enviar Solicitud</button>
+    <button type="submit" class="btn btn-info-orange">Confirmar</button>
+    <a href ="/" type="submit" class="btn btn-info-orange">Cancelar</a>
   </form>
   <%- include ('partials/_footer') %>
