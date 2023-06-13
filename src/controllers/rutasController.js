@@ -228,31 +228,13 @@ controller.solicitarTurno = (req,res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
          email = user[0].email
-         conn.query('SELECT * FROM turnos WHERE turnos.email = ?',[email],(err,rows)=>{
+         conn.query('SELECT * FROM turnos WHERE turnos.paciente = ?',[email],(err,rows)=>{
              res.render('misTurnos',{
                  data:rows,user           
              });
          })
      })
  }
- controller.nuevoTurno=((req, res) => {
-     const cliente = req.body.cliente;
-     const descripcion = req.body.descripcion;
-     const tipo = req.body.tipo;
-     const dia = req.body.dia;
-     const hora = req.body.hora;
-     const sqlQuery = 'INSERT INTO turnos (cliente, descripcion, tipo, dia, hora) VALUES (?, ?, ?, ?, ?)';
-     const values = [cliente, descripcion, tipo, dia, hora]; 
-     connection.query(sqlQuery, values, (err, result) => {
-       if (err) {
-         console.error('Error al guardar el turno: ', err);
-         res.status(500).json({ error: 'Ocurrió un error al guardar el turno' });
-       } else {
-         res.redirect('/darTurno'); 
-       }
-     });
-   });
- 
 
 
 

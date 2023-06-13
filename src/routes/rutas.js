@@ -22,7 +22,6 @@ router.get('/darTurnoSolicitud',controller.darTurnoSolicitud)
 router.get('/solicitarVentanaTurno',controller.solicitarVentanaTurno)
 router.get('/verSolicitudesTurnos',controller.verSolicitudesTurnoVentana)
 router.get('/darTurnos',controller.darTurnos)
-router.get('/nuevoTurno',controller.nuevoTurno)
 router.get('/calendarioTurnos',controller.calendarioTurnos)
 router.get('/verTurnos',controller.Turnos)
 router.get('/MisTurnos',controller.misTurnos)
@@ -135,6 +134,26 @@ router.post('/add_adopcion', (req, res)=>{
     })
     
 })
+
+router.post('/nuevot',(req, res) => {
+    const cliente = req.body.cliente;
+    const descripcion = req.body.descripcion;
+    const tipo = req.body.tipo;
+    const dia = req.body.dia;
+    const hora = req.body.hora;
+    req.getConnection((err,conn) =>{
+    sql = "INSERT INTO `turnos`(`paciente`, `descripcion`,`tipo`, `dia`,`hora`) VALUES (?,?,?,?,?)"
+    conn.query(sql, [cliente, descripcion, tipo, dia, hora] , (err, result) => {
+      if (err) {
+        res.send('hubo un error')
+        res.redirect('/darTurnos');
+      } else {
+        res.redirect('/darTurnos'); 
+      }
+    });  
+     }) 
+  });
+
 
 router.get('/add_mascota',(req, res) => {
     var user= req.session.mi_sesion
