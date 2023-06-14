@@ -18,7 +18,7 @@ router.get('/',(req,res) =>{
         })
     })
 })
-router.get('/darTurnoSolicitud',controller.darTurnoSolicitud)
+
 router.get('/solicitarVentanaTurno',controller.solicitarVentanaTurno)
 router.get('/verSolicitudesTurnos',controller.verSolicitudesTurnoVentana)
 router.get('/darTurnos',controller.darTurnos)
@@ -182,6 +182,22 @@ router.post('/cancelarTurno',(req, res) => {
      }) 
   })  
 
+router.post('/darTurnoSolicitud',(req,res) => {
+    const user = req.session.mi_sesion
+    const usuario= req.body.usuario
+    const  tipo = req.body.tipo
+    const  servicio = req.body.servicio
+      console.log(usuario)
+      console.log(servicio)
+      console.log(tipo)
+      console.log(usuario) 
+ req.getConnection((err,conn)=>{
+      res.render('darTSolicitud',{
+          user,usuario,servicio,tipo
+      })
+
+  })
+})
 
 router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;

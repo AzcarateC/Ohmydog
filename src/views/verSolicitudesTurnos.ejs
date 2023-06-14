@@ -16,10 +16,10 @@
                     <td><%=data[i].usuario%></td> 
                     <td><%=data[i].tipoTurno%></td>      
                     <td><%=data[i].tipoServicio%></td> 
-                    <form action="/darTurnoSolicitud" method="GET"> 
-                        <input type="hidden" name="usuario" value="<%= data[i].usuario %>">
-                        <input type="hidden" name="tipo" value="<%= data[i].tipoTurno %>">
-                        <input type="hidden" name="servicio" value="<%= data[i].tipoServicio %>"> 
+                    <form action="/darTurnoSolicitud" method="post"> 
+                        <input type="hidden" name="usuario" value=<%= data[i].usuario %>>
+                        <input type="hidden" name="tipo" value=<%=data[i].tipoTurno %>>
+                        <input type="hidden" name="servicio" value=<%= data[i].tipoServicio %>> 
                         <td><button type="submit">Dar Turno</button></td>
                     </form>
                   </tr>  

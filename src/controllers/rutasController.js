@@ -182,8 +182,11 @@ controller.listarSolicitudes = (req, res) => {
  controller.darTurnos = (req, res) => {
      req.getConnection((err, conn) => {
          user=req.session.mi_sesion
+         usuario=" "
+         servicio=" "
+         tipo=" "            
          res.render('darTurno',{
-             user
+             user,usuario,servicio,tipo
          });
      })
  }
@@ -191,13 +194,17 @@ controller.listarSolicitudes = (req, res) => {
 
  
  controller.darTurnoSolicitud = (req,res) => {
-     req.getConnection((err,conn)=>{
-         user = req.session.mi_sesion
-         usuario= req.body.usuario
-         tipo = req.body.tipo
-         servicio = req.body.servicio
+       const user = req.session.mi_sesion
+       const usuario= req.body.usuario
+       const  tipo = req.body.tipo
+       const  servicio = req.body.servicio
+         console.log(usuario)
+         console.log(servicio)
+         console.log(tipo)
+         console.log(usuario) 
+    req.getConnection((err,conn)=>{
          res.render('darTSolicitud',{
-             usuario,servicio,tipo
+             user,usuario,servicio,tipo
          })
  
      })

@@ -20,6 +20,12 @@
                     <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth()+1 %></td>        
                     <td><%=data[i].hora%></td>
                     <td><%=data[i].descripcion%></td>
+                    <form action="/cancelarTurno" method="POST"> 
+                        <input type="hidden" name="usuario" value=<%= data[i].paciente%>> 
+                        <input type="hidden" name="hora" value=<%= data[i].hora %>> 
+                        <input type="hidden" name="dia" value="<%= data[i].dia%>"> 
+                        <td><button type="submit">Cancelar Turno</button></td>
+                    </form>
                   </tr>  
                 <%}%> 
             <%}%>   
