@@ -39,12 +39,13 @@ controller.PagePublicaciones = (req,res)=>{
 }
 
 controller.UserPublics = (req,res) => {
+    const user = req.session.mi_sesion
+    const email = user[0].email
+    console.log(email)
     req.getConnection((err,conn)=>{
-         user = req.session.mi_sesion 
-         email = user[0].email
-        conn.query('SELECT * FROM perrosenadopcion   JOIN clientes ON perrosenadopcion.nombre = clientes.email WHERE clientes.email = ?',[email],(err,rows)=>{
+        conn.query('SELECT * FROM perrosenadopcion WHERE perrosenadopcion.cliente = ? ',[email],(err,rows)=>{
             res.render('misPublics',{
-                data:rows,user 
+                data:rows,user: user 
             });
         })
     })
@@ -193,24 +194,7 @@ controller.listarSolicitudes = (req, res) => {
 
 
  
- controller.darTurnoSolicitud = (req,res) => {
-       const user = req.session.mi_sesion
-       const usuario= req.body.usuario
-       const  tipo = req.body.tipo
-       const  servicio = req.body.servicio
-         console.log(usuario)
-         console.log(servicio)
-         console.log(tipo)
-         console.log(usuario) 
-    req.getConnection((err,conn)=>{
-         res.render('darTSolicitud',{
-             user,usuario,servicio,tipo
-         })
- 
-     })
- }
- 
- 
+  
  
  controller.Turnos= (req, res) => {
      req.getConnection((err,conn)=>{

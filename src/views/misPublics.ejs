@@ -3,15 +3,27 @@
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th></th>            
+                <th>Publicacion</th>                
             </tr>
         </thead>
         <tbody>
             <%if (data){%>
                     <% for (i=0;i<data.length;i++){%>
-                    <td><tr><%=data[i].nombrePerro%></td></tr>
-                                   
+                        <div asign="center" class="card" style="width: 18rem;">
+                            <div class="card-header">
+                                Adopcion
+                            </div>
+                            <div class="card-body">
+                            <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
+                            <p class="card-text"><%=data[i].texto%></p>
+                            <% if (user){%>
+                                <% if(user[0].email == data[0].cliente){%>
+                                    <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
+                                <% } %>
+                            <%} %>
+                            
+                            </div>
+                        </div>                                   
                 <%}%> 
             <%}%>   
         </tbody>
