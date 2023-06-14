@@ -147,31 +147,28 @@ controller.listarSolicitudes = (req, res) => {
     }
 
 }
-
-controller.solicitarTurno = (req,res) => {
-    req.getConnection((err,conn)=>{
-      tipoTurno = req.query['tipo-turno'];
-      tipoServicio = req.query['tipo-servicio'];
-      usuario = req.query['usuario'];
-      sqlQuery = 'INSERT INTO solicitudesTurno (tipoTurno, tipoServicio, usuario) VALUES (?, ?, ?)';
-     conn.query(sqlQuery, [tipoTurno, tipoServicio, usuario],(err,rows)=>{
-         res.render('darTurno')
-     })
-    })
- }
  
  controller.solicitarVentanaTurno = (req,res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
-         res.render('solicitarTurno',{
-             user
-         })
+         conn.query('SELECT * FROM solicitudesturno WHERE solicitudesturno.usuario = ?',[user[0].email],(err,rows)=>{
+            if(rows){
+              msj="Ya posee una solicitud de Turno"
+              res.render('miSolicitud',{user,rows,msj})
+            console.log(rows)
+            }
+            else{
+            res.render('solicitarTurno',{
+                user})
+            }
+        })
      })
  }
+
  controller.verSolicitudesTurnoVentana = (req,res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
-         conn.query('SELECT * FROM solicitudesTurno',(err,rows)=>{
+         conn.query('SELECT * FROM solicitudesturno',(err,rows)=>{
              if(err){
                  res.json(err)
              }

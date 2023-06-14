@@ -14,7 +14,7 @@
                     <% for (i=0;i<data.length;i++){%>
                       <tr>
                         <td> <%=data[i].tipo%></td>
-                        <td><%=data[i].dia%></td>        
+                        <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth() %></td>        
                         <td><%=data[i].hora%></td>
                         <td><%=data[i].descripcion%></td>
                   </tr>              

@@ -152,24 +152,25 @@ router.post('/nuevot',(req, res) => {
       }
     });  
      }) 
-  });
+  })
 
-  router.post('/solicitarTurno',(req, res) => {
+router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;
     const servicio = req.body.tipoServicio;
     const usuario = req.body.usuario;
     req.getConnection((err,conn) =>{
-    sql = "INSERT INTO `solicitarturno`(`tipoTurno`, `tipoServicio`,`usuario`) VALUES (?,?,?)"
+    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`) VALUES (?,?,?)"
     conn.query(sql, [tipo,servicio,usuario], (err, result) => {
       if (err) {
         res.send('hubo un error')
-        res.redirect('/');
-      } else {
-        res.redirect('/'); 
+        res.redirect('/')
+      } else{
+      var user = req.session.mi_sesion
+      res.render('solicitarTurno',{user})
       }
     });  
      }) 
-  });
+  })
   
 
 

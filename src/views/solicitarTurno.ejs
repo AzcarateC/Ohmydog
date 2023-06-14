@@ -1,20 +1,23 @@
 <%- include ('vistas') %>
   <form class="registro" action="/solicitarTurno" method="POST">
-    <label for="tipo-turno" >Preferencia Franja Horarias</label><br>
-      <input type="radio" id="turno-manana" name="tipoTurno" value="mañana">
-      <label for="turno-manana" >Preferencia Mañana</label><br>
-      <input type="radio" id="turno-tarde" name="tipoTurno" value="tarde">
-      <label for="turno-tarde" >Preferencia Tarde</label><br>
+    
+    <label for="usuario" >Usuario:</label><br>
+    <input type="text" id="usuario" name="usuario" value="<%-user[0].email%>"><br>
+    
+    <label for="tipoTurno" >Preferencia Franja Horarias</label>
+    <br>
+      <select name="tipoTurno" id>
+        <option value="Mañana">Mañana</option>
+        <option value="Tarde">Tarde</option>
+      </select>   
+    </br>
 
-    <label for="tipo-servicio" >Tipo de Servicio:</label><br>
-    <select name="tipo-servicio" id="tipoServicio">
+    <label for="tipoServicio" >Tipo de Servicio:</label><br>
+    <select name="tipoServicio" id="tipoServicio">
       <option value="vacunacion">Vacunación</option>
       <option value="esterilizacion">Esterilización</option>
       <option value="aseo">Cauterizacion</option>
     </select><br>
-
-    <label for="usuario" >Usuario:</label><br>
-    <input type="text" id="usuario" name="usuario" value="<%-user[0].email%>"><br>
 
     <button type="submit" class="btn btn-info-orange">Confirmar</button>
     <a href ="/" type="submit" class="btn btn-info-orange">Cancelar</a>
