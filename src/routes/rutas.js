@@ -26,6 +26,7 @@ router.get('/calendarioTurnos',controller.calendarioTurnos)
 router.get('/verTurnos',controller.Turnos)
 router.get('/MisTurnos',controller.misTurnos)
 
+
 router.get('/listar',controller.listarClientes)
 router.get('/publics',controller.PagePublicaciones)
 router.get('/userPublics',controller.UserPublics)
@@ -154,6 +155,34 @@ router.post('/nuevot',(req, res) => {
      }) 
   })
 
+router.post('/cancelarTurno',(req, res) => {
+    const usuario = req.body.usuario;
+    
+    const dia = req.body.dia
+    const date = new Date(dia);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const fechaFinal = `${year}-${month}-${day}`;
+   
+    const hora = req.body.hora;
+    console.log(usuario);
+    console.log("Fecha formateada:", fechaFinal);
+    console.log(hora);
+    req.getConnection((err,conn) =>{
+    const sql = "DELETE FROM turnos WHERE paciente=? AND dia=? AND hora=? "
+    const user = req.session.mi_sesion
+    conn.query(sql, [usuario,fechaFinal,hora], (err, result) => {        
+      if (user[0].esAdmin ===0) {
+        res.redirect('/verTurnos')
+      } else{
+      res.redirect("/MisTurnos")
+      }
+    });  
+     }) 
+  })  
+
+
 router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;
     const servicio = req.body.tipoServicio;
@@ -165,14 +194,28 @@ router.post('/solicitarTurno',(req, res) => {
         res.send('hubo un error')
         res.redirect('/')
       } else{
-      var user = req.session.mi_sesion
-      res.render('solicitarTurno',{user})
+      res.redirect("/solicitarVentanaTurno")
       }
     });  
      }) 
   })
   
-
+  router.post('/eliminarSolicitudTurno',(req, res) => {
+    const usuario = req.body.usuario;  
+    req.getConnection((err,conn) =>{
+    var sql = "DELETE FROM `solicitudesturno` WHERE usuario= ? "
+    conn.query(sql, [usuario], (err, result) => {
+      if (err) {
+        res.send('hubo un error')
+        res.redirect('/')
+      } else{
+      var user = req.session.mi_sesion
+      res.redirect('/solicitarVentanaTurno');
+      }
+    });  
+     }) 
+  })
+ 
 
 
 router.get('/add_mascota',(req, res) => {

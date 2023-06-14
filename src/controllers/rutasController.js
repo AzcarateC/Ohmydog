@@ -152,10 +152,10 @@ controller.listarSolicitudes = (req, res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
          conn.query('SELECT * FROM solicitudesturno WHERE solicitudesturno.usuario = ?',[user[0].email],(err,rows)=>{
-            if(rows){
-              msj="Ya posee una solicitud de Turno"
-              res.render('miSolicitud',{user,rows,msj})
-            console.log(rows)
+            if(rows.length != 0 ){              
+              var data = rows
+              res.render('miSolicitud',{user,data})
+             console.log(rows)
             }
             else{
             res.render('solicitarTurno',{
@@ -187,7 +187,8 @@ controller.listarSolicitudes = (req, res) => {
          });
      })
  }
- 
+
+
  
  controller.darTurnoSolicitud = (req,res) => {
      req.getConnection((err,conn)=>{
@@ -212,9 +213,7 @@ controller.listarSolicitudes = (req, res) => {
              if(err){
                  res.json(err)
              }
-             console.log(rows)
-             res.render('turnos',{
-                 
+             res.render('turnos',{                 
                  data: rows,user
              });
          })
@@ -269,9 +268,7 @@ controller.solicitarPaseador = (req, res) => {
 }
 controller.eliminarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
-
         var id = req.body.id;
-
         var sql = "DELETE FROM `paseadores` WHERE id= ? "
         conn.query(sql, [id], (err, rows) => {
             if (err) {

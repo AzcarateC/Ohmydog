@@ -1,5 +1,6 @@
 <%- include ('vistas') %>
 <body>    
+    <h3>Mis Turnos</h3>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -14,9 +15,15 @@
                     <% for (i=0;i<data.length;i++){%>
                       <tr>
                         <td> <%=data[i].tipo%></td>
-                        <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth() %></td>        
+                        <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth()+1 %></td>        
                         <td><%=data[i].hora%></td>
                         <td><%=data[i].descripcion%></td>
+                        <form action="/cancelarTurno" method="POST"> 
+                            <input type="hidden" name="usuario" value=<%= data[i].paciente%>> 
+                            <input type="hidden" name="hora" value=<%= data[i].hora %>> 
+                            <input type="hidden" name="dia" value="<%= data[i].dia%>"> 
+                            <td><button type="submit">Cancelar Turno</button></td>
+                        </form>
                   </tr>              
                 <%}%> 
             <%}%>   
