@@ -143,13 +143,17 @@ router.post('/nuevot',(req, res) => {
     const dia = req.body.dia;
     const hora = req.body.hora;
     req.getConnection((err,conn) =>{
+        sqlquery ="DELETE FROM solicitudesturno WHERE usuario= ? "
+        conn.query(sqlquery,[cliente],(err,result)=>{
+
+        })
     sql = "INSERT INTO `turnos`(`paciente`, `descripcion`,`tipo`, `dia`,`hora`) VALUES (?,?,?,?,?)"
     conn.query(sql, [cliente, descripcion, tipo, dia, hora] , (err, result) => {
       if (err) {
         res.send('hubo un error')
-        res.redirect('/darTurnos');
+        res.redirect('/verTurnos');
       } else {
-        res.redirect('/darTurnos'); 
+        res.redirect('/verTurnos'); 
       }
     });  
      }) 

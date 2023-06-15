@@ -68,12 +68,27 @@ controller.verTurnos = (req,res)=>{
 controller.calendarioTurnos = (req,res)=>{
     req.getConnection((err,conn)=>{
         msj=""
-        conn.query('SELECT * FROM turnos',(err,rows)=>{
+        conn.query('SELECT * FROM turnos',(err,data)=>{
             if(err){
                 res.json(err)
             }
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+          
+            // Crear el vector "conteoDias" con valores iniciales en cero
+            const conteoDias = new Array(daysInMonth).fill(0);
+          
+            // Recorrer el vector "data" y actualizar el conteo de días
+            for (const date of data) {
+              if (date.dia.getMonth() === currentMonth && date.dia.getFullYear() === currentYear) {
+                const day = date.dia.getDate();
+                conteoDias[day] += 1;
+              }
+            }
             res.render('calendarioTurnos',{
-                data1:rows,user
+                data1:conteoDias,user
             });
         })
     })
@@ -215,7 +230,7 @@ controller.listarSolicitudes = (req, res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
          email = user[0].email
-         conn.query('SELECT * FROM turnos WHERE turnos.paciente = ?',[email],(err,rows)=>{
+         conn.query('SELECT * FROM turnos WHERE paciente = ?',[email],(err,rows)=>{
              res.render('misTurnos',{
                  data:rows,user           
              });
