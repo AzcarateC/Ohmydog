@@ -1,3 +1,5 @@
+const { DATE } = require("mysql/lib/protocol/constants/types")
+
 const controller = {}
 
 controller.list = (req, res) => {
@@ -93,6 +95,33 @@ controller.calendarioTurnos = (req,res)=>{
         })
     })
 }
+controller.verturnosdiax = (req,res) => {
+    const dia = req.body.dia
+    console.log(dia)
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth();
+    const date = new Date(añoActual, mesActual, dia)
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const fechaFinal = `${year}-${month}-${day}`;
+    console.log(fechaFinal)
+    const user = req.session.mi_sesion
+    req.getConnection((err,conn)=> {
+        conn.query('SELECT * FROM turnos WHERE dia = ?',[fechaFinal],(err,rows)=>{
+            res.render('turnos',{
+                data: rows, user
+            })
+        })
+    })
+}
+
+
+
+
+
 controller.listarPaseadores = (req, res) => {
     var user= req.session.mi_sesion
     orderBy = req.query.orderBy;

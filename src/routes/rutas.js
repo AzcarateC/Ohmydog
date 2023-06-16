@@ -18,7 +18,7 @@ router.get('/',(req,res) =>{
         })
     })
 })
-
+router.post('/verTurnosDiaX',controller.verturnosdiax)
 router.get('/solicitarVentanaTurno',controller.solicitarVentanaTurno)
 router.get('/verSolicitudesTurnos',controller.verSolicitudesTurnoVentana)
 router.get('/darTurnos',controller.darTurnos)
