@@ -25,6 +25,7 @@ router.get('/darTurnos',controller.darTurnos)
 router.get('/calendarioTurnos',controller.calendarioTurnos)
 router.get('/verTurnos',controller.Turnos)
 router.get('/MisTurnos',controller.misTurnos)
+router.get('/mis_datos',controller.misDatos)
 
 
 router.get('/listar',controller.listarClientes)

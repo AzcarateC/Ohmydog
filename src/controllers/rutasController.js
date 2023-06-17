@@ -15,6 +15,16 @@ controller.list = (req, res) => {
         })
     })
 }
+controller.misDatos = (req,res) => {
+    req.getConnection((err,conn)=> {
+        const user = req.session.mi_sesion
+        conn.query('SELECT * FROM clientes WHERE email = ?',[user[0].email],(err,rows)=>{
+            res.render('verInforPersonal',{
+                rows,user
+            });
+        })
+    })
+}
 controller.listarClientes = (req,res)=>{
     req.getConnection((err,conn)=>{
         msj=""
