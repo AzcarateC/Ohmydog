@@ -77,8 +77,7 @@ controller.calendarioTurnos = (req,res)=>{
             const currentDate = new Date();
             const currentMonth = currentDate.getMonth();
             const currentYear = currentDate.getFullYear();
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-          
+            const daysInMonth = new Date(currentYear, currentMonth , 0).getDate();
             // Crear el vector "conteoDias" con valores iniciales en cero
             const conteoDias = new Array(daysInMonth).fill(0);
           
@@ -86,11 +85,11 @@ controller.calendarioTurnos = (req,res)=>{
             for (const date of data) {
               if (date.dia.getMonth() === currentMonth && date.dia.getFullYear() === currentYear) {
                 const day = date.dia.getDate();
-                conteoDias[day] += 1;
+                conteoDias[day] = conteoDias[day] + 1;
               }
             }
             res.render('calendarioTurnos',{
-                data1:conteoDias,user
+                data1:conteoDias,user,mesActual:currentMonth
             });
         })
     })

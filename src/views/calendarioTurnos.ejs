@@ -34,10 +34,15 @@
     </center>
 </header>
 <body>
-  
+  <center>
+    <% let meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']; %>
+    <% let mes = mesActual%>
+    <h2 style="text-transform: uppercase"><%= meses[mes]%></h2>
+    
+  </center>
   <div class="calendar">
     <% var j=0; %>
-    <% for (let i = 1; i <= data1.length; i++) { %>
+    <% for (let i = 1; i <= data1.length-1; i++) { %>
       <%  j++; %>
         <div class="day">
           <h2><%= i %></h2>

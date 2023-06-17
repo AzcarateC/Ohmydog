@@ -6,7 +6,8 @@
             <tr>
                 <th>Usuario</th>
                 <th>Franja Horaria</th>
-                <th>Servicio</th>                
+                <th>Servicio</th>   
+                <th>Descripcion</th>             
             </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                     <td><%=data[i].usuario%></td> 
                     <td><%=data[i].tipoTurno%></td>      
                     <td><%=data[i].tipoServicio%></td> 
+                    <td><%=data[i].descripcion%></td>
                     <form action="/eliminarSolicitudTurno" method="POST"> 
                         <input type="hidden" name="usuario" value="<%= data[i].usuario%>"> 
                         <td><button type="submit">eliminar Solicitud</button></td>

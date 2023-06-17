@@ -191,13 +191,11 @@ router.post('/darTurnoSolicitud',(req,res) => {
     const usuario= req.body.usuario
     const  tipo = req.body.tipo
     const  servicio = req.body.servicio
-      console.log(usuario)
-      console.log(servicio)
-      console.log(tipo)
-      console.log(usuario) 
+    const descripcion = req.body.descripcion
+    console.log(descripcion)
  req.getConnection((err,conn)=>{
       res.render('darTSolicitud',{
-          user,usuario,servicio,tipo
+          user,usuario,servicio,tipo,descripcion
       })
 
   })
@@ -206,10 +204,11 @@ router.post('/darTurnoSolicitud',(req,res) => {
 router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;
     const servicio = req.body.tipoServicio;
+    const descripcion = req.body.descripcion
     const usuario = req.body.usuario;
     req.getConnection((err,conn) =>{
-    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`) VALUES (?,?,?)"
-    conn.query(sql, [tipo,servicio,usuario], (err, result) => {
+    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`,`descripcion`) VALUES (?,?,?,?)"
+    conn.query(sql, [tipo,servicio,usuario,descripcion], (err, result) => {
       if (err) {
         res.send('hubo un error')
         res.redirect('/')
