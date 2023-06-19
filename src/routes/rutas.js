@@ -29,6 +29,7 @@ router.get('/mis_datos',controller.misDatos)
 
 
 router.get('/listar',controller.listarClientes)
+router.get('/buscarPorNombre',controller.buscarPorNombre)
 router.get('/publics',controller.PagePublicaciones)
 router.get('/userPublics',controller.UserPublics)
 router.get('/paseadores',controller.listarPaseadores)

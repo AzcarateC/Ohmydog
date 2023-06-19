@@ -40,6 +40,18 @@
       font-weight: bold;
       color: #333;
     }
+    .mi-boton {
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+
   </style>
 </head>
 <body>
@@ -53,6 +65,17 @@
   <% } else { %>
     <p>No se encontró información de perfil.</p>
   <% } %>
+  <% if (mascotas) { %>
+    <div class="perfil-card">
+      <h2>Perros Cliente</h2>
+      
+      <% for (i=0;i<mascotas.length;i++){%>
+        <p ><span class="label"><%= mascotas[i].nombre %> </span>  <button class="mi-boton">Ver Informacion</button></p> 
+        <%}%> 
+      
+    </div>
+  <% }%>
+
 </body>
 </html>
 <%- include ('partials/_footer') %>

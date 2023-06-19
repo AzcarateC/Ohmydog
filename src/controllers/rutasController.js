@@ -15,14 +15,35 @@ controller.list = (req, res) => {
         })
     })
 }
+
+controller.buscarPorNombre = (req,res) => {
+    const nombre = req.body.name
+    console.log(nombre)
+    req.getConnection((err,conn)=>{
+        conn.query('SELECT * FROM clientes WHERE nombre = ?',[nombre],(err,rows)=>{
+            res.render('listaClientes',{
+                data1:rows,user
+            })
+        })
+    })
+}
+
 controller.misDatos = (req,res) => {
     req.getConnection((err,conn)=> {
-        const user = req.session.mi_sesion
-        conn.query('SELECT * FROM clientes WHERE email = ?',[user[0].email],(err,rows)=>{
-            res.render('verInforPersonal',{
-                rows,user
+        let  user = req.session.mi_sesion
+        let  mascotas = []; 
+        let rows =[];
+        conn.query('SELECT * FROM mascotas WHERE cliente = ?',[user[0].email],(err,data)=>{
+             mascotas = data;
+        })
+        conn.query('SELECT * FROM clientes WHERE email = ?',[user[0].email],(err,data1)=>{
+             rows = data1
+             res.render('verInforPersonal',{
+                rows,user,mascotas
             });
         })
+       
+
     })
 }
 controller.listarClientes = (req,res)=>{
