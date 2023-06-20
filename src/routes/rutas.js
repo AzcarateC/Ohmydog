@@ -30,7 +30,8 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 
 
-router.get('axmp/listar',controller.listarClientes)
+
+router.get('/listar',controller.listarClientes)
 router.get('/buscarPorNombre',controller.buscarPorNombre)
 router.post('/verPerrosCliente',controller.verPerrosCliente)
 router.get('/publics',controller.PagePublicaciones)
@@ -216,13 +217,11 @@ router.post('/darTurnoSolicitud',(req,res) => {
 router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;
     const servicio = req.body.tipoServicio;
-    const descripcion = req.body.descripcion
     const usuario = req.body.usuario;
     req.getConnection((err,conn) =>{
-    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`,`descripcion`) VALUES (?,?,?,?)"
-    conn.query(sql, [tipo,servicio,usuario,descripcion], (err, result) => {
+    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`) VALUES (?,?,?)"
+    conn.query(sql, [tipo,servicio,usuario], (err, result) => {
       if (err) {
-        res.send('hubo un error')
         res.redirect('/')
       } else{
       res.redirect("/solicitarVentanaTurno")
