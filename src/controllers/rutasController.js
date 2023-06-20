@@ -64,6 +64,16 @@ controller.verPerrosCliente = (req,res) => {
     })
 }
 
+controller.eliminarCliente = (req,res) =>{
+    req.getConnection((err,conn)=>{
+        const cliente = req.body.elegido
+        conn.query('DELETE FROM clientes WHERE email = ?',[cliente],(err,result)=>{
+            res.render('listaClientes',{
+                data1:result,user
+            })
+        })
+    })
+}
 
 controller.listarClientes = (req,res)=>{
     req.getConnection((err,conn)=>{

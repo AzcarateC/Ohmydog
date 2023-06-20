@@ -41,7 +41,10 @@
                       <input type="hidden" name="cliente" value=<%= data1[i].email%> >
                       <td><button class="mi-boton submit" >Ver perros del cliente</button></td>
                     </form>
-                    <td><button class="mi-boton">Eliminar cliente</button></td>    
+                    <form action="/eliminarCliente" method="POST">
+                      <input type="hidden" name="elegido" value=<%=data1[i].email%> > 
+                    <td><button class="mi-boton submit">Eliminar cliente</button></td>    
+                  </form>
                   </tr>  
                 <%}%> 
             <%}%>   

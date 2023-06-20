@@ -30,7 +30,7 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 
 
-
+router.post('/eliminarCliente',controller.eliminarCliente)
 router.get('/listar',controller.listarClientes)
 router.get('/buscarPorNombre',controller.buscarPorNombre)
 router.post('/verPerrosCliente',controller.verPerrosCliente)
