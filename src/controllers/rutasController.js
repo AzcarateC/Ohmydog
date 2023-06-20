@@ -153,56 +153,33 @@ controller.verturnosdiax = (req,res) => {
 
 
 controller.listarPaseadores = (req, res) => {
-    var user= req.session.mi_sesion
-    orderBy = req.query.orderBy;
-    pagina = parseInt(req.query.pagina);
-    if (!(Number(pagina) > 0)) {
-        pagina = 1;
-    }
-    var sql = 'SELECT * FROM paseadores ORDER BY id DESC LIMIT ? ,10;'
-    if (orderBy == 'rating') {
-        sql = 'SELECT * FROM paseadores ORDER BY puntos/calificaciones DESC LIMIT ? ,10;';
-    }
-    sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id<(SELECT id FROM paseadores  LIMIT ? ,1 );'
-    sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id>(SELECT id FROM paseadores  LIMIT ? ,1 )'
-    primero = ((pagina - 1) * 10);
-    ultimo = ((pagina) * 10 - 1);
+    var user = req.session.mi_sesion
+    var sql = 'SELECT * FROM paseadores';
     req.getConnection((err, conn) => {
-        conn.query(sql, [primero, primero, ultimo], (err, rows) => {
+        conn.query(sql, (err, rows) => {
+            res.render('listaPaseadores', {
+                data: rows,
+                user: user
+            });
+        })
+    })
+}
+controller.listarPerrosPerdidos = (req, res) => {
+    var user = req.session.mi_sesion
+    var sql = 'SELECT * FROM `perrosperdidos` WHERE 1 ORDER BY id DESC'
+    req.getConnection((err, conn) => {
+        conn.query(sql, (err, rows) => {
             if (err) {
                 res.json(err)
             }
-            var previo = -1;
-            if (rows[1][0].x > 0) {
-                previo = Number(pagina) - 1;
-            }
-            var siguiente = -1;
-            if (rows[2][0].x > 0) {
-                siguiente = Number(pagina) + 1;
-            }
-            res.render('listaPaseadores', {
-                data: rows[0],
-                previo: previo,
-                siguiente: siguiente,
-                user : user
+            res.render('listaPerroPerdido', {
+                data: rows,
+                user: user
             });
         })
     })
 }
 controller.listarSolicitudes = (req, res) => {
-    // var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id FROM `solicitudescontacto` s INNER JOIN `paseadores` p ON s.idPaseador=p.id;"
-    // req.getConnection((err, conn) => {
-    //     conn.query(sql, (err, rows) => {
-    //         if (err) {
-    //             res.json(err)
-    //         }
-    //         console.log(rows);
-    //         res.render('listaSolicitudes', {
-    //             data: rows
-    //         });
-
-    //     })
-    // })
     var user= req.session.mi_sesion
     if ((!user) || (user.esAdmin==1)){
         res.redirect('/')
@@ -346,10 +323,12 @@ controller.eliminarPaseador = (req, res) => {
 controller.agregarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
         var nombre = req.body.nombre;
+        var esPaseador = req.body.esPaseador ? 1 : 0;
+        var esCuidador = req.body.esCuidador ? 1 : 0;
+        var mail = req.body.mail;
         var descripcion = req.body.descripcion;
         var zonas = req.body.zonas;
         var lunesManiana = req.body.lunesManiana ? 1 : 0;
-        console.log(lunesManiana);
         var martesManiana = req.body.martesManiana ? 1 : 0;
         var miercolesManiana = req.body.miercolesManiana ? 1 : 0;
         var juevesManiana = req.body.juevesManiana ? 1 : 0;
@@ -370,8 +349,8 @@ controller.agregarPaseador = (req, res) => {
         var viernesNoche = req.body.viernesNoche ? 1 : 0;
         var sabadoNoche = req.body.sabadoNoche ? 1 : 0;
         var domingoNoche = req.body.domingoNoche ? 1 : 0;
-        var sql = 'INSERT INTO `paseadores`(`nombre`, `descripcion`, `zonas`, `lunesManiana`, `lunesTarde`, `lunesNoche`, `martesManiana`, `martesTarde`, `martesNoche`, `miercolesManiana`, `miercolesTarde`, `miercolesNoche`, `juevesManiana`, `juevesTarde`, `juevesNoche`, `viernesManiana`, `viernesTarde`, `viernesNoche`, `sabadoManiana`, `sabadoTarde`, `sabadoNoche`, `domingoManiana`, `domingoTarde`, `domingoNoche`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-        conn.query(sql, [nombre, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche], (err, rows) => {
+        var sql = 'INSERT INTO `paseadores`(`nombre`,`esCuidador`,`esPaseador`,`mail`, `descripcion`, `zonas`, `lunesManiana`, `lunesTarde`, `lunesNoche`, `martesManiana`, `martesTarde`, `martesNoche`, `miercolesManiana`, `miercolesTarde`, `miercolesNoche`, `juevesManiana`, `juevesTarde`, `juevesNoche`, `viernesManiana`, `viernesTarde`, `viernesNoche`, `sabadoManiana`, `sabadoTarde`, `sabadoNoche`, `domingoManiana`, `domingoTarde`, `domingoNoche`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        conn.query(sql, [nombre, esCuidador, esPaseador, mail, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche], (err, rows) => {
             if (err) {
                 res.json(err)
             }
@@ -382,6 +361,9 @@ controller.agregarPaseador = (req, res) => {
 controller.modificarPaseador = (req, res) => {
     var id = req.query.id
     var nombre = req.body.nombre;
+    var mail = req.body.mail;
+    var esPaseador = req.body.esPaseador ? 1 : 0;
+    var esCuidador = req.body.esCuidador ? 1 : 0;
     var descripcion = req.body.descripcion;
     var zonas = req.body.zonas;
     var lunesManiana = req.body.lunesManiana ? 1 : 0;
@@ -406,15 +388,15 @@ controller.modificarPaseador = (req, res) => {
     var sabadoNoche = req.body.sabadoNoche ? 1 : 0;
     var domingoNoche = req.body.domingoNoche ? 1 : 0;
     req.getConnection((err, conn) => {
-        var sql = "UPDATE `paseadores` SET `nombre`=?,`descripcion`=?,`zonas`=?,`lunesManiana`=?,`lunesTarde`=?,`lunesNoche`=?,`martesManiana`=?,`martesTarde`=?,`martesNoche`=?,`miercolesManiana`=?,`miercolesTarde`=?,`miercolesNoche`=?,`juevesManiana`=?,`juevesTarde`=?,`juevesNoche`=?,`viernesManiana`=?,`viernesTarde`=?,`viernesNoche`=?,`sabadoManiana`=?,`sabadoTarde`=?,`sabadoNoche`=?,`domingoManiana`=?,`domingoTarde`=?,`domingoNoche`=? WHERE id=?"
-        conn.query(sql, [nombre, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche, id], (err, rows) => {
+        var sql = "UPDATE `paseadores` SET `nombre`=?,`esCuidador`=?,`esPaseador`=?,`mail`=?,`descripcion`=?,`zonas`=?,`lunesManiana`=?,`lunesTarde`=?,`lunesNoche`=?,`martesManiana`=?,`martesTarde`=?,`martesNoche`=?,`miercolesManiana`=?,`miercolesTarde`=?,`miercolesNoche`=?,`juevesManiana`=?,`juevesTarde`=?,`juevesNoche`=?,`viernesManiana`=?,`viernesTarde`=?,`viernesNoche`=?,`sabadoManiana`=?,`sabadoTarde`=?,`sabadoNoche`=?,`domingoManiana`=?,`domingoTarde`=?,`domingoNoche`=? WHERE id=?"
+        conn.query(sql, [nombre, esCuidador, esPaseador, mail, descripcion, zonas, lunesManiana, lunesTarde, lunesNoche, martesManiana, martesTarde, martesNoche, miercolesManiana, miercolesTarde, miercolesNoche, juevesManiana, juevesTarde, juevesNoche, viernesManiana, viernesTarde, viernesNoche, sabadoManiana, sabadoTarde, sabadoNoche, domingoManiana, domingoTarde, domingoNoche, id], (err, rows) => {
             if (err) {
                 res.json(err)
             }
             res.redirect('/paseadores')
         })
     })
-}
+}   
 controller.calificarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
         var id = req.body.id;
@@ -484,6 +466,96 @@ controller.delete_adopcion = (req, res) => {
             })
         })
     })
+}
+controller.modificarPerrosPerdidos = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file);
+        var id=req.body.id;
+        var nombre = req.body.nombre;
+        var descripcion = req.body.descripcion;
+        var zona = req.body.zona;
+        var fecha = req.body.fecha==""?req.body.fechavieja:req.body.fecha;
+        var emailpublicacion = req.body.emailpublicacion;
+        var sexo = req.body.sexo;
+        var perdidooencontrado = req.body.perdidooencontrado;
+        var contacto = req.body.contacto;
+        var foto = req.file?req.file.filename:req.body.imagenVieja;
+        var sql = 'UPDATE `perrosperdidos` SET `nombre`=?,`descripcion`=?,`foto`=?,`contacto`=?,`zona`=?,`perdidooencontrado`=?,`sexo`=?,`fecha`=? WHERE id=?'
+        conn.query(sql, [nombre, descripcion, foto, contacto, zona, perdidooencontrado, sexo, fecha, id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/perrosPerdidos')
+            }
+        })
+    })
+}
+controller.modificarPerroPerdido = (req, res) => {
+    {
+        var user = req.session.mi_sesion
+        if ((!user) || (user.esAdmin == 1)) {
+            res.redirect('/')
+        } else {
+            id = req.query.id;
+            var sql = 'SELECT * FROM perrosperdidos WHERE id = ?';
+            req.getConnection((err, conn) => {
+                conn.query(sql, id, (err, rows) => {
+                    if (err) {
+                        res.json(err)
+                    }
+                    res.render('modificarPerroPerdido', {
+                        data: rows,
+                        user: user
+                    });
+                })
+            })
+        }
+    }
+}
+controller.eliminarPerroPerdido = (req, res) => {
+    req.getConnection((err, conn) => {
+
+        var id = req.body.id;
+        var sql = "DELETE FROM `perrosperdidos` WHERE id= ? "
+        conn.query(sql, [id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.send(rows)
+        })
+    })
+}
+controller.agregarPerroPerdido = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file)
+        var nombre = req.body.nombre;
+        var descripcion = req.body.descripcion;
+        var zona = req.body.zona;
+        var fecha = req.body.fecha;
+        var emailpublicacion = req.body.emailpublicacion;
+        var sexo = req.body.sexo;
+        var perdidooencontrado = req.body.perdidooencontrado;
+        var contacto = req.body.contacto;
+        var foto = req.file.filename;
+        var sql = 'INSERT INTO `perrosperdidos` (`nombre`, `descripcion`, `foto`, `contacto`, `zona`, `emailpublicacion`, `perdidooencontrado`, `sexo`, `fecha` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) '
+        conn.query(sql, [nombre, descripcion, foto, contacto, zona, emailpublicacion, perdidooencontrado, sexo, fecha], (err, rows) => {
+            console.log('s')
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/perrosPerdidos')
+            }
+        })
+    })
+}
+controller.agregarPerrosPerdidos = (req, res) => {
+
+    var user = req.session.mi_sesion
+    if ((!user)) {
+        res.redirect('/')
+    } else {
+        res.render('agregarPerroPerdido', { user: user })
+    }
 }
 module.exports = controller;
 

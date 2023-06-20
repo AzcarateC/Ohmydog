@@ -1,15 +1,61 @@
-<%- include ('vistas')  %>
-<h1 class="text-center">Modificar datos del paseador <%=data[0].nombre%></h1>
-<form class=" registro" action="/modificarPaseador?id=<%=data[0].id%>" method="post" >
-  <div class="form-group"><label for="nombre">Nombre y apellido:</label><br>
-    <input type="text"class="form-control" id="nombre" value="<%=data[0].nombre%>" name="nombre"></div>
+<%- include ('vistas') %>
+<script>
+  function handleData()
+  {
+    var form_data = new FormData(document.querySelector("form"));
+      if (!form_data.has("esPaseador") && !form_data.has("esCuidador")) {
+        document.getElementById("chk_option_error").style.visibility = "visible";
+        return false;
+      }
+      else {
+        document.getElementById("chk_option_error").style.visibility = "hidden";
+        mail = document.getElementById('mail').value;
+        console.log(mail)
+        var xmlHttp = new XMLHttpRequest();
+        theUrl= 'http://localhost:3000/validarMail?mail='+mail;
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        validez = xmlHttp.responseText;
+        if (validez !== 'Mail valido') {
+          document.getElementById("mail_option_error").style.visibility = "visible";
+          return false;
+        } else {
+          document.getElementById("mail_option_error").style.visibility = "hidden";
+          return true
+        }
+      }
+  }
+  </script>
+  <h1 class="text-center">Modificar datos del paseador <%=data[0].nombre%>
+  </h1>
+  <form class=" registro" onsubmit="return handleData()" action="/modificarPaseador?id=<%=data[0].id%>" method="post">
+    <div class="form-group"><label for="nombre">Nombre y apellido:</label><br>
+      <input type="text" class="form-control" id="nombre" value="<%=data[0].nombre%>" name="nombre">
+    </div>
     <br><br>
+    <div style="visibility:hidden; color:red; " id="chk_option_error">
+      Debe seleccionar al menos una opción.
+    </div>
+    <div>
+      <input type="checkbox" name="esPaseador" id="paseadorCheckBox" value="1" <%=data[0].esPaseador==1?'checked':'' %>> <label
+        for="paseadorCheckBox">Paseador</label>
+    </div>
+    <div>
+      <input type="checkbox" name="esCuidador" id="cuidadorCheckBox" value="1" <%=data[0].esPaseador==1?'checked':'' %>> <label
+        for="cuidadorCheckBox">Cuidador</label>
+    </div>
+    <div class="form-group"><label for="mail">Mail:</label><br>
+      <input type="email" class="form-control" id="mail" name="mail" value="<%=data[0].mail%>">
+    </div>
     <div class="form-group"><label for="zonas" maxlength="300" size="300">Zonas:</label><br>
-    <textarea  class="form-control" required rows="3" type="text" id="zonas" value="<%=data[0].zonas%>" name="zonas"></textarea></div>
+      <textarea class="form-control" required rows="3" type="text" id="zonas" value=""
+        name="zonas"><%=data[0].zonas%></textarea>
+    </div>
     <div class="form-group"><label for="descripcion">Descripcion:</label><br>
-    <textarea class="form-control" type="text" maxlength="300" size="300" id="descripcion" name="descripcion" value="<%=data[0].descripcion%>"></textarea></div>
+      <textarea class="form-control" type="text" maxlength="700" size="700" id="descripcion" name="descripcion"
+        value="<%=data[0].descripcion%>"><%=data[0].descripcion%></textarea>
+    </div>
     <%- include('partials/_tablaAgregarHorarios', {user: data[0]}); %>
-    <input type="submit" value="Modificar">
+      <input type="submit" value="Modificar">
   </form>
-<%- include ('partials/_footer') %>
-
+  <%- include ('partials/_footer') %>

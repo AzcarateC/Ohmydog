@@ -29,6 +29,7 @@
             </div>
             <div id="mensaje<%= data.id%>"> </div>
             <% if( (locals.user) && user[0].esAdmin==0){%>
+                Mail= <%= data.mail%>
                 <button type='button' class="btn btn-info-orange" onclick='eliminar(<%= data.id%>,"<%=data.nombre%>")'
                     id='eliminar<%=data.id%>'>Eliminar publicacion de <%=data.nombre%></button><button type='button' class="btn btn-info-orange"
                     onclick="window.location.href='http://localhost:3000/modificar?id=<%= data.id%>'"

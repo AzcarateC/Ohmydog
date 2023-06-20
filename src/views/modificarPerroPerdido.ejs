@@ -1,0 +1,37 @@
+<%- include ('vistas') %>
+<% var fecha = new Date(data[0].fecha);%>
+  <h1 class="text-center">Modificar publicación 
+  </h1>
+  <form class=" registro" action="/modificarPerrosPerdidos?id=<%=data[0].id%>" method="post" enctype="multipart/form-data"> 
+    <input name="id" type="hidden" value="<%= data[0].id %>">
+    <input type="radio" id="encontrado" name="perdidooencontrado" value="0"  <%=data[0].perdidooencontrado==0?'checked':'' %> required>
+    <label for="encontrado">Encontre un perro</label><br>
+    <input type="radio" id="perdido" name="perdidooencontrado" value="1" required <%=data[0].perdidooencontrado==1?'checked':'' %>>
+    <label for="perdido">Perdi a mi perro</label><br>
+    <div class="form-group"><label for="nombre">Nombre :</label><br>
+      <input type="text" class="form-control" id="nombre" name="nombre" value="<%=data[0].nombre%>">
+    </div>
+    <input type="radio" id="macho" name="sexo" value="Macho" <%=data[0].sexo=='Macho'?'checked':'' %> required>
+    <label for="encontrado">Macho</label><br>
+    <input type="radio" id="hembra" name="sexo" value="Hembra" <%=data[0].sexo=='Hembra'?'checked':'' %> required>
+    <label for="perdido">Hembra</label><br>
+    <div class="form-group"><label for="zona" maxlength="700" size="700">Zona:</label><br>
+      <textarea class="form-control" required rows="3" type="text" id="zona" name="zona"><%=data[0].zona  %></textarea>
+    </div>
+    <label for="fecha">Fecha de perdido/encontrado:</label>
+    <input type="date" id="fecha" name="fecha" value="<%=fecha.toISOString().substr(0, 10)%>">
+   <div class="form-group"><label for="descripcion">Descripcion:</label><br>
+      <textarea class="form-control" type="text" maxlength="700" size="700" id="descripcion"
+        name="descripcion"><%=data[0].descripcion%></textarea>
+    </div>
+    <input id="imagenVieja" name="imagenVieja" type="hidden" value="<%= data[0].foto %>">
+    <div class="form-group">
+      <label for="imagen">Foto:</label>
+      <input type="file" class="form-control" name="imagen">
+  </div>
+    <div class="form-group">
+      <label for="contacto">Telefono:</label>
+      <input type="text" class="form-control" name="contacto" value="<%=data[0].contacto%>"required>
+      <input type="submit" value="Modificar">
+  </form>
+  <%- include ('partials/_footer') %>

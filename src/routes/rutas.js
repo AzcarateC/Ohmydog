@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/rutasController')
+const multer = require('multer')
+const upload = multer({ dest: './src/public/data/uploads/' })
 
 router.get('/',(req,res) =>{
     req.getConnection((err,conn)=>{
@@ -44,6 +46,13 @@ router.post('/calificarPaseador',controller.calificarPaseador)
 router.post('/modificarPaseador',controller.modificarPaseador)
 router.get('/agregarPaseador',controller.agregarPaseadores)
 router.get('/delete/:id',controller.delete_adopcion)
+
+router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
+router.get('/perrosPerdidos',controller.listarPerrosPerdidos)
+router.get('/modificarPerroPerdido',controller.modificarPerroPerdido)
+router.post('/agregarPerroPerdido',upload.single('imagen'),controller.agregarPerroPerdido)
+router.get('/agregarPerroPerdido',controller.agregarPerrosPerdidos)
+router.post('/modificarPerrosPerdidos',upload.single('imagen'),controller.modificarPerrosPerdidos)
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
@@ -368,5 +377,123 @@ router.get('/list_perros', (req, res)=>{
         })
     })
 })
+router.get('/validarMail',(req,res) =>{
+    req.getConnection((err,conn)=>{
+        mail=req.query.mail;
+        conn.query('SELECT * FROM paseadores WHERE mail=?',[mail],(err,rows)=>{
+            if (rows[0]!=null){
+                res.send('Mail ya registrado')}
+            else{
+                res.send('Mail valido')
+            }
+        })
+    })
+})
+controller.modificarPerrosPerdidos = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file);
+        var id=req.body.id;
+        var nombre = req.body.nombre;
+        var descripcion = req.body.descripcion;
+        var zona = req.body.zona;
+        var fecha = req.body.fecha;
+        var emailpublicacion = req.body.emailpublicacion;
+        var sexo = req.body.sexo;
+        var perdidooencontrado = req.body.perdidooencontrado;
+        var contacto = req.body.contacto;
+        var foto = req.file?req.file.filename:req.body.imagenVieja;
+        var sql = 'UPDATE `perrosperdidos` SET `nombre`=?,`descripcion`=?,`foto`=?,`contacto`=?,`zona`=?,`perdidooencontrado`=?,`sexo`=?,`fecha`=? WHERE id=?'
+        conn.query(sql, [nombre, descripcion, foto, contacto, zona, perdidooencontrado, sexo, fecha, id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/perrosPerdidos')
+            }
+        })
+    })
+}
+controller.eliminarPerroPerdido = (req, res) => {
+    req.getConnection((err, conn) => {
+
+        var id = req.body.id;
+        var sql = "DELETE FROM `perrosperdidos` WHERE id= ? "
+        conn.query(sql, [id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.send(rows)
+        })
+    })
+}
+controller.agregarPerroPerdido = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file)
+        var nombre = req.body.nombre;
+        var descripcion = req.body.descripcion;
+        var zona = req.body.zona;
+        var fecha = req.body.fecha;
+        var emailpublicacion = req.body.emailpublicacion;
+        var sexo = req.body.sexo;
+        var perdidooencontrado = req.body.perdidooencontrado;
+        var contacto = req.body.contacto;
+        var foto = req.file.filename;
+        var sql = 'INSERT INTO `perrosperdidos` (`nombre`, `descripcion`, `foto`, `contacto`, `zona`, `emailpublicacion`, `perdidooencontrado`, `sexo`, `fecha` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) '
+        conn.query(sql, [nombre, descripcion, foto, contacto, zona, emailpublicacion, perdidooencontrado, sexo, fecha], (err, rows) => {
+            console.log('s')
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/perrosPerdidos')
+            }
+        })
+    })
+}
+controller.modificarPerroPerdido = (req, res) => {
+    {
+        var user = req.session.mi_sesion
+        if ((!user) || (user.esAdmin == 1)) {
+            res.redirect('/')
+        } else {
+            id = req.query.id;
+            var sql = 'SELECT * FROM perrosperdidos WHERE id = ?';
+            req.getConnection((err, conn) => {
+                conn.query(sql, id, (err, rows) => {
+                    if (err) {
+                        res.json(err)
+                    }
+                    res.render('modificarPerroPerdido', {
+                        data: rows,
+                        user: user
+                    });
+                })
+            })
+        }
+    }
+}
+controller.agregarPerrosPerdidos = (req, res) => {
+
+    var user = req.session.mi_sesion
+    if ((!user)) {
+        res.redirect('/')
+    } else {
+        res.render('agregarPerroPerdido', { user: user })
+    }
+}
+
+controller.listarPerrosPerdidos = (req, res) => {
+    var user = req.session.mi_sesion
+    var sql = 'SELECT * FROM `perrosperdidos` WHERE 1 ORDER BY id DESC'
+    req.getConnection((err, conn) => {
+        conn.query(sql, (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.render('listaPerroPerdido', {
+                data: rows,
+                user: user
+            });
+        })
+    })
+}
 
 module.exports=router
