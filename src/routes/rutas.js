@@ -30,8 +30,9 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 
 
-router.get('/listar',controller.listarClientes)
+router.get('axmp/listar',controller.listarClientes)
 router.get('/buscarPorNombre',controller.buscarPorNombre)
+router.post('/verPerrosCliente',controller.verPerrosCliente)
 router.get('/publics',controller.PagePublicaciones)
 router.get('/userPublics',controller.UserPublics)
 router.get('/paseadores',controller.listarPaseadores)

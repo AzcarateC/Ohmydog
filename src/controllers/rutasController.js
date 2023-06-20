@@ -42,10 +42,29 @@ controller.misDatos = (req,res) => {
                 rows,user,mascotas
             });
         })
-       
-
     })
 }
+
+controller.verPerrosCliente = (req,res) => {
+    const  cliente = req.body.cliente 
+    req.getConnection((err,conn)=> {
+        user =req.session.mi_sesion
+        console.log(cliente)
+        let nombre = [];
+        let mascotas = []
+        conn.query('SELECT * FROM mascotas WHERE cliente = ?',[cliente],(err,data)=>{
+             mascotas = data;
+        })
+        conn.query('SELECT * FROM clientes WHERE email= ?',[cliente],(err,data1)=>{
+            nombre = data1;
+            res.render('perrosCliente',{
+                mascotas,user,nombre
+             })
+       })  
+    })
+}
+
+
 controller.listarClientes = (req,res)=>{
     req.getConnection((err,conn)=>{
         msj=""

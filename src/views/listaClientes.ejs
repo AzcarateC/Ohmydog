@@ -36,9 +36,10 @@
                   <% for (i=0;i<data1.length;i++){%>
                   <tr>
                     <td><%= data1[i].nombre%></td> 
-                    <td><%= data1[i].email%></td>    
-                    <form>
-                    <td><button class="mi-boton">Ver perros del cliente</button></td>
+                    <td ><%= data1[i].email%></td>    
+                    <form action="/verPerrosCliente" method="POST">                                    
+                      <input type="hidden" name="cliente" value=<%= data1[i].email%> >
+                      <td><button class="mi-boton submit" >Ver perros del cliente</button></td>
                     </form>
                     <td><button class="mi-boton">Eliminar cliente</button></td>    
                   </tr>  
