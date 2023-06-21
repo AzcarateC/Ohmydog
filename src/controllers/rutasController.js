@@ -105,9 +105,13 @@ controller.UserPublics = (req,res) => {
     const email = user[0].email
     console.log(email)
     req.getConnection((err,conn)=>{
+        let perdidos =[]
+        conn.query('SELECT * FROM perrosperdidos    WHERE emailpublicacion = ?',[email],(err,r)=>{
+            perdidos = r;
+          })
         conn.query('SELECT * FROM perrosenadopcion WHERE perrosenadopcion.cliente = ? ',[email],(err,rows)=>{
             res.render('misPublics',{
-                data:rows,user: user 
+                data:rows,user: user, perdidos
             });
         })
     })
