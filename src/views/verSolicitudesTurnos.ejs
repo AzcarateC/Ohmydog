@@ -6,7 +6,7 @@
                 <th>Usuario</th>
                 <th>Franja Horaria</th>
                 <th>Servicio</th>             
-                <th>Descripcion</th>                
+                
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,6 @@
                     <td><%=data[i].usuario%></td> 
                     <td><%=data[i].tipoTurno%></td>      
                     <td><%=data[i].tipoServicio%></td> 
-                    <td><%=data[i].descripcion%></td>
                     <form action="/darTurnoSolicitud" method="post">                 
                         <input type="hidden" name="usuario" value=<%= data[i].usuario %>>
                         <input type="hidden" name="tipo" value=<%=data[i].tipoTurno %>>

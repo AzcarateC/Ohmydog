@@ -149,28 +149,49 @@ router.post('/add_adopcion', (req, res)=>{
     
 })
 
-router.post('/nuevot',(req, res) => {
+router.post('/nuevot', (req, res) => {
     const cliente = req.body.cliente;
     const descripcion = req.body.descripcion;
     const tipo = req.body.tipo;
     const dia = req.body.dia;
     const hora = req.body.hora;
-    req.getConnection((err,conn) =>{
-        sqlquery ="DELETE FROM solicitudesturno WHERE usuario= ? "
-        conn.query(sqlquery,[cliente],(err,result)=>{
-
-        })
-    sql = "INSERT INTO `turnos`(`paciente`, `descripcion`,`tipo`, `dia`,`hora`) VALUES (?,?,?,?,?)"
-    conn.query(sql, [cliente, descripcion, tipo, dia, hora] , (err, result) => {
-      if (err) {
-        res.send('hubo un error')
-        res.redirect('/verTurnos');
-      } else {
-        res.redirect('/verTurnos'); 
-      }
-    });  
-     }) 
-  })
+  
+    console.log(cliente)
+    console.log(descripcion)
+    console.log(tipo)
+    console.log(dia)
+    console.log(hora)
+    req.getConnection((err, conn) => {
+      // Verificar si el cliente existe
+      const sqlQuery = "SELECT * FROM clientes WHERE email = ?";
+      conn.query(sqlQuery, [cliente], (err, result) => {
+        if (err) {
+          // Manejar el error si ocurre durante la consulta
+          console.error(err);
+          res.send('Hubo un error en la consulta');
+        } else {
+          if (result.length === 0) {
+            // Cliente no válido, mostrar alerta y redireccionar
+            res.send('<script>alert("El cliente proporcionado no es válido."); window.location.href = "/verTurnos";</script>');
+          } else {
+            // Cliente válido, realizar la inserción en la base de datos
+            const sql = "INSERT INTO turnos (paciente, descripcion, tipo, dia, hora) VALUES (?, ?, ?, ?, ?)";
+            conn.query(sql, [cliente, descripcion, tipo, dia, hora], (err, result) => {
+              if (err) {
+                // Manejar el error si ocurre durante la inserción
+                console.error(err);
+                res.send('Hubo un error al insertar el turno');
+              } else {
+                // Redireccionar a la página de visualización de turnos
+                res.redirect('/verTurnos');
+              }
+            });
+          }
+        }
+      });
+    });
+  });
+  
 
 router.post('/cancelarTurno',(req, res) => {
     const usuario = req.body.usuario;
@@ -204,11 +225,10 @@ router.post('/darTurnoSolicitud',(req,res) => {
     const usuario= req.body.usuario
     const  tipo = req.body.tipo
     const  servicio = req.body.servicio
-    const descripcion = req.body.descripcion
-    console.log(descripcion)
+    console.log(servicio)
  req.getConnection((err,conn)=>{
       res.render('darTSolicitud',{
-          user,usuario,servicio,tipo,descripcion
+          user,usuario,servicio,tipo
       })
 
   })
