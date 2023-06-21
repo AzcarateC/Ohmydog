@@ -36,6 +36,9 @@ router.get('/verificar', (req, res) => {
         res.render('verificar')
 })
 router.get('/verMascotas',controller.verMascotas)
+router.get('/modificarpass',(req, res )=>{
+    res.render('verificar')
+})
 
 
 

@@ -15,7 +15,10 @@ controller.list = (req,res)=>{
 }
 
 controller.verificar= (req,res)=>{
-    var mail= req.body.email
+    
+        var mail= req.body.email
+    
+    console.log(mail)
     var actpas= req.body.pass1
     var confirmpas = req.body.confirmpass1
     sql="SELECT * FROM clientes WHERE email = ?"
@@ -248,14 +251,14 @@ controller.verMascotas = (req, res) => {
 controller.adoptado = (req, res) => {
     var id= req.params.id
     req.getConnection((err, conn) => {
-        var consulta = "SELECT * FROM perrosenadopcion WHERE id =?"
+        var consulta = "INSERT INTO perrosadoptados SELECT * FROM perrosenadopcion WHERE id = ?"
         conn.query (consulta, [id], (err, rows) => {
             console.log(rows)
-            res.redirect('/adopcion')
+            res.redirect('/')
         })
-       // var sql ="UPDATE `perrosadoptados` SET `id`='[value-1]',`titulo`='[value-2]',`edad`='[value-3]',`tamaño`='[value-4]',`raza`='[value-5]',`nombre`='[value-6]',`texto`='[value-7]' WHERE 1 "
     })
 } 
+
 
 module.exports = controller;
 

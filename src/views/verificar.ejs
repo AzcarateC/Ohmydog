@@ -1,11 +1,14 @@
-<%- include ('partials/_header')  %>
+ <%- include('partials/_header') %>
+
 
 <form  class="recuperar" action="/verificar" method="post">
-    <li><input placeholder="Ingrese correo valido" name="email" required></input></li>
-    <li><input type="password" placeholder="Ingrese nueva contraseña" required name="pass1"></li>
-    <li><input type="password" placeholder="Confirme contraseña" required name="confirmpass1"></li>
-    <button type="submit" class="btn btn-primary">Enviar</button>
-    <a href="/" type="button">Cancelar</a>
+     <li><input placeholder="Ingrese correo valido" name="email" required></input></li>
+     <li><input type="password" placeholder="Ingrese nueva contraseña" required name="pass1"></li>
+     <li><input type="password" placeholder="Confirme contraseña" required name="confirmpass1"></li>
+     <button type="submit" class="btn btn-primary">Enviar</button>
+     <a href="/" type="button">Cancelar</a>
+            
+
 </form>
 
 <%- include ('partials/_footer') %>
