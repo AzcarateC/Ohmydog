@@ -650,6 +650,14 @@ controller.agregarPerrosPerdidos = (req, res) => {
         res.render('agregarPerroPerdido', { user: user })
     }
 }
+controller.delete_adopcion = (req, res) => { 
+    var id = req.params.id;
+    req.getConnection((err, conn) => {
+        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?;', [id],(err, rows) => { 
+            res.redirect('/adopcion')
+        })
+    })
+}
 controller.verMascotas = (req, res) => {
     var user = req.session.mi_sesion
     var cliente =user[0].email

@@ -64,6 +64,7 @@ router.get('/modificarpass',(req, res )=>{
 
 
 
+<<<<<<< HEAD
 
 router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
 router.get('/perrosPerdidos',controller.listarPerrosPerdidos)
@@ -71,6 +72,8 @@ router.get('/modificarPerroPerdido',controller.modificarPerroPerdido)
 router.post('/agregarPerroPerdido',upload.single('imagen'),controller.agregarPerroPerdido)
 router.get('/agregarPerroPerdido',controller.agregarPerrosPerdidos)
 router.post('/modificarPerrosPerdidos',upload.single('imagen'),controller.modificarPerrosPerdidos)
+=======
+>>>>>>> mi_codigo
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{

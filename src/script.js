@@ -16,3 +16,4 @@ function confirm_delete(){
     }    
            
    }
+   
