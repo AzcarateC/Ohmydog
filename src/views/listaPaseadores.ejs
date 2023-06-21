@@ -24,7 +24,7 @@
         x.esPaseador==1).sort((x,y)=>(y.puntos/y.calificaciones)-(x.puntos/x.calificaciones));
         for(var i=0; i<paseadoresRating.length; i++) { %>
 
-          <%- include('partials/_publicacionPaseador', {data: paseadoresRating[i]}); %>
+          <%- include('partials/_publicacionPaseador', {data: paseadoresRating[i], lista: 'a'}); %>
 
             <% } %>
     </ul>
@@ -33,7 +33,7 @@
         x.esCuidador==1).sort((x,y)=>(y.puntos/y.calificaciones)-(x.puntos/x.calificaciones));
         for(var i=0; i<cuidadoresRating.length; i++) { %>
 
-          <%- include('partials/_publicacionPaseador', {data: cuidadoresRating[i]}); %>
+          <%- include('partials/_publicacionPaseador', {data: cuidadoresRating[i], lista: 'b'}); %>
 
             <% } %>
     </ul>
@@ -41,7 +41,7 @@
       <% var paseadoresRecientes=data.filter(x=>x.esPaseador==1).sort((x,y)=>y.id-x.id);
         for(var i=0; i<paseadoresRecientes.length; i++) { %>
 
-          <%- include('partials/_publicacionPaseador', {data: paseadoresRecientes[i]}); %>
+          <%- include('partials/_publicacionPaseador', {data: paseadoresRecientes[i], lista: 'c'}); %>
 
             <% } %>
     </ul>
@@ -49,7 +49,7 @@
       <% var cuidadoresRecientes=data.filter(x=> x.esCuidador==1).sort((x,y)=>y.id-x.id);
         for(var i=0; i<cuidadoresRecientes.length; i++) { %>
 
-          <%- include('partials/_publicacionPaseador', {data: cuidadoresRecientes[i]}); %>
+          <%- include('partials/_publicacionPaseador', {data: cuidadoresRecientes[i], lista: 'd'}); %>
 
             <% } %>
     </ul>

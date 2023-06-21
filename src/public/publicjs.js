@@ -1,21 +1,21 @@
-function contactar(id) {
-    contacto = document.getElementById("contacto" + id);
+function contactar(id,lista) {
+    contacto = document.getElementById("contacto" + id+lista);
     contacto.innerHTML = "";
     console.log('contactar')
     form = document.createElement("div");
     var tel = document.createElement("input");
     tel.setAttribute("type", "int");
-    tel.setAttribute("id", "telefono" + id);
+    tel.setAttribute("id", "telefono" + id+lista);
     tel.setAttribute("placeholder", "Ingrese su telefono");
     var nombre = document.createElement("input");
     nombre.setAttribute("type", "text");
-    nombre.setAttribute("id", "nombreSolicitud" + id);
+    nombre.setAttribute("id", "nombreSolicitud" + id+lista);
     nombre.setAttribute("placeholder", "Ingrese su nombre");
     var s = document.createElement("button");
     s.setAttribute("type", "button");
-    s.setAttribute('id', 'boton' + id);
+    s.setAttribute('id', 'boton' + id+lista);
     s.setAttribute('class',"btn btn-info-orange")
-    s.setAttribute('onClick', "solicitarContacto(" + id + ")")
+    s.setAttribute('onClick', "solicitarContacto(" + id+','+"'"+lista+"')")
     s.innerHTML = 'Contactar'
 
 
@@ -28,13 +28,13 @@ function contactar(id) {
     // Append the boton  to the form
     form.appendChild(s);
 
-    document.getElementById("contacto" + id).appendChild(form);
+    document.getElementById("contacto" + id+lista).appendChild(form);
 }
 
-function solicitarContacto(id) {
-    telefono = document.getElementById("telefono" + id).value;
+function solicitarContacto(id,lista) {
+    telefono = document.getElementById("telefono" + id+lista).value;
     if (Number.isInteger(Number(telefono))) {
-        nombre = document.getElementById("nombreSolicitud" + id).value;
+        nombre = document.getElementById("nombreSolicitud" + id+lista).value;
         const options = {
             method: 'POST',
             headers: {
@@ -49,14 +49,14 @@ function solicitarContacto(id) {
                 return res;
             })
             .then(res => res.json())
-            .then(res => solicitudExitosa(id, res))
+            .then(res => solicitudExitosa(id,lista, res))
     } else {
         alert("Ingrese un numero de telefono valido(solo números, sin caracteres especiales)")
     }
 
 
 }
-function solicitudExitosa(id, res) {
+function solicitudExitosa(id,lista, res) {
     console.log("asd")
     if (res.errno && res.errno == 1062) {
         mensaje = "Ya existe una solicitud registrada en el sistema con ese número de teléfono"
@@ -64,42 +64,13 @@ function solicitudExitosa(id, res) {
         if (res.affectedRows = 1) { mensaje = "Su solicitud de contacto ha sido realizada con exito" }
         else { mensaje = "Fallo al procesar la solicitudExitosa, intente nuevamente mas tarde." }
     }
-    contacto = document.getElementById("mensaje" + id);
+    contacto = document.getElementById("mensaje" + id+lista);
     contacto.innerHTML = mensaje;
 
 }
-function cambiarPagina(pagina) {
-    let url = new URL(window.location);
-    pagina = parseInt(pagina)
-    url.searchParams.set("pagina", pagina);
-    console.log(url)
-    location.href = url.href;
-}
-botonOrdenar();
-function botonOrdenar() {
-    let url = new URL(window.location);
-    if (url.searchParams.get("orderBy") == 'rating') {
-        document.getElementById('botonOrdenar').setAttribute('onclick', "ordenarPor('asd')")
-        document.getElementById('botonOrdenar').innerHTML = 'Ordenar por fecha de publicación'
-
-    }
-
-}
-function ordenarPor(criterio) {
-    let url = new URL(window.location);
-    if (criterio == 'rating') {
-        url.searchParams.set("orderBy", criterio);
-    } else {
-        url.searchParams.delete("orderBy");
-    }
-    location.href = url.href;
-
-}
-
-
-function calificar(id) {
-    calificacion = document.getElementById("calificacion" + id).value;
-    if (calificacion == 0 || calificacion == 1 || calificacion == 2 || calificacion == 3 || calificacion == 5 || calificacion == 4) {
+function calificar(id,lista) {
+    calificacion = document.getElementById("calificacion"+id+lista).value;
+    if (calificacion!=="" && calificacion == 0 || calificacion == 1 || calificacion == 2 || calificacion == 3 || calificacion == 5 || calificacion == 4) {
         const options = {
             method: 'POST',
             headers: {
@@ -110,13 +81,13 @@ function calificar(id) {
         };
         fetch('http://localhost:3000/calificarPaseador', options)
             .then(res => res.json())
-            .then(calificacionExitosa(id))
+            .then(calificacionExitosa(id,lista))
     } else {
         alert("Ingrese un numero del 0 al 5")
     }
 }
-function calificacionExitosa(id) {
-    contacto = document.getElementById("calificar" + id);
+function calificacionExitosa(id,lista) {
+    contacto = document.getElementById("calificar" + id+lista);
     contacto.innerHTML = "Calificacion realizada";
 
 }
