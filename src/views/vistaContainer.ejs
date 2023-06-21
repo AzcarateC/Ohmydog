@@ -8,7 +8,7 @@
     
     <table class="container">
         <tr>
-          
+          <% if (data) {%>
           <% for (var i =0; i<data.length;i++) {%>   
           <td>
             <div class="card" style="width: 18rem;">
@@ -24,6 +24,7 @@
           </div>
           
         </td>
+        <% } %>
         <% } %>
         </td>
         </tr>

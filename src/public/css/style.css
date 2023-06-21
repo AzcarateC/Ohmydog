@@ -37,12 +37,21 @@ background-color:#f1965b ;
 }
 .card{
     margin-left: 5px;
+   
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20%;
 }
-
+container-text-center{
+    position: relative;
+  
+}
 footer{
 background-color: #7abbca;
 margin-top: 0%;
-position: absolute;
+position: fixed;
+display: block;
 bottom: 0;
 width: 100%;
 height: 20px;
@@ -68,6 +77,25 @@ background-color: #f1965b;
 .nav-login{
 text-align: right;
 
+}
+.recuperar{
+    margin: 80px 20px 20px 20px ;
+    transition: 0.3s;
+    width: auto;
+    margin-left: 500px;
+    margin-right: 200px;
+}
+.link:hover{
+    background-color: #0d6efd;
+}
+.list_adopcion{
+    width:100%;
+    height:50px;
+    text-align:center;
+}
+.adopcion_lis{
+ display:inline-block;
+ margin-right:10px;
 }
 header{
 padding: 0px;

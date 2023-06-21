@@ -1,31 +1,35 @@
 <%- include ('vistas') %>
-
-<body>
-    <table class="container">
-        <tr>
-          
-          <% for (var i =0; i<data.length;i++) {%>   
-          <td>
+<script src="script.js"></script>
+<ul class="list_adopcion">
+    <% if (data){%>
+    <% for(var i=0; i<data.length; i++) { %>
+        <li class="adopcion_lis">
             <div class="card" style="width: 18rem;">
                 <div class="card-header">
                     Adopcion
                 </div>
                 <div class="card-body">
                 <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
-                <p class="card-text"><%=data[i].texto%></p>
-                <a href="#" class="card-link">Contactar</a>
+                <p class="card-text">Nombre: <%=data[i].nombre%></p>
+                <p class="card-text">Edad: <%=data[i].edad%></p>
+                <p class="card-text">Raza: <%=data[i].raza%></p>
+                <p class="card-text">Tamaño: <%=data[i].tamaño%></p>
+                <p class="card-text">Descipcion: <%=data[i].texto%></p>
+                <a class="btn btn-info-orange"type='button' onclick='contactar("<%= data[i].id%>")'id='boton<%=data.id%>'>Contactar</a>
                 <% if (user){%>
                     <% if(user[0].email == data[0].cliente){%>
-                        <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
+
+                            <a href="/adoptado/<%= data[0].id %>" type="button" class="btn btn-info-orange" onclick="confirm_delete()">Adoptado</a>
+                        
+                            <a href="/delete_adopcion/<%= data[0].id %>" type="button" class="btn btn-info-orange" onclick="confirm_delete()">Eliminar</a>
+                                                   
                     <% } %>
                 <%} %>
-                
                 </div>
             </div>
-            </div>
-          
-        </td>
-        <% } %>
-        
+        </li>
+   <% } %>
+   <% } %>
+</ul>
+<%- include ('partials/_footer') %>
 
-    <%- include ('partials/_footer') %>

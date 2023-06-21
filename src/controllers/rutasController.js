@@ -13,6 +13,42 @@ controller.list = (req,res)=>{
         })
     })
 }
+
+controller.verificar= (req,res)=>{
+    var mail= req.body.email
+    var actpas= req.body.pass1
+    var confirmpas = req.body.confirmpass1
+    sql="SELECT * FROM clientes WHERE email = ?"
+    req.getConnection((err,conn)=>{
+        conn.query(sql,[mail],(err,rows)=>{
+            if(rows.length>0){
+
+                if (actpas==confirmpas) {
+                    sql2 = "update clientes set password =? where email= ?"
+                    conn.query(sql2,[actpas,mail],(err,rows)=>{
+                            res.redirect('/')
+                    })
+            }
+    }});
+    });
+    }
+
+
+
+controller.listarAdopcion = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        var user = req.session.mi_sesion
+        conn.query('SELECT * FROM perrosenadopcion',(err,rows)=>{
+            if (err){
+                res.json(err)
+            }
+            req.session.adopcion=rows   
+            res.render('adopcion',{data:rows,user})
+        });
+    });
+}
+
+
 controller.listarPaseadores = (req, res) => {
     orderBy = req.query.orderBy;
     pagina = parseInt(req.query.pagina);
@@ -185,19 +221,42 @@ controller.modificar = (req, res) => {
         })
     })
 }
-controller.delete_adopcion = (req, res) => {
-    const {id} = req.params
-    const user =req.session.mi_sesion
-    const msj=""
-    const data= req.session.adoptados
+controller.delete_adopcion = (req, res) => { 
+    var id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?', [id],(err, rows) => {
-            res.render('vistaContainer',{
-                user,msj,data
-            })
+        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?;', [id],(err, rows) => { 
+            res.redirect('/adopcion')
         })
     })
 }
+controller.verMascotas = (req, res) => {
+    var user = req.session.mi_sesion
+    var cliente =user[0].email
+    req.getConnection((err, conn) => {
+        sql ="SELECT clientes.nombre AS nombrecliente, mascotas.nombre AS nombre, detalle FROM mascotas join clientes on mascotas.cliente = ?"
+        conn.query(sql,[cliente], (err, rows) => {
+            if (err){
+                res.json(err)
+            }
+            else {
+                res.render("mis_mascotas", {data:rows,user})
+            }
+        })
+    })
+}
+
+controller.adoptado = (req, res) => {
+    var id= req.params.id
+    req.getConnection((err, conn) => {
+        var consulta = "SELECT * FROM perrosenadopcion WHERE id =?"
+        conn.query (consulta, [id], (err, rows) => {
+            console.log(rows)
+            res.redirect('/adopcion')
+        })
+       // var sql ="UPDATE `perrosadoptados` SET `id`='[value-1]',`titulo`='[value-2]',`edad`='[value-3]',`tamaño`='[value-4]',`raza`='[value-5]',`nombre`='[value-6]',`texto`='[value-7]' WHERE 1 "
+    })
+} 
+
 module.exports = controller;
 
 
