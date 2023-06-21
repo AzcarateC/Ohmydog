@@ -9,29 +9,43 @@
                 <th>Fecha</th>
                 <th>Horario</th>
                 <th>Descripcion</th>
-
             </tr>
         </thead>
         <tbody>
-            <%if (data){%>
-                    <% for (i=0;i<data.length;i++){%>
-                      <tr>
-                    <td><%=data[i].paciente%></td>      
-                    <td><%=data[i].tipo%></td>
-                    <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth()+1 %></td>        
-                    <td><%=data[i].hora%></td>
-                    <td><%=data[i].descripcion%></td>
-                    <form action="/cancelarTurno" method="POST"> 
-                        <input type="hidden" name="usuario" value=<%= data[i].paciente%>> 
-                        <input type="hidden" name="hora" value=<%= data[i].hora %>> 
-                        <input type="hidden" name="dia" value="<%= data[i].dia%>"> 
-                        <td><button type="submit">Eliminar Turno</button></td>
-                    </form>
-                  </tr>  
-                <%}%> 
-            <%}%>   
+            <% if (data) { %>
+                <% for (i = 0; i < data.length; i++) { %>
+                    <tr>
+                        <td><%= data[i].paciente %></td>      
+                        <td><%= data[i].tipo %></td>
+                        <td><%= data[i].dia.getDate() %>/<%= data[i].dia.getMonth() + 1 %></td>        
+                        <td><%= data[i].hora %></td>
+                        <td><%= data[i].descripcion %></td>
+                        <form action="/cancelarTurno" method="POST" onsubmit="return confirmarEliminacion(event)">
+                            <input type="hidden" name="usuario" value=<%= data[i].paciente %>> 
+                            <input type="hidden" name="hora" value=<%= data[i].hora %>>                             
+                            <input type="hidden" name="dia" value="<%= data[i].dia %>"> 
+                            <td><button type="submit">Eliminar Turno</button></td>
+                        </form>
+                    </tr>  
+                <% } %> 
+            <% } %>   
         </tbody>
     </table>
 </body>
 </html>
 <%- include ('partials/_footer') %>
+
+<script>
+    function confirmarEliminacion(event) {
+        event.preventDefault();
+            // Mostrar confirmación al usuario
+            var confirmacion = confirm("¿Seguro que desea eliminar el turno?");
+            
+            if (confirmacion) {
+                // Enviar el formulario si el usuario confirma
+                event.target.submit();
+    }
+}
+    </script>
+
+

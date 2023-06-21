@@ -182,8 +182,10 @@ router.post('/nuevot', (req, res) => {
                 console.error(err);
                 res.send('Hubo un error al insertar el turno');
               } else {
-                // Redireccionar a la página de visualización de turnos
-                res.redirect('/verTurnos');
+                conn.query('DELETE FROM solicitudesturno WHERE usuario= ?',[cliente],(err,r)=>{
+                    // Redireccionar a la página de visualización de turnos
+                    res.redirect('/verTurnos');
+                })                
               }
             });
           }
