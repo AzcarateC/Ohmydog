@@ -1,21 +1,25 @@
-<%- include ('vistas')  %>  
-  <form action="/solicitarTurno" method="POST">
-    <label for="tipo-turno">Tipo de Turno:</label><br>
-    <input type="radio" id="turno-manana" name="tipo-turno" value="mañana">
-    <label for="turno-manana">Preferencia Mañana</label><br>
-    <input type="radio" id="turno-tarde" name="tipo-turno" value="tarde">
-    <label for="turno-tarde">Preferencia Tarde</label><br>
+<%- include ('vistas') %>
+  <form class="registro" action="/solicitarTurno" method="POST">
+    <h3>Solicitando Turno</h3>  
+    <label for="usuario" >Usuario:</label>
+    <input type="text" id="usuario" name="usuario" value="<%-user[0].email%>"><br><br>
+    
+    <label for="tipoTurno" >Preferencia Franja Horarias</label>
+    <br>
+      <select name="tipoTurno" id>
+        <option value="Mañana">Mañana</option>
+        <option value="Tarde">Tarde</option>
+      </select>   
+    </br>
 
-    <label for="tipo-servicio">Tipo de Servicio:</label><br>
-    <select name="tipo-servicio" id="tipo-servicio">
+    <label for="tipoServicio" >Tipo de Servicio:</label><br>
+    <select name="tipoServicio" id="tipoServicio">
       <option value="vacunacion">Vacunación</option>
-      <option value="esterilizacion">Esterilización</option>
-      <option value="aseo">Cauterizacion</option>
+      <option value="Castracion">Castracion</option>
+      <option value="Desparacitacion">Desparacitacion</option>
     </select><br>
 
-    <label for="usuario">Usuario:</label><br>
-    <input type="text" id="usuario" name="usuario"><br>
-
-    <button type="submit">Enviar Solicitud</button>
+    <button type="submit" class="btn btn-info-orange">Confirmar</button>
+    <a href ="/" type="submit" class="btn btn-info-orange">Cancelar</a>
   </form>
   <%- include ('partials/_footer') %>

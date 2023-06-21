@@ -1,0 +1,57 @@
+<%- include ('vistas') %>
+<head>
+  <title>Lista de Mascotas</title>
+  <style>
+      table {
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      th, td {
+          padding: 8px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #f2f2f2;
+      }
+
+      .nombre-mascota {
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .boton-acciones {
+          background-color: white;
+          border: 1px solid black;
+          color: black;
+          padding: 5px 10px;
+          border-radius: 3px;
+      }
+  </style>
+</head>
+<body>
+  <h3 align="center">Perros de <%=nombre[0].nombre%> </h3>
+  <table>
+      <thead>
+          <tr>
+              <th>Nombre</th>
+              <th>Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% for (i=0;i<mascotas.length;i++){ %>
+          <tr>
+              <td class="nombre-mascota"><%= mascotas[i].nombre %></td>
+              <td>
+                  <form action="/verPerro" method="POST">
+                    <input type="hidden" value=mascotas[i].nombre>
+                    <button class="submit boton-acciones" >Ver información</button>  
+                  </form>
+              </td>
+          </tr>
+          <% }%>
+      </tbody>
+  </table>
+</body>
+<%- include ('partials/_footer') %>

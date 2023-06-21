@@ -1,4 +1,6 @@
-<%- include ('vistas') %>  
+<%- include ('vistas') %>
+<body>    
+    <h3 align="center">Turnos del Sistema</h3>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -16,10 +18,15 @@
                       <tr>
                     <td><%=data[i].paciente%></td>      
                     <td><%=data[i].tipo%></td>
-                    <td><%=data[i].dia%></td>        
+                    <td><%=data[i].dia.getDate()%>/<%=data[i].dia.getMonth()+1 %></td>        
                     <td><%=data[i].hora%></td>
                     <td><%=data[i].descripcion%></td>
-                    
+                    <form action="/cancelarTurno" method="POST"> 
+                        <input type="hidden" name="usuario" value=<%= data[i].paciente%>> 
+                        <input type="hidden" name="hora" value=<%= data[i].hora %>> 
+                        <input type="hidden" name="dia" value="<%= data[i].dia%>"> 
+                        <td><button type="submit">Eliminar Turno</button></td>
+                    </form>
                   </tr>  
                 <%}%> 
             <%}%>   

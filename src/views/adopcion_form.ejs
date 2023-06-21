@@ -1,23 +1,8 @@
-<%- include ('vistas') %>
+<%- include ('cliente_panel') %>
 
 <form class ="registro" action="/add_adopcion" method="post">
     <div class="form-group">
         <input type="text" class="form-control" name="titulo" placeholder="Ingrese titulo de la publicacion" required>
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre (si tiene)">
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="edad" placeholder="Ingrese edad">
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="raza" placeholder="Ingrese raza (si aplica)">
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="tamaño" placeholder="Ingrese tamaño">
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="telefono" placeholder="Ingrese numero de telefono" required>
     </div>
     <div class="form-group">
         <textarea class="form-control" name="txtArea" placeholder="Ingrese texto"required rows="3"></textarea>

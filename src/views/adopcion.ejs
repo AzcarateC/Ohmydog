@@ -13,11 +13,10 @@
                 <div class="card-body">
                 <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
                 <p class="card-text"><%=data[i].texto%></p>
-                <p class="card-text"><%= data[i].telefono %></p>
+                <a href="#" class="card-link">Contactar</a>
                 <% if (user){%>
-                    <% if(user[0].email == data[i].cliente){%>
-                        <a href="/delete/<%= data[i].id %>" class="card-link" onclick="Confirmar()">Eliminar</a>
-                        
+                    <% if(user[0].email == data[0].cliente){%>
+                        <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
                     <% } %>
                 <%} %>
                 
@@ -28,5 +27,5 @@
         </td>
         <% } %>
         
-<script type="text/javascript
+
     <%- include ('partials/_footer') %>

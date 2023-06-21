@@ -1,18 +1,64 @@
-<%- include ('vistas')  %>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-<h1 class="text-center">Agregar paseador.</h1>
+<%- include ('vistas') %>
+  <script>
+    function handleData() {
+      var form_data = new FormData(document.querySelector("form"));
+      if (!form_data.has("esPaseador") && !form_data.has("esCuidador")) {
+        document.getElementById("chk_option_error").style.visibility = "visible";
+        return false;
+      }
+      else {
+        document.getElementById("chk_option_error").style.visibility = "hidden";
+        mail = document.getElementById('mail').value;
+        console.log(mail)
+        var xmlHttp = new XMLHttpRequest();
+        theUrl= 'http://localhost:3000/validarMail?mail='+mail;
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        validez = xmlHttp.responseText;
+        if (validez !== 'Mail valido') {
+          document.getElementById("mail_option_error").style.visibility = "visible";
+          return false;
+        } else {
+          document.getElementById("mail_option_error").style.visibility = "hidden";
+          return true
+        }
+      }
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <h1 class="text-center">Agregar paseador y/o cuidador.</h1>
 
 
-<form action="/agregarPaseador" class=" registro" method="post" >
-    <div class="form-group"><label for="nombre" >Nombre y apellido:</label><br>
-    <input type="text"class="form-control" id="nombre" name="nombre" required></div>
+  <form onsubmit="return handleData()" action="/agregarPaseador" class=" registro" method="post">
+    <div class="form-group"><label for="nombre">Nombre y apellido:</label><br>
+      <input type="text" class="form-control" id="nombre" name="nombre">
+    </div>
+    <div style="visibility:hidden; color:red; " id="chk_option_error">
+      Debe seleccionar al menos una opción.
+    </div>
+    <div>
+      <input type="checkbox" name="esPaseador" id="paseadorCheckBox" value="1"> <label
+        for="paseadorCheckBox">Paseador</label>
+    </div>
+    <div>
+      <input type="checkbox" name="esCuidador" id="cuidadorCheckBox" value="1"> <label
+        for="cuidadorCheckBox">Cuidador</label>
+    </div>
+    <div style="visibility:hidden; color:red; " id="mail_option_error">
+      Ingrese un mail que no este en uso.
+    </div>
+    <div class="form-group"><label for="mail">Mail:</label><br>
+      <input type="email" required class="form-control" id="mail" name="mail">
+    </div>
     <div class="form-group"><label for="zonas" maxlength="300" size="300">Zonas:</label><br>
-    <textarea  class="form-control" required rows="3" type="text" id="zonas" name="zonas"></textarea></div>
+      <textarea class="form-control" required rows="3" type="text" id="zonas" name="zonas"></textarea>
+    </div>
     <div class="form-group"><label for="descripcion">Descripcion:</label><br>
-    <textarea class="form-control" type="text" maxlength="700" size="300" id="descripcion" name="descripcion"></textarea></div>
+      <textarea class="form-control" type="text" maxlength="700" size="700" id="descripcion"
+        name="descripcion"></textarea>
+    </div>
     <%- include('partials/_tablaAgregarHorarios'); %>
-    <input type="submit" value="Agregar" class="btn btn-info-orange">
+      <input type="submit" value="Agregar" class="btn btn-info-orange">
   </form>
-<%- include ('partials/_footer') %>
-
+  <%- include ('partials/_footer') %>

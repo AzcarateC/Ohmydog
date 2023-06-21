@@ -1,0 +1,35 @@
+<%- include ('vistas') %>
+<head>
+  <title>Información de la mascota</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    .pet-info {
+      margin-bottom: 20px;
+    }
+    
+    .pet-name {
+      font-weight: bold;
+    }
+    
+    .owner {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1 align="center">Información de la mascota</h1>
+  <div class="pet-info">
+    <p class="pet-name">Nombre de la mascota: <span id="petName"></span></p>
+    <p class="owner">Dueño: <span id="ownerName"></span></p>
+  </div>
+</body>
+<%- include ('partials/_footer') %>

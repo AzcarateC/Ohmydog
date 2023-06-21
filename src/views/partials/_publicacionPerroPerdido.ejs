@@ -1,0 +1,38 @@
+    <% var fecha = new Date(data.fecha);%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <li class="container">
+        <div class="card">
+            <script src="publicjs.js"></script>
+            <div class="card-header" id="nombre<%= data.id%>">
+                Se busca a <%= data.nombre %>
+            </div>
+            <div clas="card-body">
+                <div id='sexo<%= data.id%>'>
+                    <%=data.sexo%>
+                </div>
+                <div id='zona<%= data.id%>'>
+                    <%=data.zona%>
+                </div>
+                <div id='fecha<%= data.id%>'>
+                    Se perdio el: <%=fecha.toLocaleDateString()%>
+                </div>
+                <div id='foto<%= data.id%>'>
+                    <img src="data/uploads/<%=data.foto%>">
+                </div>
+                <div id='descripcion<%= data.id%>'>
+                    <%=data.descripcion%>
+                </div>
+                <div id='contacto<%= data.id%>'>
+                    Contactar al <%=data.contacto%>
+                </div>
+                <% if( (locals.user) && user[0].email==data.emailpublicacion){%>
+                    <button type='button' class="btn btn-info-orange"
+                        onclick='eliminarPerroPerdido(<%= data.id%>)' id='eliminar<%=data.id%>'>Eliminar
+                        publicacion  </button><button type='button' class="btn btn-info-orange"
+                        onclick="window.location.href='http://localhost:3000/modificarPerroPerdido?id=<%= data.id%>'"
+                        id='Modificar<%=data.id%>'>Modificar publicacion  </button>
+
+                    <% } %>
+            </div>
+    </li>
