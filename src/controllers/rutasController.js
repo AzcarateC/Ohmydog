@@ -2,7 +2,72 @@ const { DATE } = require("mysql/lib/protocol/constants/types")
 
 const controller = {}
 
-controller.list = (req, res) => {
+controller.list = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        conn.query('SELECT * FROM clientes',(err,rows)=>{
+            if(err){
+                res.json(err)
+            }
+            res.render('vistaContainer',{
+                data: rows,msj
+            });
+        })
+    })
+}
+
+controller.verificar= (req,res)=>{
+    
+        var mail= req.body.email
+    
+    console.log(mail)
+    var actpas= req.body.pass1
+    var confirmpas = req.body.confirmpass1
+    sql="SELECT * FROM clientes WHERE email = ?"
+    req.getConnection((err,conn)=>{
+        conn.query(sql,[mail],(err,rows)=>{
+            if(rows.length>0){
+
+                if (actpas==confirmpas) {
+                    sql2 = "update clientes set password =? where email= ?"
+                    conn.query(sql2,[actpas,mail],(err,rows)=>{
+                            res.redirect('/')
+                    })
+            }
+    }});
+    });
+    }
+
+
+
+controller.listarAdopcion = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        var user = req.session.mi_sesion
+        conn.query('SELECT * FROM perrosenadopcion',(err,rows)=>{
+            if (err){
+                res.json(err)
+            }
+            req.session.adopcion=rows   
+            res.render('adopcion',{data:rows,user})
+        });
+    });
+}
+
+
+controller.listarPaseadores = (req, res) => {
+    orderBy = req.query.orderBy;
+    pagina = parseInt(req.query.pagina);
+    if (!(Number(pagina) > 0)) {
+        pagina = 1;
+    }
+    var sql = 'SELECT * FROM paseadores ORDER BY id DESC LIMIT ? ,10;'
+    if (orderBy=='rating'){
+        sql='SELECT * FROM paseadores ORDER BY puntos/calificaciones DESC LIMIT ? ,10;';
+    }
+    sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id<(SELECT id FROM paseadores  LIMIT ? ,1 );'
+    sql += 'SELECT COUNT(id) AS x FROM paseadores  WHERE id>(SELECT id FROM paseadores  LIMIT ? ,1 )'
+    primero = ((pagina - 1) * 10);
+    ultimo = ((pagina) * 10 - 1);
     req.getConnection((err, conn) => {
         msj = ""
         conn.query('SELECT * FROM clientes', (err, rows) => {
@@ -487,16 +552,11 @@ controller.modificar = (req, res) => {
         })
 }
 }
-controller.delete_adopcion = (req, res) => {
-    const {id} = req.params
-    const user =req.session.mi_sesion
-    const msj=""
-    const data= req.session.adoptados
+controller.delete_adopcion = (req, res) => { 
+    var id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?', [id],(err, rows) => {
-            res.render('vistaContainer',{
-                user,msj,data
-            })
+        conn.query('DELETE FROM  perrosenadopcion WHERE id = ?;', [id],(err, rows) => { 
+            res.redirect('/adopcion')
         })
     })
 }
@@ -590,6 +650,34 @@ controller.agregarPerrosPerdidos = (req, res) => {
         res.render('agregarPerroPerdido', { user: user })
     }
 }
+controller.verMascotas = (req, res) => {
+    var user = req.session.mi_sesion
+    var cliente =user[0].email
+    req.getConnection((err, conn) => {
+        sql ="SELECT clientes.nombre AS nombrecliente, mascotas.nombre AS nombre, detalle FROM mascotas join clientes on mascotas.cliente = ?"
+        conn.query(sql,[cliente], (err, rows) => {
+            if (err){
+                res.json(err)
+            }
+            else {
+                res.render("mis_mascotas", {data:rows,user})
+            }
+        })
+    })
+}
+
+controller.adoptado = (req, res) => {
+    var id= req.params.id
+    req.getConnection((err, conn) => {
+        var consulta = "INSERT INTO perrosadoptados SELECT * FROM perrosenadopcion WHERE id = ?"
+        conn.query (consulta, [id], (err, rows) => {
+            console.log(rows)
+            res.redirect('/')
+        })
+    })
+} 
+
+
 module.exports = controller;
 
 

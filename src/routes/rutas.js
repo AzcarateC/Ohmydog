@@ -38,6 +38,7 @@ router.get('/publics',controller.PagePublicaciones)
 router.get('/userPublics',controller.UserPublics)
 router.get('/paseadores',controller.listarPaseadores)
 router.get('/',controller.list)
+router.get('/adopcion',controller.listarAdopcion)
 router.get('/solicitudes',controller.listarSolicitudes)
 router.get('/modificar',controller.modificar)
 router.post('/eliminarSolicitudes',controller.eliminarSolicitud)
@@ -47,7 +48,22 @@ router.post('/agregarPaseador',controller.agregarPaseador)
 router.post('/calificarPaseador',controller.calificarPaseador)
 router.post('/modificarPaseador',controller.modificarPaseador)
 router.get('/agregarPaseador',controller.agregarPaseadores)
-router.get('/delete/:id',controller.delete_adopcion)
+router.get('/delete_adopcion/:id',controller.delete_adopcion)
+router.get('/adoptado/:id',controller.delete_adopcion)
+router.post('/verificar',controller.verificar)
+router.get('/verificar', (req, res) => {
+        res.render('verificar')
+})
+router.get('/verMascotas',controller.verMascotas)
+router.get('/modificarpass',(req, res )=>{
+    res.render('verificar')
+})
+
+
+
+
+
+
 
 router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
 router.get('/perrosPerdidos',controller.listarPerrosPerdidos)
@@ -90,21 +106,6 @@ router.get('/close',(req, res)=>{
     var data= req.session.adoptados
     res.render('vistaContainer', {data,msj,user})
 })
-    router.get('/adopcion',(req,res)=>{
-    req.getConnection((err,conn)=>{
-        var user=req.session.mi_sesion
-        console.log(user)
-        conn.query('SELECT * FROM perrosenadopcion',(err,rows)=>{
-            if(err){
-                res.json(err)
-            }
-            req.session.adopcion=rows
-            res.render('adopcion',{
-                data: rows,user
-            });
-        })
-    })
-})
 router.get('/veterinaria_panel', (req, res)=>{
     var user= req.session.mi_sesion
     var data= req.session.adoptados
@@ -143,7 +144,7 @@ router.post('/add_adopcion', (req, res)=>{
                 return
             }
             data=req.session.adoptados
-          res.render('vistaContainer', {user,data})
+          res.render('adopcion', {user,data})
         })
     })
     
@@ -381,7 +382,7 @@ router.get('/list_perros', (req, res)=>{
             res.json({error:err})
         }
 
-        sql ="SELECT * FROM mascotas"
+        sql ="SELECT clientes.nombre AS nombrecliente, mascotas.nombre AS nombre, detalle FROM mascotas inner join clientes on clientes.email=mascotas.cliente"
         conn.query(sql,(err,rows)=>{
             if(err){
                 res.json(err)

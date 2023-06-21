@@ -71,10 +71,12 @@
     <div class="alert alert-danger" role="alert">
       <%= text %>
     </div>
-    <% if (text2){ %>
-      <div class="alert alert-success" role="alert">
-        <%= text2 %>
-      </div>
-      <% } %>
-
-        <% } %>
+      <% if (text2){ %>
+        <div class="alert alert-success" role="alert">
+          <%= text2 %>
+        </div>  
+       <%  } %>
+    
+    <% } %>
+    
+<%- include ('partials/_footer') %>
