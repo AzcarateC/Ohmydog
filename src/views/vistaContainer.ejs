@@ -6,7 +6,7 @@
         </div>
     <%  } %>
     
-    <table class="container">
+    <table class="container_adoptados">
         <tr>
           <% if (data) {%>
           <% for (var i =0; i<data.length;i++) {%>   
@@ -17,8 +17,8 @@
               </div>
               <div class="card-body">
               <h5 class="card-title"><%= data[i].titulo %></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><%= data[i].nombre %></h6>
-              <p class="card-text"><%=data[i].texto%></p>
+              <h6 class="card-subtitle mb-2 text-muted">Nombre: <%= data[i].nombre %></h6>
+              <p class="card-text">Descripcion: <%=data[i].texto%></p>
               </div>
           </div>
           </div>

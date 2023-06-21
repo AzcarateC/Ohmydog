@@ -1,29 +1,58 @@
-<%- include ('partials/_header')  %>  
-<style>
-    tr,td {
-      border: 1px solid;
-    }
-    </style>
-      <button onclick='ordenarPor("rating")' id="botonOrdenar" class="float-left submit-button" >Ordenar por calificacion</button>  
-<ul id="lista">
-  <% for(var i=0; i<data.length; i++) { %>
-    <%- include('partials/_publicacionPaseador', {data: data[i]}); %>
+<%- include ('vistas') %>
+  <script>
 
- <% } %>
+  </script>
+  <div>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Boostrap-->
+    <!--<link rel="stylesheet" href="https://bootswatch.com/5/united/bootstrap.min.css">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <div><div align="center">
+      <select onchange="checkAlert(event)">
+        <option>Paseadores</option>
+        <option>Cuidadores</option>
+      </select>
+      <select onchange="checkAlert(event)">
+        <option>Mas recientes</option>
+        <option>Mejores calificaciones</option>
+      </select>
+    </div>
 
+    <ul id="listaPaseadoresRating" style="list-style-type:none; display: none;">
+      <% var paseadoresRating=data.filter(x=>
+        x.esPaseador==1).sort((x,y)=>(y.puntos/y.calificaciones)-(x.puntos/x.calificaciones));
+        for(var i=0; i<paseadoresRating.length; i++) { %>
 
-</ul> 
-<div id="botones" >
-  <% if (previo > 0) { %>
-    <button onclick='cambiarPagina(<%= previo %>) ' id="botonPrevio<%= previo %>" class="float-left submit-button" >Previo</button>
-    <% } %>
-    <% if (siguiente > 0) { %>
-      <button onclick='cambiarPagina(<%=siguiente%>)' id="botonSiguiente<%= siguiente %>" class="float-left submit-button" >Siguiente</button>
-      <% } %>
+          <%- include('partials/_publicacionPaseador', {data: paseadoresRating[i], lista: 'a'}); %>
 
+            <% } %>
+    </ul>
+    <ul id="listaCuidadoresRating" style="list-style-type:none; display: none;">
+      <% var cuidadoresRating=data.filter(x=>
+        x.esCuidador==1).sort((x,y)=>(y.puntos/y.calificaciones)-(x.puntos/x.calificaciones));
+        for(var i=0; i<cuidadoresRating.length; i++) { %>
 
+          <%- include('partials/_publicacionPaseador', {data: cuidadoresRating[i], lista: 'b'}); %>
 
-</div>
-<script src="testlista.js" ></script>
+            <% } %>
+    </ul>
+    <ul id="listaPaseadoresRecientes" style="list-style-type:none; display: block;">
+      <% var paseadoresRecientes=data.filter(x=>x.esPaseador==1).sort((x,y)=>y.id-x.id);
+        for(var i=0; i<paseadoresRecientes.length; i++) { %>
 
-<%- include ('partials/_footer') %>
+          <%- include('partials/_publicacionPaseador', {data: paseadoresRecientes[i], lista: 'c'}); %>
+
+            <% } %>
+    </ul>
+    <ul id="listaCuidadoresRecientes" style="list-style-type:none; display: none;">
+      <% var cuidadoresRecientes=data.filter(x=> x.esCuidador==1).sort((x,y)=>y.id-x.id);
+        for(var i=0; i<cuidadoresRecientes.length; i++) { %>
+
+          <%- include('partials/_publicacionPaseador', {data: cuidadoresRecientes[i], lista: 'd'}); %>
+
+            <% } %>
+    </ul>
+    <script src="publicjs.js"></script>
+  </div>
+  <%- include ('partials/_footer') %>

@@ -1,0 +1,25 @@
+<%- include ('vistas') %>
+  <form class="registro" action="/solicitarTurno" method="POST">
+    <h3>Solicitando Turno</h3>  
+    <label for="usuario" >Usuario:</label>
+    <input type="text" id="usuario" name="usuario" value="<%-user[0].email%>"><br><br>
+    
+    <label for="tipoTurno" >Preferencia Franja Horarias</label>
+    <br>
+      <select name="tipoTurno" id>
+        <option value="Mañana">Mañana</option>
+        <option value="Tarde">Tarde</option>
+      </select>   
+    </br>
+
+    <label for="tipoServicio" >Tipo de Servicio:</label><br>
+    <select name="tipoServicio" id="tipoServicio">
+      <option value="vacunacion">Vacunación</option>
+      <option value="Castracion">Castracion</option>
+      <option value="Desparacitacion">Desparacitacion</option>
+    </select><br>
+
+    <button type="submit" class="btn btn-info-orange">Confirmar</button>
+    <a href ="/" type="submit" class="btn btn-info-orange">Cancelar</a>
+  </form>
+  <%- include ('partials/_footer') %>

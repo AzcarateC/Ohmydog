@@ -1,25 +1,21 @@
-<%- include ('partials/_header')  %>  
-<table>
-    <tbody>
+<%- include ('vistas')  %>  
+<h1 class="text-center">Solicitudes de paseadores y cuidadores.</h1>
+<table class="container">
         <tr>
-        <td>Solicitante</td>
-        <td>Telefono</td>
-        <td>Paseador</td>
-        <td>Paseador</td>
+        <th scope="col" >Solicitante</th scope="col">
+        <th scope="col">Telefono</th scope="col">
+        <th scope="col">Paseador</th scope="col">
+        <th scope="col"></th scope="col">
     </tr>
 <% for(var i=0; i<data.length; i++) { %>
     <tr>
         <td><%= data[i].nombre %></td>
         <td><%= data[i].telefono %></td>
         <td><%= data[i].nombrePaseador %></td>
-        <td>  <button type='button' onclick='eliminarSolicitud(<%= data[i].id%>,"<%=data[i].telefono%>")'>Solicitud procesada  </button></td>
+        <td>  <button type='button' class="btn btn-info-orange" onclick='eliminarSolicitud(<%= data[i].id%>,"<%=data[i].telefono%>")'>Eliminar solicitud de la lista  </button></td>
         
     </tr>
     <% } %>
     <script src="publicjs.js" ></script>
-
-
-</tbody>
 </table>
 <%- include ('partials/_footer') %>
-

@@ -1,8 +1,10 @@
-function confirm_delete(){
-    if (confirm ="¿Estas seguro de eliiminar esta publicación?")
+function Confirmar(){
+    var retVal = confirm("¿Seguro desea eliminar?");
+    if( retVal == true ){
+        document.write ("Publicacion elminada");
         return true;
-    else{
+    }else{
+        document.write ("No se elimino la publicacion");
         return false;
-    }    
-           
-   }
+    }
+}

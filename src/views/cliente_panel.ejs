@@ -23,10 +23,11 @@
     <% }  %>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item"  href="#">Servicios de veterinaria</a></li>
-      <li><a class="dropdown-item" href="/verMascotas">Ver mis mascotas</a></li>
       <li><a class="dropdown-item" href="/mis_datos">Mi perfil</a></li>
-      <li><a class="dropdown-item" href="#">Ver mis turnos</a></li>
       <li><a class="dropdown-item" href="#">Tinder</a></li>
+      <li><a class="dropdown-item" href="/MisTurnos">Ver mis turnos</a></li>
+      <li><a class="dropdown-item" href="/solicitarVentanaTurno">Solicitar Turno</a></li>
+      <li><a class="dropdown-item" href="/userPublics">Ver mis publicaciones</a></li>  
       <li><a class="dropdown-item" href="/modificarpass">cambiarcontra</a></li>
       <li><a class="dropdown-item" href="/close">Cerrar sesion</a></li>
     </ul>
@@ -41,7 +42,12 @@
       <h2 class="nombre-empresa">Veterinaria canina Oh my dog</h2>
     </center>
 
-    <ul class="nav justify-content-center">
+    <ul class="nav justify-content-center"><li class="nav-item">
+      <a type="button " class="btn btn-info-orange" href="/agregarperroperdido">Publicar perro perdido o encontrado</a>
+    </li>
+      <li class="nav-item">
+        <a type="button " class="btn btn-info-orange" href="/perrosPerdidos">Perdidos y encontrados</a>
+      </li>
       <li class="nav-item">
         <a type="button " class="btn btn-info-orange" href="/publicacion_adopcion">Publicar perros en adopcion</a>
       </li>

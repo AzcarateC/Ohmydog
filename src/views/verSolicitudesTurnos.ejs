@@ -1,0 +1,34 @@
+<%- include ('vistas') %>
+<body>    
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Franja Horaria</th>
+                <th>Servicio</th>             
+                
+            </tr>
+        </thead>
+        <tbody>
+            
+            <%if (data){%>
+                    <% for (i=0;i<data.length;i++){%>
+                  <tr>
+                    <td><%=data[i].usuario%></td> 
+                    <td><%=data[i].tipoTurno%></td>      
+                    <td><%=data[i].tipoServicio%></td> 
+                    <form action="/darTurnoSolicitud" method="post">                 
+                        <input type="hidden" name="usuario" value=<%= data[i].usuario %>>
+                        <input type="hidden" name="tipo" value=<%=data[i].tipoTurno %>>
+                        <input type="hidden" name="servicio" value=<%= data[i].tipoServicio %>> 
+                        <input type="hidden" name="descripcion" placeholder=<%=data[i].descripcion%>>                         
+                        <td><button type="submit">Dar Turno</button></td>
+                    </form>
+                  </tr>  
+                <%}%> 
+            <%}%>    
+        </tbody>
+    </table>
+</body>
+</html>
+<%- include ('partials/_footer') %>

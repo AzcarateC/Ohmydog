@@ -1,0 +1,54 @@
+<%- include ('vistas') %>
+<body>
+<h1 align="center">Nuevo Turno</h1>
+<div>
+  <form class="registro" action="/nuevot" method="POST" onsubmit="return validarFecha()">
+    <label for="cliente" class="form-control">Cliente:</label>
+    <input type="text" id="cliente" name="cliente" value="<%-usuario%>" required><br><br>
+  
+    <label for="descripcion" class="form-control">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" required></textarea><br><br>
+  
+    <label for="tipo" class="form-control">Servicio Elegido: <%-servicio%></label>
+    <select id="tipo" name="tipo">
+        <option value="Vacunacion" selected >Vacunacion</option>
+        <option value="Castracion" >Castracion</option>
+        <option value="Desparacitacion" >Desparacitacion</option>      
+    </select><br><br>
+  
+    <label for="dia" class="form-control">Día:</label>
+    <input type="date" id="dia" name="dia" required><br><br>
+  
+    <p>La preferencia es: <%-tipo%></p>
+    <label for="hora" class="form-control">Hora:</label>
+    <input type="time" id="hora" name="hora" required><br><br>
+  
+    <button type="submit" class="btn btn-info-orange">Confirmar</button>
+    <a href="/" class="btn btn-info-orange">Cancelar</a>
+  </form>
+  
+  <script>
+    function validarFecha() {
+      var inputFecha = document.getElementById('dia');
+      var fechaIngresada = new Date(inputFecha.value);
+      var fechaActual = new Date();
+  
+      if (fechaIngresada <= fechaActual) {
+        alert('La fecha ingresada no es válida. Debe ser mayor a la fecha actual.');
+        return false; // Evita que se envíe el formulario
+      }
+  
+      return true; // Permite enviar el formulario
+    }
+  </script>
+  
+
+
+</div>
+</body>
+</html>
+<%- include ('partials/_footer') %>
+
+
+
+

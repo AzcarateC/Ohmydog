@@ -1,0 +1,51 @@
+<%- include ('vistas') %>
+<style>
+    .table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<h3 align="center">Mis Publicaciones</h3>
+<div class="table-container">
+    <table class="table table-bordered table-hover">
+        <% if (data) { %>
+            <% for (i = 0; i < data.length; i++) { %>
+                <div align="center" class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Adopcion
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
+                        <p class="card-text"><%= data[i].texto %></p>
+                        <% if (user) { %>
+                            <% if (user[0].email == data[0].cliente) { %>
+                                <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
+                            <% } %>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </table>
+    <table class="table table-bordered table-hover">
+        <% if (perdidos) { %>
+            <% for (i = 0; i < perdidos.length; i++) { %>
+                <div align="center" class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Perro Perdido
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= perdidos[i].nombre %></h5>
+                        <p class="card-text"><%= data[i].fecha %></p>
+                        
+                        <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
+                            
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </table>
+</div>
+
+<%- include ('partials/_footer') %>

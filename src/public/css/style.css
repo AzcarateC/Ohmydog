@@ -88,6 +88,14 @@ text-align: right;
 .link:hover{
     background-color: #0d6efd;
 }
+.container_adoptados{
+    display:inline-block;
+    margin-right:10px;
+    width:auto !important;
+    height:50px;
+    text-align:center;
+}
+
 .list_adopcion{
     width:100%;
     height:50px;

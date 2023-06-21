@@ -1,0 +1,57 @@
+<%- include ('vistas') %>
+<style>
+   .mi-boton {
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+    }
+</style>
+<body>    
+   <!-- 
+    <form action="/buscarPorNombre" method="GET">
+        <input  type="text" name="name" placeholder="Buscar Cliente">
+        <button  type="submit">Buscar</button>
+      </form>
+    <form action="/buscarPorUsuario" method="GET">
+        <input align="center" type="text" name="buscarusuario" placeholder="Buscar Cliente por Usuario">
+        <button align="center" type="submit">Buscar</button>
+      </form>  
+    -->    
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Usuario</th>            
+                <th>Perros</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%if (data1){%>
+                  <% for (i=0;i<data1.length;i++){%>
+                   <% if(data1[i].esAdmin==1){%> 
+                  <tr>
+                    <td><%= data1[i].nombre%></td> 
+                    <td ><%= data1[i].email%></td>    
+                    <form action="/verPerrosCliente" method="POST">                                    
+                      <input type="hidden" name="cliente" value=<%= data1[i].email%> >
+                      <td><button class="mi-boton submit" >Ver perros del cliente</button></td>
+                    </form>
+                    <form action="/eliminarCliente" method="POST">
+                      <input type="hidden" name="elegido" value=<%=data1[i].email%> > 
+                    <td><button class="mi-boton submit">Eliminar cliente</button></td>    
+                  </form>
+                  </tr>  
+                  <%}%>
+                <%}%> 
+            <%}%>   
+        </tbody>
+    </table>
+</body>
+</html>
+<%- include ('partials/_footer') %>

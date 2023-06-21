@@ -1,0 +1,77 @@
+
+<%- include ('vistas') %>
+<body>    
+    <h3>Mis Turnos</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Dia</th>
+                <th>Hora</th>
+                <th>Descripcion</th>
+                <th>Acciones</th>            
+            </tr>
+        </thead>
+        <tbody>
+            <% if (data) { %>
+                <% for (var i = 0; i < data.length; i++) { %>
+                    <tr>
+                        <td><%= data[i].tipo %></td>
+                        <td><%= data[i].dia.getDate() %>/<%= data[i].dia.getMonth() + 1 %></td>        
+                        <td><%= data[i].hora %></td>
+                        <td><%= data[i].descripcion %></td>
+                        <td>
+                            <form action="/cancelarTurno" method="POST" onsubmit="return confirmarEliminacion(event,'<%=data[i].dia%>','<%= data[i].hora %>')">
+                                <input type="hidden" name="usuario" value="<%= data[i].paciente %>"> 
+                                <input type="hidden" name="hora" value="<%= data[i].hora %>"> 
+                                <input type="hidden" name="dia" value="<%= data[i].dia %>"> 
+                                <button type="submit">Cancelar Turno</button>
+                            </form>
+                        </td>
+                    </tr>              
+                <% } %> 
+            <% } %>   
+        </tbody>
+    </table>
+
+    <script>
+        function confirmarEliminacion(event, fechaTurno, horaTurno) {
+            
+            var fechaComponents = fechaTurno.split(" ");
+            var dia = parseInt(fechaComponents[2], 10);
+            var mes = obtenerNumeroMes(fechaComponents[1]); // Función auxiliar para obtener el número de mes a partir del nombre del mes
+            var año = parseInt(fechaComponents[3], 10);
+            // Extraer los componentes de hora del segundo dato
+            var horaComponents = horaTurno.split(":");
+            var horas = parseInt(horaComponents[0], 10);
+            var minutos = parseInt(horaComponents[1], 10);
+            var segundos = parseInt(horaComponents[2], 10);
+
+            // Construir el nuevo objeto Date con la fecha y hora combinadas
+            var nuevoDate = new Date(año, mes, dia, horas, minutos, segundos);
+            var fechaHoraActual = new Date();
+            
+            var diferenciaHoras = Math.abs(nuevoDate - fechaHoraActual) / (60 * 60 * 1000); // Diferencia en horas
+            if (diferenciaHoras >= 48) {
+                var confirmacion =confirm("¿Seguro que desea eliminar su turno?")
+                if (confirmacion) {
+                    return true;
+            }else{
+                return false;
+            }
+            } else {
+                alert("No puede cancelar el turno elegido. Debe ser al menos 48 horas antes del turno.");
+                return false;
+            }
+        }
+            // Función auxiliar para obtener el número de mes a partir del nombre del mes
+            function obtenerNumeroMes(nombreMes) {
+            var meses = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            return meses.indexOf(nombreMes);
+        }
+        
+
+    </script>
+</body>
+</html>
+<%- include ('partials/_footer') %>
