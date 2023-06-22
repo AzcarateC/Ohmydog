@@ -64,6 +64,10 @@ router.get('/modificarpass',(req, res )=>{
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9207451a3944fbab5da923a322937d29396e99a7
 
 router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
 router.get('/perrosPerdidos',controller.listarPerrosPerdidos)
@@ -71,6 +75,11 @@ router.get('/modificarPerroPerdido',controller.modificarPerroPerdido)
 router.post('/agregarPerroPerdido',upload.single('imagen'),controller.agregarPerroPerdido)
 router.get('/agregarPerroPerdido',controller.agregarPerrosPerdidos)
 router.post('/modificarPerrosPerdidos',upload.single('imagen'),controller.modificarPerrosPerdidos)
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> mi_codigo
+>>>>>>> 9207451a3944fbab5da923a322937d29396e99a7
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
