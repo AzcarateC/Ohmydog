@@ -30,6 +30,8 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 
 
+router.post('/add_adopcion',controller.add_adopcion) 
+
 router.post('/eliminarCliente',controller.eliminarCliente)
 router.get('/listar',controller.listarClientes)
 router.get('/buscarPorNombre',controller.buscarPorNombre)
@@ -64,10 +66,6 @@ router.get('/modificarpass',(req, res )=>{
 
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9207451a3944fbab5da923a322937d29396e99a7
 
 router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
 router.get('/perrosPerdidos',controller.listarPerrosPerdidos)
@@ -75,11 +73,6 @@ router.get('/modificarPerroPerdido',controller.modificarPerroPerdido)
 router.post('/agregarPerroPerdido',upload.single('imagen'),controller.agregarPerroPerdido)
 router.get('/agregarPerroPerdido',controller.agregarPerrosPerdidos)
 router.post('/modificarPerrosPerdidos',upload.single('imagen'),controller.modificarPerrosPerdidos)
-<<<<<<< HEAD
-=======
-=======
->>>>>>> mi_codigo
->>>>>>> 9207451a3944fbab5da923a322937d29396e99a7
 
 router.post('/login',(req, res) => {
     req.getConnection((err,conn)=>{
@@ -127,6 +120,16 @@ router.get('/veterinaria_panel', (req, res)=>{
 }
 )
 
+router.get('/add_mascota',(req, res) => {
+    var cliente = req.query.cliente
+    var user= req.session.mi_sesion
+    text=""
+    text2=""
+    res.render('add_mascota',{ 
+     user,text,text2,cliente
+    })
+
+})
  router.get('/add_cliente',(req, res) => {
     var user= req.session.mi_sesion
     text=""
@@ -140,43 +143,64 @@ router.get('/publicacion_adopcion',(req, res)=>{
     var user= req.session.mi_sesion
     res.render('adopcion_form',{user})
 })
-router.post(
-    '/verPerro',(req,res)=> {
+router.post('/verPerro',(req,res)=> {
     var cliente = req.body.cliente;
+    console.log(cliente)
     var perro = req.body.perro;
+    console.log(perro)
     req.getConnection((err,conn)=>{
-        conn.query('SELECT * FROM mascotas WHERE nombre= ? AND cliente = ?',[perro,cliente],(err,mascota)=>{
+        conn.query('SELECT * FROM mascotas WHERE nombre= ? AND cliente = ?',[perro,cliente],(err,rows)=>{
             user = req.session.mi_sesion
+            var mascota =[]
             res.render('verPerro',{
-                mascota,user
+                mascota:rows,user
             })
         })
     })
 })
+router.post('/add_mascota',upload.single('imagen'), (req, res)=>{
+    const user = req.session.mi_sesion
+    const text2 = "mascota ya registrada"
+    const text = "mascota agregada"
+    req.getConnection((err,conn)=>{
+    var nombre= req.body.nombre
+    var edad= req.body.edad
+    var tamaño=req.body.tamaño
+    var mail= req.body.cliente
+    var img =  req.file.filename;
+    var detalle= req.body.detalle
+    var sql ="SELECT * FROM clientes WHERE email = ?"
+    conn.query(sql,[mail],(err,rows)=>{
+        if(err){
+            res.json('Cliente no valido')
+            return
+        }
+        cliente=rows
+        if(rows.length > 0){
+            sql2= "SELECT * FROM mascotas inner join clientes WHERE cliente = ? "
+            conn.query(sql2,[cliente[0].email],(err,mascota)=>{
+                if(err){
+                    res.json(text2)
+                    return
+                }
+                else{
+                    sql3="INSERT INTO mascotas(nombre, edad, tamaño, cliente, foto, detalle) VALUES ('"+nombre+"','"+edad+"','"+tamaño+"','"+cliente[0].email+"','"+img+"','"+detalle+"')"
+                    console.log(sql3)
+                    conn.query(sql3,[],(err,rows)=>{
+                        data = req.session.adoptados
+                    res.render('vistaContainer',{
+                        user,text,data
+                    })
+                })
+                }
 
-router.post('/add_adopcion', (req, res)=>{
-        var user = req.session.mi_sesion
-        var titulo = req.body.titulo
-        var tama = req.body.tamaño
-        var nombre = req.body.nombre
-        var edad = req.body.edad
-        var raza = req.body.raza
-        var telefono = req.body.txtArea
-        var texto = req.body.telefono
-        req.getConnection((err,conn)=>{        
-        sql = "INSERT INTO `perrosenadopcion`(`nombredepublicacion`, `id`,`nombre`, `texto`,`edad`, `raza`, `tamaño`, `cliente`, `telefono` ) VALUES (?,?,?,?,?,?,?,?,?)"
-        conn.query(sql,[titulo,null,nombre,texto,edad,raza,tama,user[0].email],telefono, (err,rows)=>{
-            if(err) {
-                res.json(err)
-                
-            }
-            console.log(rows)
-            data=req.session.adoptados
-          res.render('adopcion', {user,data})
         })
+    }
+
     })
-    
 })
+})
+
 
 router.post('/nuevot', (req, res) => {
     const cliente = req.body.cliente;
@@ -298,59 +322,6 @@ router.post('/solicitarTurno',(req, res) => {
   })
  
 
-
-router.get('/add_mascota',(req, res) => {
-    var user= req.session.mi_sesion
-    text=""
-    text2=""
-    res.render('add_mascota',{ 
-     user,text,text2
-    })
-
-})
-router.post('/add_mascota', (req, res)=>{
-    const user = req.session.mi_sesion
-    const text2 = "mascota ya registrada"
-    const text = "mascota agregada"
-    req.getConnection((err,conn)=>{
-    var nombre= req.body.nombre
-    var edad= req.body.edad
-    var tamaño=req.body.tamaño
-    var mail= req.body.cliente
-    var img = ""
-    var detalle= req.body.detalle
-    var sql ="SELECT * FROM `clientes` WHERE email = ?"
-    conn.query(sql,[mail],(err,rows)=>{
-        if(err){
-            res.json('Cliente no valido')
-            return
-        }
-        cliente=rows
-        if(rows.length > 0){
-            sql2= "SELECT * FROM `mascotas` inner join clientes WHERE cliente = ? "
-            conn.query(sql2,[cliente[0].email],(err,mascota)=>{
-                if(err){
-                    res.json(text2)
-                    return
-                }
-                else{
-                    sql3="INSERT INTO `mascotas`(`nombre`, `edad`, `tamaño`, `cliente`, `foto`, `detalle`) VALUES ('"+nombre+"','"+edad+"','"+tamaño+"','"+cliente[0].email+"','"+img+"','"+detalle+"')"
-                    console.log(sql3)
-                    conn.query(sql3,[],(err,rows)=>{
-                        data = req.session.adoptados
-                    res.render('vistaContainer',{
-                        user,text,data
-                    })
-                })
-                }
-                
-        })
-    }
-                
-    })
-})
-})
-
 router.post('/add_cliente', (req, res)=>{
         const user = req.session.mi_sesion
         const text = "email ya registrado"
@@ -359,7 +330,7 @@ router.post('/add_cliente', (req, res)=>{
         var nombre= req.body.nombre
         var mail= req.body.email
         var pas = req.body.password
-        var esAdmin= false
+        var esAdmin= 1
         var telefono=req.body.telefono
         var sql ="SELECT * FROM `clientes` WHERE email = ?"
         conn.query(sql,[mail],(err,rows)=>{

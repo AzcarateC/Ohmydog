@@ -1,51 +1,70 @@
 <%- include ('vistas') %>
 <style>
-    .table-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    
+    .list_adopcion{
+    width:100%;
+    height:50px;
+    text-align:center;
+}
+.adopcion_lis{
+ 
+ margin-right:10px;
+}
 </style>
+<body>
 <h3 align="center">Mis Publicaciones</h3>
-<div class="table-container">
-    <table class="table table-bordered table-hover">
-        <% if (data) { %>
-            <% for (i = 0; i < data.length; i++) { %>
-                <div align="center" class="card" style="width: 18rem;">
-                    <div class="card-header">
-                        Adopcion
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%= data[i].nombredepublicacion %></h5>
-                        <p class="card-text"><%= data[i].texto %></p>
-                        <% if (user) { %>
-                            <% if (user[0].email == data[0].cliente) { %>
-                                <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
-                            <% } %>
-                        <% } %>
-                    </div>
-                </div>
-            <% } %>
-        <% } %>
-    </table>
-    <table class="table table-bordered table-hover">
-        <% if (perdidos) { %>
-            <% for (i = 0; i < perdidos.length; i++) { %>
-                <div align="center" class="card" style="width: 18rem;">
-                    <div class="card-header">
-                        Perro Perdido
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><%= perdidos[i].nombre %></h5>
-                        <p class="card-text"><%= data[i].fecha %></p>
-                        
-                        <a href="/delete/<%= data[i].id %>" class="card-link">Eliminar</a>
-                            
-                    </div>
-                </div>
-            <% } %>
-        <% } %>
-    </table>
-</div>
 
+<ul id="listaPerdidos" style="list-style-type:none;">
+    <% var perdidos=data.filter(x=>
+      x.perdidooencontrado==1);
+      for(var i=0; i<perdidos.length; i++) { %>
+
+        <%- include('partials/_publicacionPerroPerdido', {data: perdidos[i]}); %>
+
+          <% } %>
+  </ul>
+  <ul id="listaEncontrados" style="list-style-type:none;">
+
+    <% var encontrados=data.filter(x=>
+      x.perdidooencontrado==0);
+      for(var i=0; i<encontrados.length; i++) { %>
+
+        <%- include('partials/_publicacionPerroEncontrado', {data: encontrados[i]}); %>
+
+          <% } %>
+  </ul>
+  <pre><%=data1[0].nombre%></pre>
+<script src="script.js"></script>
+<pre><%=data1[0].nombre%></pre>
+<ul class="list_adopcion" >
+    <pre><%=data1[0].nombre%></pre>
+    <% for (var i=0;i<data1.lenght;i++){%>
+        <li class="adopcion_lis">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Adopcion
+                </div>
+                <div class="card-body">
+                <h5 class="card-title"><%= data1[i].nombredepublicacion %></h5>
+                <p class="card-text">Nombre: <%=data1[i].nombre%></p>
+                <p class="card-text">Edad: <%=data1[i].edad%></p>
+                <p class="card-text">Raza: <%=data1[i].raza%></p>
+                <p class="card-text">Tamaño: <%=data1[i].tamaño%></p>
+                <p class="card-text">Descipcion: <%=data1[i].texto%></p>
+                <a class="btn btn-info-orange"type='button' onclick='contactar("<%= data1[i].id%>")'id='boton<%=data1.id%>'>Contactar</a>
+                <% if (user){%>
+                    <% if(user[0].email == data[0].cliente){%>
+                        <a href="/adoptado/<%= data1[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar_adoptar()">Adoptado</a>
+
+                        <a href="/delete_adopcion/<%= data1[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar()">Eliminar</a>                       
+                    <% } %>
+                <%} %>
+                </div>
+            </div>
+        </li> 
+       
+        <%}%>
+</ul>
+<script type="text/javascript" src="script.js"></script>
+</body>
 <%- include ('partials/_footer') %>

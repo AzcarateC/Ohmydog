@@ -38,7 +38,30 @@ controller.verificar= (req,res)=>{
     });
     }
 
-
+    controller.add_adopcion = (req, res) => {
+        var user = req.session.mi_sesion
+        var titulo = req.body.titulo
+        var nombre = req.body.nombre
+        var edad = req.body.edad
+        var raza = req.body.raza
+        var tamaño = req.body.tamaño
+        var texto = req.body.txtArea
+        var telefono = req.body.telefono
+        var value= [titulo,nombre,edad,raza,tamaño,null,texto,user[0].email,telefono]
+        req.getConnection((err,conn)=>{
+        sql = "INSERT INTO perrosenadopcion(nombredepublicacion, nombre, edad, raza, tamaño, id, texto, cliente, telefono) VALUES (?,?,?,?,?,?,?,?,?)"
+        conn.query(sql,value, (err,rows)=>{
+            if(err) {
+                res.send('hubo un error')
+                return
+            }
+            data=req.session.adoptados
+            msj=""
+          res.render('vistaContainer', {user,data,msj})
+        })
+    })
+    
+    }
 
 controller.listarAdopcion = (req,res)=>{
     req.getConnection((err,conn)=>{
@@ -130,12 +153,14 @@ controller.verPerrosCliente = (req,res) => {
 }
 
 controller.eliminarCliente = (req,res) =>{
+    const cliente = req.body.elegido;
+    console.log(cliente)
     req.getConnection((err,conn)=>{
-        const cliente = req.body.elegido
-        conn.query('DELETE FROM clientes WHERE email = ?',[cliente],(err,result)=>{
-            res.render('listaClientes',{
-                data1:result,user
-            })
+        conn.query('DELETE FROM clientes WHERE email=?',[cliente],(err,result)=>{
+            if(err){
+                console.log("no se pudo")
+            }
+            res.redirect('/');
         })
     })
 }
@@ -170,13 +195,14 @@ controller.UserPublics = (req,res) => {
     const email = user[0].email
     console.log(email)
     req.getConnection((err,conn)=>{
-        let perdidos =[]
+        let data =[]
         conn.query('SELECT * FROM perrosperdidos    WHERE emailpublicacion = ?',[email],(err,r)=>{
-            perdidos = r;
+            data = r;
           })
         conn.query('SELECT * FROM perrosenadopcion WHERE perrosenadopcion.cliente = ? ',[email],(err,rows)=>{
+            console.log(rows)
             res.render('misPublics',{
-                data:rows,user: user, perdidos
+                data1:rows,user: user,data
             });
         })
     })

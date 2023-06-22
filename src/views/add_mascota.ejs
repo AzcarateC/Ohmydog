@@ -1,6 +1,6 @@
 <%- include('vistas') %>
 
-<form class=" registro" action="/add_mascota" method="POST">
+<form class=" registro" action="/add_mascota" method="POST" enctype="multipart/form-data" >
     <div class="form-group">
         <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" required>
     </div>
@@ -11,10 +11,10 @@
         <input type="text" class="form-control" name="tamaño" placeholder="Ingrese tamaño"required>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" name="cliente" placeholder="Ingrese cliente"required>
+        <input type="text" class="form-control" name="cliente" placeholder="Ingrese cliente" <% if (cliente) {%>value='<%=cliente%>' <% } %>required>
     </div>
     <div class="form-group">
-        <input type="file" class="form-control" name="foto"required>
+        <input type="file" class="form-control" name="imagen"required>
     </div>
     <div class="form-group">
         <textarea class="form-control"name="detalle" placeholder="Ingrese detalles"required rows="3"></textarea>

@@ -42,8 +42,12 @@
                       <input type="hidden" name="cliente" value=<%= data1[i].email%> >
                       <td><button class="mi-boton submit" >Ver perros del cliente</button></td>
                     </form>
-                    <form action="/eliminarCliente" method="POST">
-                      <input type="hidden" name="elegido" value=<%=data1[i].email%> > 
+                    <form action="/add_mascota" method="GET">
+                      <input type="hidden" name="cliente" value='<%= data1[i].email%>' >
+                      <td><button class="mi-boton submit">Agregar perro</button></td>
+                      </form>
+                    <form action="/eliminarCliente" method="POST" onsubmit="return confirmarEliminacion(event)">
+                      <input type="hidden" name="elegido" value=<%=data1[i].email%>> 
                     <td><button class="mi-boton submit">Eliminar cliente</button></td>    
                   </form>
                   </tr>  
@@ -52,6 +56,15 @@
             <%}%>   
         </tbody>
     </table>
+   <script>
+    function confirmarEliminacion(event, fechaTurno, horaTurno) {
+      event.preventDefault();
+          var confirmacion =confirm("¿Seguro que desea eliminar su turno?")
+          if (confirmacion) {
+            event.target.submit();
+            }
+  }
+</script>
 </body>
 </html>
 <%- include ('partials/_footer') %>

@@ -45,8 +45,8 @@
               <td class="nombre-mascota"><%= mascotas[i].nombre %></td>
               <td>
                   <form action="/verPerro" method="POST">
-                    <input type="hidden" value=mascotas[i].nombre>
-                    <button class="submit boton-acciones" >Ver información</button>  
+                    <input type="hidden" name='perro' value=<%= mascotas[i].nombre %>><input type="hidden" name="cliente" value=<%= mascotas[i].cliente %>>
+                    <button  class="submit boton-acciones" >Ver información</button>
                   </form>
               </td>
           </tr>
