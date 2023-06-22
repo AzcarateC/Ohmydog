@@ -669,11 +669,16 @@ controller.verMascotas = (req, res) => {
 controller.adoptado = (req, res) => {
     var id= req.params.id
     req.getConnection((err, conn) => {
-        var consulta = "INSERT INTO perrosadoptados SELECT * FROM perrosenadopcion WHERE id = ?"
-        conn.query (consulta, [id], (err, rows) => {
+       var sql ="INSERT INTO `perrosadoptados`(`titulo`, `nombre`, `texto`) SELECT perrosenadopcion.nombredepublicacion AS titulopubli, perrosenadopcion.nombre AS nobmreperro, perrosenadopcion.texto as detalle from perrosenadopcion WHERE id = ?"
+       conn.query (sql, [id], (err, rows) => {
+        sql2 ="DELETE FROM perrosenadopcion WHERE id = ?"
+        conn.query(sql2,[id],(err,rows)=>{
             console.log(rows)
             res.redirect('/')
         })
+        })
+
+        
     })
 } 
 

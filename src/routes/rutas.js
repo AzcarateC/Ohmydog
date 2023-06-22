@@ -49,7 +49,7 @@ router.post('/calificarPaseador',controller.calificarPaseador)
 router.post('/modificarPaseador',controller.modificarPaseador)
 router.get('/agregarPaseador',controller.agregarPaseadores)
 router.get('/delete_adopcion/:id',controller.delete_adopcion)
-router.get('/adoptado/:id',controller.delete_adopcion)
+router.get('/adoptado/:id',controller.adoptado)
 router.post('/verificar',controller.verificar)
 router.get('/verificar', (req, res) => {
         res.render('verificar')
@@ -131,18 +131,37 @@ router.get('/publicacion_adopcion',(req, res)=>{
     var user= req.session.mi_sesion
     res.render('adopcion_form',{user})
 })
+router.post(
+    '/verPerro',(req,res)=> {
+    var cliente = req.body.cliente;
+    var perro = req.body.perro;
+    req.getConnection((err,conn)=>{
+        conn.query('SELECT * FROM mascotas WHERE nombre= ? AND cliente = ?',[perro,cliente],(err,mascota)=>{
+            user = req.session.mi_sesion
+            res.render('verPerro',{
+                mascota,user
+            })
+        })
+    })
+})
 
 router.post('/add_adopcion', (req, res)=>{
         var user = req.session.mi_sesion
         var titulo = req.body.titulo
-        var texto = req.body.txtArea
-        req.getConnection((err,conn)=>{          
-        sql = "INSERT INTO `perrosenadopcion`(`nombredepublicacion`, `id`, `texto`, `cliente`) VALUES (?,?,?,?)"
-        conn.query(sql,[titulo,null,texto,user[0].email], (err,rows)=>{
+        var tama = req.body.tamaño
+        var nombre = req.body.nombre
+        var edad = req.body.edad
+        var raza = req.body.raza
+        var telefono = req.body.txtArea
+        var texto = req.body.telefono
+        req.getConnection((err,conn)=>{        
+        sql = "INSERT INTO `perrosenadopcion`(`nombredepublicacion`, `id`,`nombre`, `texto`,`edad`, `raza`, `tamaño`, `cliente`, `telefono` ) VALUES (?,?,?,?,?,?,?,?,?)"
+        conn.query(sql,[titulo,null,nombre,texto,edad,raza,tama,user[0].email],telefono, (err,rows)=>{
             if(err) {
-                res.send('hubo un error')
-                return
+                res.json(err)
+                
             }
+            console.log(rows)
             data=req.session.adoptados
           res.render('adopcion', {user,data})
         })
@@ -309,9 +328,9 @@ router.post('/add_mascota', (req, res)=>{
                     sql3="INSERT INTO `mascotas`(`nombre`, `edad`, `tamaño`, `cliente`, `foto`, `detalle`) VALUES ('"+nombre+"','"+edad+"','"+tamaño+"','"+cliente[0].email+"','"+img+"','"+detalle+"')"
                     console.log(sql3)
                     conn.query(sql3,[],(err,rows)=>{
-                        
-                    res.render('veterinaria_panel',{
-                        user,text
+                        data = req.session.adoptados
+                    res.render('vistaContainer',{
+                        user,text,data
                     })
                 })
                 }

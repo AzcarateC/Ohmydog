@@ -70,7 +70,11 @@
       <h2>Perros Cliente</h2>
       
       <% for (i=0;i<mascotas.length;i++){%>
+        <form action="/verPerro" method="post">
+          <input name="perro" value=<%= mascotas[i].nombre %>>
+          <input name="cliente" value=<%=rows[0].email%>>
         <p ><span class="label"><%= mascotas[i].nombre %> </span>  <button class="mi-boton">Ver Informacion</button></p> 
+      </form>
         <%}%> 
       
     </div>
