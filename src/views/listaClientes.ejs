@@ -26,7 +26,8 @@
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Usuario</th>            
+                <th>Usuario</th>  
+                <th>Telefono</th>          
                 <th>Perros</th>
                 <th>Acciones</th>
             </tr>
@@ -38,6 +39,7 @@
                   <tr>
                     <td><%= data1[i].nombre%></td> 
                     <td ><%= data1[i].email%></td>    
+                    <td ><%= data1[i].telefono%></td>    
                     <form action="/verPerrosCliente" method="POST">                                    
                       <input type="hidden" name="cliente" value=<%= data1[i].email%> >
                       <td><button class="mi-boton submit" >Ver perros del cliente</button></td>

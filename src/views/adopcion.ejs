@@ -17,7 +17,7 @@
                 <p class="card-text">Descipcion: <%=data[i].texto%></p>
                 <a class="btn btn-info-orange"type='button' onclick='contactar("<%= data[i].id%>")'id='boton<%=data.id%>'>Contactar</a>
                 <% if (user){%>
-                    <% if(user[0].email == data[0].cliente){%>
+                    <% if(user[0].email == data[i].cliente){%>
                         <a href="/adoptado/<%= data[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar_adoptar()">Adoptado</a>
 
                         <a href="/delete_adopcion/<%= data[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar()">Eliminar</a>                       
