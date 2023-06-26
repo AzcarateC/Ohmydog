@@ -5,13 +5,14 @@
         <th scope="col" >Solicitante</th scope="col">
         <th scope="col">Telefono</th scope="col">
         <th scope="col">Paseador/Cuidador</th scope="col">
-        <th scope="col"></th scope="col">
+        <th scope="col">Mail Paseador/Cuidador</th scope="col">
     </tr>
 <% for(var i=0; i<data.length; i++) { %>
     <tr>
         <td><%= data[i].nombre %></td>
         <td><%= data[i].telefono %></td>
         <td><%= data[i].nombrePaseador %></td>
+        <td><%= data[i].mail %></td>
         <td>  <button type='button' class="btn btn-info-orange" onclick='eliminarSolicitud(<%= data[i].id%>,"<%=data[i].telefono%>")'>Eliminar solicitud de la lista  </button></td>
         
     </tr>

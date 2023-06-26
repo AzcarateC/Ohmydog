@@ -308,7 +308,7 @@ controller.listarSolicitudes = (req, res) => {
     if ((!user) || (user.esAdmin==1)){
         res.redirect('/')
     }else{
-        var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id FROM `solicitudescontacto` s INNER JOIN `paseadores` p ON s.idPaseador=p.id;"
+        var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id, p.mail as mail FROM solicitudescontacto s INNER JOIN paseadores p ON s.idPaseador=p.id;"
         req.getConnection((err, conn) => {
             conn.query(sql, (err, rows) => {
                 if (err) {

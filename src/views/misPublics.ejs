@@ -12,7 +12,7 @@
 }
 </style>
 <body>
-<h3 align="center">Mis Publicaciones</h3>
+<h3 align="center">Publicaciones Perros Perdidos y Buscados</h3>
 
 <ul id="listaPerdidos" style="list-style-type:none;">
     <% var perdidos=data.filter(x=>
@@ -34,6 +34,7 @@
           <% } %>
   </ul>
   
+  <h3 align="center">Publicaciones de Adopcion</h3>
 <script src="script.js"></script>
 <ul class="list_adopcion" >
     
@@ -53,9 +54,9 @@
                 <a class="btn btn-info-orange"type='button' onclick='contactar("<%= data1[i].id%>")'id='boton<%=data1.id%>'>Contactar</a>
                 <% if (user){%>
                     <% if(user.email == data[i].cliente){%>
-                        <a href="/adoptado/<%= data1[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar_adoptar()">Adoptado</a>
+                        <a href="/adoptado/<%= data1[i].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar_adoptar()">Adoptado</a>
 
-                        <a href="/delete_adopcion/<%= data1[0].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar()">Eliminar</a>                       
+                        <a href="/delete_adopcion/<%= data1[i].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar()">Eliminar</a>                       
                     <% } %>
                 <%} %>
                 </div>
