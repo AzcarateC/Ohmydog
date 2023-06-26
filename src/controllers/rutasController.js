@@ -17,22 +17,34 @@ controller.list = (req,res)=>{
 }
 
 controller.verificar= (req,res)=>{
-    
-        var mail= req.body.email
-    
-    console.log(mail)
+
+    var mail= req.body.email
+
     var actpas= req.body.pass1
     var confirmpas = req.body.confirmpass1
     sql="SELECT * FROM clientes WHERE email = ?"
     req.getConnection((err,conn)=>{
         conn.query(sql,[mail],(err,rows)=>{
+            console.log(rows.length)
+            var data = req.session.adoptado
+            var user =""
+            var msj ="Mail invalido, no se actualizo la contraseña"
+            if(rows == 0){
+                res.render('vistaContainer',{user,data,msj})
+            }else{
             if(rows.length>0){
 
                 if (actpas==confirmpas) {
+                    msj ="Contraseña actualizada"
                     sql2 = "update clientes set password =? where email= ?"
                     conn.query(sql2,[actpas,mail],(err,rows)=>{
-                            res.redirect('/')
+                            res.render('vistaContainer',{user,data,msj})
                     })
+            }else{
+                msj="Las contraseñas no coinciden, no se actualizo la contraseña"
+                res.render('vistaContainer',{user,data,msj})
+            }
+
             }
     }});
     });
