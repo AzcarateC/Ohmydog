@@ -2,6 +2,7 @@
 <script>
   function handleData()
   {
+    mailViejo = document.getElementById('mailViejo').innerHTML;
     var form_data = new FormData(document.querySelector("form"));
       if (!form_data.has("esPaseador") && !form_data.has("esCuidador")) {
         document.getElementById("chk_option_error").style.visibility = "visible";
@@ -16,7 +17,7 @@
         xmlHttp.open("GET", theUrl, false); // false for synchronous request
         xmlHttp.send(null);
         validez = xmlHttp.responseText;
-        if (validez !== 'Mail valido') {
+        if ((validez !== 'Mail valido') &&(mailViejo!==mail)) {
           document.getElementById("mail_option_error").style.visibility = "visible";
           return false;
         } else {
@@ -28,9 +29,10 @@
   </script>
   <h1 class="text-center">Modificar datos del paseador <%=data[0].nombre%>
   </h1>
+  <div  id="mailViejo" style="display: none"><%=data[0].mail%></div>
   <form class=" registro" onsubmit="return handleData()" action="/modificarPaseador?id=<%=data[0].id%>" method="post">
     <div class="form-group"><label for="nombre">Nombre y apellido:</label><br>
-      <input type="text" class="form-control" id="nombre" value="<%=data[0].nombre%>" name="nombre">
+      <input type="text" class="form-control" id="nombre" value="<%=data[0].nombre%>" name="nombre"  required>
     </div>
     <br><br>
     <div style="visibility:hidden; color:red; " id="chk_option_error">
@@ -44,15 +46,18 @@
       <input type="checkbox" name="esCuidador" id="cuidadorCheckBox" value="1" <%=data[0].esPaseador==1?'checked':'' %>> <label
         for="cuidadorCheckBox">Cuidador</label>
     </div>
+    <div style="visibility:hidden; color:red; " id="mail_option_error">
+      Ingrese un mail que no este en uso.
+    </div>
     <div class="form-group"><label for="mail">Mail:</label><br>
-      <input type="email" class="form-control" id="mail" name="mail" value="<%=data[0].mail%>">
+      <input type="email" class="form-control" id="mail" name="mail" value="<%=data[0].mail%>"  required>
     </div>
     <div class="form-group"><label for="zonas" maxlength="300" size="300">Zonas:</label><br>
       <textarea class="form-control" required rows="3" type="text" id="zonas" value=""
         name="zonas"><%=data[0].zonas%></textarea>
     </div>
     <div class="form-group"><label for="descripcion">Descripcion:</label><br>
-      <textarea class="form-control" type="text" maxlength="700" size="700" id="descripcion" name="descripcion"
+      <textarea class="form-control"  required type="text" maxlength="700" size="700" id="descripcion" name="descripcion"
         value="<%=data[0].descripcion%>"><%=data[0].descripcion%></textarea>
     </div>
     <%- include('partials/_tablaAgregarHorarios', {user: data[0]}); %>

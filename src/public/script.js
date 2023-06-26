@@ -10,7 +10,7 @@ function Confirmar(){
 }
 
 function Confirmar_adoptar(){
-    var retVal = confirm("Se va a dar por terminada la publicacion de adiocion");
+    var retVal = confirm("Se va a dar por terminada la publicacion de adopcion");
     if( retVal == true ){
         alert ("Publicacion cancelada");
         return true;
