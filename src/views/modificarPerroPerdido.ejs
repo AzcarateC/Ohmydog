@@ -19,10 +19,10 @@
       <textarea class="form-control" required rows="3" type="text" id="zona" name="zona"><%=data[0].zona  %></textarea>
     </div>
     <label for="fecha">Fecha de perdido/encontrado:</label>
-    <input type="date" id="fecha" name="fecha" value="<%=fecha.toISOString().substr(0, 10)%>">
+    <input type="date" id="fecha" name="fecha" value="<%=fecha.toISOString().substr(0, 10)%>" required>
    <div class="form-group"><label for="descripcion">Descripcion:</label><br>
       <textarea class="form-control" type="text" maxlength="700" size="700" id="descripcion"
-        name="descripcion"><%=data[0].descripcion%></textarea>
+        name="descripcion" required><%=data[0].descripcion%></textarea>
     </div>
     <input id="imagenVieja" name="imagenVieja" type="hidden" value="<%= data[0].foto %>">
     <div class="form-group">

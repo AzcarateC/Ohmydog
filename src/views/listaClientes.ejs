@@ -59,10 +59,11 @@
         </tbody>
     </table>
    <script>
-    function confirmarEliminacion(event, fechaTurno, horaTurno) {
+    function confirmarEliminacion(event,cliente) {
       event.preventDefault();
           var confirmacion =confirm("¿Seguro que desea eliminar Cliente?")
           if (confirmacion) {
+            alert("Se elimino al cliente")
             event.target.submit();
             }
   }

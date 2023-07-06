@@ -50,8 +50,8 @@
                 <p class="card-text">Edad: <%=data1[i].edad%></p>
                 <p class="card-text">Raza: <%=data1[i].raza%></p>
                 <p class="card-text">Tamaño: <%=data1[i].tamaño%></p>
-                <p class="card-text">Descipcion: <%=data1[i].texto%></p>
-                <p class="card-text">Telefono: <%=data[i].telefono%></p>
+                <p class="card-text">Descripcion: <%=data1[i].texto%></p>
+                <p class="card-text">Telefono: <%=data1[i].telefono%></p>
                 <% if (user){%>
                     <% if(user.email == data[i].cliente){%>
                         <a href="/adoptado/<%= data1[i].id %>" type="button" class="btn btn-info-orange" onclick="return Confirmar_adoptar()">Adoptado</a>

@@ -172,7 +172,7 @@ controller.eliminarCliente = (req,res) =>{
             if(err){
                 console.log("no se pudo")
             }
-            res.redirect('/');
+            res.redirect('/listar');
         })
     })
 }
