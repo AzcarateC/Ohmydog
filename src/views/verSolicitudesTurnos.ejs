@@ -22,6 +22,7 @@
                     <form action="/darTurnoSolicitud" method="post">                 
                         <input type="hidden" name="usuario" value=<%= data[i].usuario %>>
                         <input type="hidden" name="tipo" value=<%=data[i].tipoTurno %>>
+                        <input type="hidden" name="perroElegido" value=<%=data[i].perroElegido %>>
                         <input type="hidden" name="servicio" value=<%= data[i].tipoServicio %>> 
                         <input type="hidden" name="descripcion" placeholder=<%=data[i].descripcion%>>                         
                         <td><button type="submit">Dar Turno</button></td>

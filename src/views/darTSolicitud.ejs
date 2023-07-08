@@ -6,7 +6,7 @@
     <label for="cliente" class="form-control">Cliente:</label>
     <input type="text" id="cliente" name="cliente" value="<%-usuario%>" readonly><br><br>
     
-    <label for="tipo" class="form-control">Perro Seleccionado:</label>
+    <label for="tipo" class="form-control">Perro Seleccionado: <%-perro%></label>
     <select id="tipo" name="mascotaElegida" required>
       <% for(var i = 0; i < mascotas.length; i++) { %>
         <option value=<%= mascotas[i].nombre %>><%= mascotas[i].nombre %></option>

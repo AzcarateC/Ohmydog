@@ -282,12 +282,13 @@ router.post('/darTurnoSolicitud',(req,res) => {
     const usuario= req.body.usuario
     const  tipo = req.body.tipo
     const  servicio = req.body.servicio
+    const perro = req.body.perroElegido
     console.log(servicio)
     req.getConnection((err,conn) =>{
     conn.query('SELECT * FROM mascotas WHERE mascotas.cliente = ?',[usuario],(err,rows)=>{            
         mascotas = rows;
         res.render('darTSolicitud',{
-         user,usuario,servicio,tipo,mascotas
+         user,usuario,servicio,tipo,perro,mascotas
         })
      })
 })
