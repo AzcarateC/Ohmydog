@@ -11,7 +11,14 @@
         <option value="Tarde">Tarde</option>
       </select>   
     </br>
-
+    
+    <label for="tipo" class="form-control">Perro Seleccionado:</label>
+    <select id="tipo" name="perroElegido" required>
+      <% for(var i = 0; i < mascotas.length; i++) { %>
+        <option value=<%= mascotas[i].nombre %>><%= mascotas[i].nombre %></option>
+      <% } %>
+    </select><br><br>
+    
     <label for="tipoServicio" >Tipo de Servicio:</label><br>
     <select name="tipoServicio" id="tipoServicio">
       <option value="vacunacion">Vacunación</option>

@@ -23,12 +23,12 @@ router.get('/',(req,res) =>{
 router.post('/verTurnosDiaX',controller.verturnosdiax)
 router.get('/solicitarVentanaTurno',controller.solicitarVentanaTurno)
 router.get('/verSolicitudesTurnos',controller.verSolicitudesTurnoVentana)
-router.get('/darTurnos',controller.darTurnos)
+router.post('/darTurnos',controller.darTurnos)
 router.get('/calendarioTurnos',controller.calendarioTurnos)
 router.get('/verTurnos',controller.Turnos)
 router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
-
+router.get('/elegirClienteTurno',controller.elegirClienteTurno)
 
 router.post('/add_adopcion',controller.add_adopcion) 
 
@@ -208,12 +208,14 @@ router.post('/nuevot', (req, res) => {
     const tipo = req.body.tipo;
     const dia = req.body.dia;
     const hora = req.body.hora;
+    const perroElegido = req.body.mascotaElegida;
   
     console.log(cliente)
     console.log(descripcion)
     console.log(tipo)
     console.log(dia)
     console.log(hora)
+    console.log(perroElegido)
     req.getConnection((err, conn) => {
       // Verificar si el cliente existe
       const sqlQuery = "SELECT * FROM clientes WHERE email = ?";
@@ -228,8 +230,8 @@ router.post('/nuevot', (req, res) => {
             res.send('<script>alert("El cliente proporcionado no es válido."); window.location.href = "/verTurnos";</script>');
           } else {
             // Cliente válido, realizar la inserción en la base de datos
-            const sql = "INSERT INTO turnos (paciente, descripcion, tipo, dia, hora) VALUES (?, ?, ?, ?, ?)";
-            conn.query(sql, [cliente, descripcion, tipo, dia, hora], (err, result) => {
+            const sql = "INSERT INTO turnos (paciente, descripcion, tipo, dia, hora, perroElegido) VALUES (?, ?, ?, ?, ?,?)";
+            conn.query(sql, [cliente, descripcion, tipo, dia, hora, perroElegido], (err, result) => {
               if (err) {
                 // Manejar el error si ocurre durante la inserción
                 console.error(err);
@@ -281,21 +283,24 @@ router.post('/darTurnoSolicitud',(req,res) => {
     const  tipo = req.body.tipo
     const  servicio = req.body.servicio
     console.log(servicio)
- req.getConnection((err,conn)=>{
-      res.render('darTSolicitud',{
-          user,usuario,servicio,tipo
-      })
-
-  })
+    req.getConnection((err,conn) =>{
+    conn.query('SELECT * FROM mascotas WHERE mascotas.cliente = ?',[usuario],(err,rows)=>{            
+        mascotas = rows;
+        res.render('darTSolicitud',{
+         user,usuario,servicio,tipo,mascotas
+        })
+     })
+})
 })
 
 router.post('/solicitarTurno',(req, res) => {
     const tipo = req.body.tipoTurno;
     const servicio = req.body.tipoServicio;
     const usuario = req.body.usuario;
+    const mascota = req.body.perroElegido;
     req.getConnection((err,conn) =>{
-    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`) VALUES (?,?,?)"
-    conn.query(sql, [tipo,servicio,usuario], (err, result) => {
+    sql = "INSERT INTO `solicitudesturno`(`tipoTurno`, `tipoServicio`,`usuario`,`perroElegido`) VALUES (?,?,?,?)"
+    conn.query(sql, [tipo,servicio,usuario,mascota], (err, result) => {
       if (err) {
         res.redirect('/')
       } else{

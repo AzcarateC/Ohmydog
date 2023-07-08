@@ -4,8 +4,15 @@
 <div>
   <form class="registro" action="/nuevot" method="POST" onsubmit="return validarFecha()">
     <label for="cliente" class="form-control">Cliente:</label>
-    <input type="text" id="cliente" name="cliente" value="<%-usuario%>" required><br><br>
-  
+    <input type="text" id="cliente" name="cliente" value="<%-usuario%>" readonly><br><br>
+    
+    <label for="tipo" class="form-control">Perro Seleccionado:</label>
+    <select id="tipo" name="mascotaElegida" required>
+      <% for(var i = 0; i < mascotas.length; i++) { %>
+        <option value=<%= mascotas[i].nombre %>><%= mascotas[i].nombre %></option>
+      <% } %>
+    </select><br><br>
+    
     <label for="descripcion" class="form-control">Descripción:</label>
     <textarea id="descripcion" name="descripcion" required></textarea><br><br>
   

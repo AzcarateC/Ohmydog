@@ -1,0 +1,25 @@
+<%- include ('vistas') %>
+<body>
+<h1 align="center">Nuevo Turno</h1>
+<div>
+  <form class="registro" action="/darTurnos" method="POST">
+    <label for="tipo" class="form-control">Elegir cliente para turno:</label>
+    <select id="tipo" name="cliente">
+        <% for(var i = 0; i < data.length; i++) { %>
+            <% if(data[i].esAdmin ==1){%>
+            <option value=<%= data[i].email %>><%= data[i].email %></option>
+            <%}%>
+          <% } %>
+    </select><br><br>
+
+    <button type="submit" class="btn btn-info-orange">Avanzar</button>
+    <a href="/" class="btn btn-info-orange">Cancelar</a>
+  </form>
+</div>
+</body>
+</html>
+<%- include ('partials/_footer') %>
+
+
+
+

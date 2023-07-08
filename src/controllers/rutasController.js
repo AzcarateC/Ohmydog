@@ -346,8 +346,11 @@ controller.listarSolicitudes = (req, res) => {
              console.log(rows)
             }
             else{
-            res.render('solicitarTurno',{
-                user})
+                conn.query('SELECT * FROM mascotas WHERE  cliente =?',[user[0].email],(err,rows)=>{
+                    res.render('solicitarTurno',{
+                        user,mascotas:rows
+                    })
+                })
             }
         })
      })
@@ -367,22 +370,34 @@ controller.listarSolicitudes = (req, res) => {
      })
  }
  
- controller.darTurnos = (req, res) => {
+controller.elegirClienteTurno = (req, res) => {
+    req.getConnection((err,conn)=>{
+        conn.query('SELECT * FROM clientes',(err,rows)=>{
+            console.log(rows)
+            res.render('elegirClienteParaTurno',{
+
+                data:rows,user
+            })
+    })
+    })
+}
+
+
+controller.darTurnos = (req, res) => {
      req.getConnection((err, conn) => {
          user=req.session.mi_sesion
-         usuario=" "
+         usuario=req.body.cliente
          servicio=" "
          tipo=" "            
-         res.render('darTurno',{
-             user,usuario,servicio,tipo
+         conn.query('SELECT * FROM mascotas WHERE mascotas.cliente = ?',[usuario],(err,rows)=>{            
+            mascotas = rows;
+            res.render('darTurno',{
+             user,usuario,servicio,tipo,mascotas
          });
      })
- }
+ })
+}
 
-
- 
-  
- 
  controller.Turnos= (req, res) => {
      req.getConnection((err,conn)=>{
          msj=""
