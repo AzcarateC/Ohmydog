@@ -1,0 +1,65 @@
+<%- include ('vistas')  %> 
+<script>
+    function eliminar(id) {
+    confirma = window.confirm("Desea eliminar la campaña de donacion?");
+    if (confirma) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({ 'id': id })
+        };
+        fetch('http://localhost:3000/eliminarCampania', options)
+            .then(alert('Campaña borrada'))
+            .then(location.href = window.location)
+    }
+}
+function finalizar(id) {
+    confirma = window.confirm("Desea finalizar la campaña de donacion? Si lo hace no se aceptaran mas donaciones.");
+    if (confirma) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({ 'id': id })
+        };
+        fetch('http://localhost:3000/finalizarCampania', options)
+            .then(alert('Campaña finalizada'))
+            .then(location.href = window.location)
+    }
+}
+</script> 
+<h1 class="text-center">Campañas de donación.</h1>
+    <ul id="listaCampanias" >
+      
+        <% 
+          for(var i=0; i<data.length; i++) { %>
+  
+            <li >
+                <div class="card">
+                <h5 class="card-title"><%= data[i].nombreCampania %></h5>
+                <p class="card-text">Nombre del refugio: <%=data[i].nombreRefugio%></p>
+                <p class="card-text">Estado: <% if( data[i].finalizada==0){%> Activa <% } else{ %> Finalizada <% } %></p>
+                <p class="card-text">Descripción: <%=data[i].descripcion%></p>
+                <p class="card-text">Recaudado: <%=data[i].montoActual%></p>
+                <p class="card-text">Objetivo de recaudación: <%=data[i].objetivo%></p>
+                <div id='foto<%= data.id%>'>
+                <img src="data/uploads/<%=data[i].foto%>">
+                </div>
+            </div>
+            <% if( (locals.user) && user[0].esAdmin==0){%>
+                <button type='button' class="btn btn-info-orange" onclick='eliminar(<%= data[i].id%>)' id='eliminar<%=data.id%>'>Eliminar campaña</button>
+                <% if( data[i].finalizada==0){%>  <button type='button' class="btn btn-info-orange" onclick='finalizar(<%= data[i].id%>)' id='finalizar<%=data.id%>'>Finalizar campaña</button> <% }  %>
+                <button type='button' class="btn btn-info-orange"
+                            onclick="window.location.href='http://localhost:3000/modificarCampania?id=<%= data[i].id%>'"
+                            id='Modificar<%=data.id%>'>Modificar campaña</button>
+                <% } %>
+            </li>
+        
+              <% } %>
+      </ul>
+<%- include ('partials/_footer') %>

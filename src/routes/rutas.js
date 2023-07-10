@@ -62,7 +62,13 @@ router.get('/modificarpass',(req, res )=>{
 
 
 
-
+router.post('/agregarCampania',upload.single('imagen'),controller.agregarCampaña)
+router.get('/agregarCampania',controller.agregarCampañas)
+router.get('/campanias',controller.campanias)
+router.get('/modificarcampania',controller.modificarCampania)
+router.post('/modificarcampania',upload.single('imagen'),controller.modificarCampanias)
+router.post('/eliminarCampania',controller.eliminarCampania)
+router.post('/finalizarCampania',controller.finalizarCampania)
 
 
 router.post('/eliminarPerroPerdido',controller.eliminarPerroPerdido)
