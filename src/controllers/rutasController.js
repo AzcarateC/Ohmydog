@@ -17,39 +17,53 @@ controller.list = (req,res)=>{
 }
 
 controller.verificar= (req,res)=>{
-
     var mail= req.body.email
-
     var actpas= req.body.pass1
     var confirmpas = req.body.confirmpass1
-    sql="SELECT * FROM clientes WHERE email = ?"
+    sql="SELECT * FROM clientes WHERE email = ? and password = ?"
     req.getConnection((err,conn)=>{
-        conn.query(sql,[mail],(err,rows)=>{
-            console.log(rows.length)
+        conn.query(sql,[mail,actpas],(err,rows)=>{
+           
             var data = req.session.adoptado
             var user =""
-            var msj ="Mail invalido, no se actualizo la contraseña"
+            var msj ="Mail o contraseña invalido/s, no se actualizo la contraseña"
             if(rows == 0){
                 res.render('vistaContainer',{user,data,msj})
             }else{
             if(rows.length>0){
 
-                if (actpas==confirmpas) {
+                if (confirmpas.length>5) {
+                    
+                
+                 if(validarPassword(confirmpas)){
                     msj ="Contraseña actualizada"
                     sql2 = "update clientes set password =? where email= ?"
-                    conn.query(sql2,[actpas,mail],(err,rows)=>{
+                    conn.query(sql2,[confirmpas,mail],(err,rows)=>{
                             res.render('vistaContainer',{user,data,msj})
                     })
-            }else{
-                msj="Las contraseñas no coinciden, no se actualizo la contraseña"
+                 } 
+            }
+            else{
+                msj="La contraseña debe tener minimo 6 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
                 res.render('vistaContainer',{user,data,msj})
             }
-
-            }
+        } 
+        
     }});
-    });
+});
     }
-
+    function validarPassword(password){
+        let expresion = /^[a-zA-Z0-9]+$/
+        
+        if(password.match(expresion)) {
+         
+           return true;
+    
+        } else {
+            return false;
+        }
+    
+    }
     controller.add_adopcion = (req, res) => {
         var user = req.session.mi_sesion
         var titulo = req.body.titulo
@@ -809,6 +823,5 @@ controller.iniciar_sesion = (req,res)=>{
 
 
 */
-
 
 

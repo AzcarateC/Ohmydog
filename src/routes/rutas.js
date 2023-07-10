@@ -29,9 +29,7 @@ router.get('/verTurnos',controller.Turnos)
 router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 router.get('/elegirClienteTurno',controller.elegirClienteTurno)
-
 router.post('/add_adopcion',controller.add_adopcion) 
-
 router.post('/eliminarCliente',controller.eliminarCliente)
 router.get('/listar',controller.listarClientes)
 router.get('/buscarPorNombre',controller.buscarPorNombre)

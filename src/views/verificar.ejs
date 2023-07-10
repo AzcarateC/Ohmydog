@@ -2,9 +2,15 @@
 
 
 <form  class="recuperar" action="/verificar" method="post">
-     <li><input placeholder="Ingrese correo valido" name="email" required></input></li>
-     <li><input type="password" placeholder="Ingrese nueva contraseña" required name="pass1"></li>
-     <li><input type="password" placeholder="Confirme contraseña" required name="confirmpass1"></li>
+     <div>
+     <input placeholder="Ingrese correo valido" name="email" required></input>
+     </div>
+     <div>
+          <input type="password" placeholder="Ingrese contraseña actual" required name="pass1">
+     </div>
+     <div>
+     <input type="password" placeholder="Ingrese contraseña nueva" required name="confirmpass1">
+     </div>
      <button type="submit" class="btn btn-primary">Enviar</button>
      <a href="/" type="button">Cancelar</a>
             
