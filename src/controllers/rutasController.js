@@ -15,6 +15,71 @@ controller.list = (req,res)=>{
         })
     })
 }
+controller.modificarCliente =  (req,res)=>{
+    var cliente = req.body.elegido
+    var user = req.session.mi_sesion
+    msj=""
+    data = req.session.adoptados
+    console.log(cliente)
+    req.getConnection((err,conn)=>{
+        sql ="SELECT * FROM clientes where email = ?"
+        conn.query(sql,[cliente], (err,rows)=>{
+            if(err){
+                console.log(err)
+            }
+            var value = rows
+            req.session.clientevalue = cliente
+            res.render('updateCliente',{data1:value,user:user,msj,data:data})
+            
+        });
+    });
+    
+}
+controller.update_cliente = (req,res)=>{
+    var user = req.session.mi_sesion
+    var data = req.session.adoptados
+    var nombre = req.body.nombre
+    var email = req.body.email
+    var password = req.body.password
+    var telefono = req.body.telefono
+    let value = req.session.clientevalue
+    if(validarPassword(password)){
+        req.getConnection((err,conn)=>{
+            console.log("entra")
+            sql1 = "SELECT email FROM clientes where email = ?"
+            conn.query(sql1,[email],(err,rows)=>{
+                if(err){
+                    console.log(err)
+                }
+                console.log(rows)
+                if(rows.length==1)
+                {
+                    if(rows[0].email == value){
+                       
+                        sql = "UPDATE `clientes` SET `nombre`= ?,`email`= ?,`password`= ?,`telefono`= ? WHERE email = ?"
+                        conn.query(sql,[nombre,email,password,telefono,value],(err,rows)=>{});
+                        msj ="Ususario actualizado"
+                        res.render ('vistaContainer',{user:user,data,msj})
+                                
+                    }
+                    msj ="Email ya esta en uso, usuario no actualizado"
+                    res.render ('vistaContainer',{user:user,data,msj})
+                }
+                sql = "UPDATE `clientes` SET `nombre`= ?,`email`= ?,`password`= ?,`telefono`= ? WHERE email = ?"
+                conn.query(sql,[nombre,email,password,telefono,value],(err,rows)=>{});
+                msj ="Ususario actualizado"
+                res.render ('vistaContainer',{user:user,data,msj})
+
+               
+            })
+    });
+}else{
+    var msj="La contraseña debe tener minimo 8 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
+    res.render('updateCliente',{data1:value,user,msj,data})
+}
+
+
+}
 
 controller.verificar= (req,res)=>{
     var mail= req.body.email
@@ -26,7 +91,7 @@ controller.verificar= (req,res)=>{
            
             var data = req.session.adoptado
             var user =""
-            var msj ="Mail o contraseña invalido/s, no se actualizo la contraseña"
+            var msj ="Mail y/o contraseña invalido/s, no se actualizo la contraseña"
             if(rows == 0){
                 res.render('verificar',{msj})
             }else{
@@ -54,7 +119,7 @@ controller.verificar= (req,res)=>{
 });
     }
 function validarPassword(password){
-        let expresion = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const expresion = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         console.log(password)
         let res = expresion.test(password)
         console.log(res)
@@ -203,6 +268,7 @@ controller.listarClientes = (req,res)=>{
             if(err){
                 res.json(err)
             }
+
             console.log(clientes)
             res.render('listaClientes',{
                 data1:clientes,user
@@ -461,6 +527,187 @@ controller.eliminarSolicitud = (req, res) => {
         })
     })
 }
+
+controller.agregarVetTurno =(req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        text=null
+        conn.query('SELECT * FROM  veterinarias',(err,rows)=>{         
+            res.render('agregarVeterinariaDeTurno',{
+                user,rows,text});  
+         });
+    })
+}
+
+controller.agregarDiaTurnoVeterinariaVentana =(req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        text=null;
+        conn.query("SELECT * FROM veterinarias",(err,rows)=>{
+            veterinarias = rows
+            res.render('agregarDiaTurnoVeterinaria',{
+            user,text,veterinarias 
+        })    
+        })
+    })
+}
+
+
+
+controller.verVeterinariasTurnoCargadas = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        conn.query("SELECT * FROM veterinarias",(err,rows)=>{
+            res.render('listadoVeterinariasDeTurno',{              
+                user,data1:rows
+            })
+        })
+    })
+}
+controller.eliminarVeterinariaDeTurno = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        const nombre = req.body.veterinaria
+        conn.query("DELETE FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+                res.redirect('/verVeterinariasTurnoCargadas')
+        })
+    })
+}
+
+controller.calendarioVeterinariasDeTurno = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        conn.query('SELECT * FROM turnodeveterinaria',(err,data)=>{
+            if(err){
+                res.json(err)
+            }
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const daysInMonth = new Date(currentYear, currentMonth , 0).getDate();
+            // Crear el vector "conteoDias" con valores iniciales en cero
+            const conteoDias = new Array(daysInMonth).fill(0);
+          
+            // Recorrer el vector "data" y actualizar el conteo de días
+            for (const date of data) {
+              if (date.dia.getMonth() === currentMonth && date.dia.getFullYear() === currentYear) {
+                const day = date.dia.getDate();
+                conteoDias[day] = conteoDias[day] + 1;
+              }
+            }
+            res.render('calendarioVeterinariasTurno',{
+                data1:conteoDias,user,mesActual:currentMonth
+            });
+        })
+    })
+}
+
+controller.verVeterinariasTurnoDiaX = (req,res)=>{
+    const dia = req.body.dia
+    console.log(dia)
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth();
+    const date = new Date(añoActual, mesActual, dia)
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const fechaFinal = `${year}-${month}-${day}`;
+    console.log(fechaFinal)
+    req.getConnection((err,conn)=> {
+        user = req.session.mi_sesion;
+        conn.query("SELECT * FROM veterinarias JOIN turnodeveterinaria  ON veterinarias.nombre = turnodeveterinaria.nombreVeterinaria WHERE turnodeveterinaria.dia = ?",[fechaFinal],(err,rows)=>{
+            
+            res.render('verVeterinariasTurnoDiaX',{
+                user,data1: rows,fechaFinal
+            })
+        })
+    })
+}
+
+controller.guardarVeterinariaModificada = (req,res)=>{
+    const nombre = req.body.nombre;
+    const numero = req.body.telefono;
+    const direccion = req.body.direccion;
+    req.getConnection((err,conn)=>{
+        conn.query("UPDATE veterinarias SET numero=?, direccion = ? WHERE nombre = ?",[numero,direccion,nombre],(err,rows)=>{
+            res.redirect('/verVeterinariasTurnoCargadas')
+        })
+    })
+}
+
+controller.modificarVeterinariaDeTurno  = (req,res) =>{
+    const nombre = req.body.veterinaria
+    req.getConnection((err,conn)=>{
+        user=req.session.mi_sesion
+        conn.query("SELECT * FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+            res.render('modificarVeterinariaTurno',{
+                user,data:rows
+            })
+        })
+    })
+}
+
+controller.eliminarDiaVeterinariaTurno = (req,res)=>{
+    const nombre = req.body.veterinaria
+    const fecha = req.body.dia
+    req.getConnection((err,conn)=>{
+        conn.query("DELETE FROM turnodeveterinaria WHERE nombreVeterinaria=? AND dia=?",[nombre,fecha],(err,rows)=>{
+            res.redirect('/')
+        })
+    })
+}
+
+controller.agregarVeterinariaDeTurno = (req,res)=> {
+    const nombre = req.body.nombre;
+    const telefono = req.body.telefono;
+    const direccion = req.body.direccion;
+
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        conn.query("SELECT * FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+            if(rows.length>0){
+                text = "veterinaria de turno ya registrada, pruebe con otra"
+                res.render('agregarVeterinariaDeTurno',{
+                    user,rows,text
+                })
+            }else{
+        conn.query("INSERT INTO veterinarias (nombre, numero, direccion) VALUES (?,?,?)",[nombre,telefono,direccion],(err,rows)=>{
+                text = "veterinaria de turno cargada"
+                res.render('agregarVeterinariaDeTurno',{
+                    user,rows,text
+                })
+        })
+        }   
+        })
+    })
+}
+
+controller.agregarDiaTurnoVeterinaria = (req,res) => {
+    const nombre = req.body.veterinariaElegida;
+    const fechaOriginal = req.body.dia;
+    console.log(fechaOriginal)
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        conn.query('SELECT * FROM turnodeveterinaria WHERE nombreVeterinaria=? AND  dia=?',[nombre,fechaOriginal],(err,rows)=>{
+            if(rows.length>0){
+                text="La veterinaria "+nombre+ " ya poseía turno para la fecha "+fechaOriginal+", cambie de fecha o de veterinaria";
+                res.render("agregarDiaTurnoVeterinaria",{
+                    user,text
+                })
+            }else{
+                conn.query('INSERT INTO turnodeveterinaria (nombreVeterinaria,dia) VALUES (?,?)',[nombre,fechaOriginal],(err,rows)=>{
+                    text="Se guardo la veterinaria "+nombre+ " para estar de turno en la fecha "+fechaOriginal;
+                    res.render("agregarDiaTurnoVeterinaria",{
+                        user,text
+                    })
+                })
+            }
+        })  
+    })
+}
+
 controller.solicitarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
         var nombre = req.body.nombre

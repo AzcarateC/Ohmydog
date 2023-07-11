@@ -1,0 +1,19 @@
+<%- include ('vistas') %>
+<%if(text){%>
+  <script>
+    alert('<%= text %>');
+  </script>
+  <%}%>
+<form action="/guardarVeterinaria" method="POST" >
+  <label for="nombre">Nombre de la Veterinaria:</label>
+  <input type="text" name="nombre" id="nombre" required>
+
+  <label for="telefono">Teléfono:</label>
+  <input type="text" name="telefono" id="telefono" required>
+
+  <label for="direccion">Dirección:</label>
+  <input type="text" name="direccion" id="direccion" required>
+
+  <button class="btn btn-info-orange" type="submit">Guardar</button>
+</form>
+<%- include ('partials/_footer') %>
