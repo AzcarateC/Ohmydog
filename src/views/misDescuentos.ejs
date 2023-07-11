@@ -1,0 +1,17 @@
+<%- include ('vistas')  %>  
+<h1 class="text-center">Mis cupones de descuento.</h1>
+<table class="container">
+        <tr>
+        <th scope="col" >Campaña de donación</th scope="col">
+        <th scope="col">Monto donado</th scope="col">
+        <th scope="col">Descuento</th scope="col"
+    </tr>
+<% for(var i=0; i<data.length; i++) { %>
+    <tr>
+        <td><%= data[i].nombreCampania %></td>
+        <td>$<%= data[i].montoDonacion %></td>
+        <td>$<%= data[i].montoDonacion/10 %></td>       
+    </tr>
+    <% } %>
+</table>
+<%- include ('partials/_footer') %>

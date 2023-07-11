@@ -1,0 +1,29 @@
+<%- include ('vistas')  %>  
+<h1 class="text-center">Descuentos disponibles del cliente <%= cliente[0].nombre %>.</h1>
+<table class="container">
+        <tr>
+        <th scope="col" >Campaña de donación</th scope="col">
+        <th scope="col">Monto donado</th scope="col">
+        <th scope="col">Descuento</th scope="col"
+    </tr>
+<% for(var i=0; i<data.length; i++) { %>
+    <tr>
+        <td><%= data[i].nombreCampania %></td>
+        <td>$<%= data[i].montoDonacion %></td>
+        <td>$<%= data[i].montoDonacion/10 %></td>
+        <td>  <button type='button' class="btn btn-info-orange" onclick='canjearDescuento(<%= data[i].id%>)'>Canjear descuento.</button></td>
+        
+    </tr>
+    <% } %>
+</table>
+<%- include ('partials/_footer') %>
+<script>
+    function canjearDescuento(id){
+        var xmlHttp = new XMLHttpRequest();
+        theUrl= 'http://localhost:3000/canjear?id='+id;
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        msj = xmlHttp.responseText;
+        alert(msj)
+    }
+</script>

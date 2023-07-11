@@ -7,8 +7,7 @@
 
   <form action="/modificarCampania" class=" registro" method="post" enctype="multipart/form-data">
     <input name="id" type="hidden" value="<%= data[0].id %>">
-    <div class="form-group"><label for="nombreCampania">Nombre de la campaña de donación :</label><br>
-      <input type="text" class="form-control" value="<%= data[0].nombreCampania %>" id="nombreCampania" name="nombreCampania">
+    <div class="form-group">Nombre de la campaña de donación :<%= data[0].nombreCampania %>
     </div>
     <div class="form-group"><label for="nombreRefugio">Nombre del refugio :</label><br>
         <input type="text" class="form-control" value="<%= data[0].nombreRefugio %>" id="nombreRefugio" name="nombreRefugio">
@@ -17,7 +16,7 @@
       <textarea class="form-control" required rows="3" type="text" id="descripcion"  name="descripcion" maxlength="500" size="500"><%= data[0].descripcion %></textarea>
     </div>
     <div class="form-group">  <label for="objetivo">Monto a recaudar:</label>
-        <input type="number" id="objetivo"  step="0.01" name="objetivo" value="<%= data[0].objetivo %>" >
+        <input type="number" id="objetivo" min="0"  step="0.01" name="objetivo" value="<%= data[0].objetivo %>" >
       </div>
       <input id="imagenVieja" name="imagenVieja" type="hidden" value="<%= data[0].foto %>">
     <div class="form-group">

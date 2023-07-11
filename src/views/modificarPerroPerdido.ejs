@@ -1,8 +1,21 @@
 <%- include ('vistas') %>
+<script>
+      function validarFecha() {
+      var fechaInput = document.getElementById("fecha").value;
+      var fechaActual = new Date().toISOString().split("T")[0];
+  
+      if (fechaInput > fechaActual) {
+        alert("La fecha ingresada no es válida. Debe ser anterior o igual a la fecha actual.");
+        return false; // Evita que el formulario se envíe
+      }
+  
+      return true; // Permite que el formulario se envíe
+    }
+</script>
 <% var fecha = new Date(data[0].fecha);%>
   <h1 class="text-center">Modificar publicación 
   </h1>
-  <form class=" registro" action="/modificarPerrosPerdidos?id=<%=data[0].id%>" method="post" enctype="multipart/form-data"> 
+  <form onsubmit="return validarFecha()" class=" registro" action="/modificarPerrosPerdidos?id=<%=data[0].id%>" method="post" enctype="multipart/form-data"> 
     <input name="id" type="hidden" value="<%= data[0].id %>">
     <input type="radio" id="encontrado" name="perdidooencontrado" value="0"  <%=data[0].perdidooencontrado==0?'checked':'' %> required>
     <label for="encontrado">Encontre un perro</label><br>

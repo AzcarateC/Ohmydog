@@ -59,9 +59,12 @@ router.get('/modificarpass',(req, res )=>{
     res.render('verificar')
 })
 
+router.get('/misDescuentos',controller.misDescuentos)
+router.get('/descuento',controller.descuentos)
+router.get('/canjear',controller.canjear)
 
-
-
+router.get('/donar',controller.donarForm)
+router.post('/donar',controller.donar)
 router.post('/agregarCampania',upload.single('imagen'),controller.agregarCampaña)
 router.get('/agregarCampania',controller.agregarCampañas)
 router.get('/campanias',controller.campanias)
@@ -417,6 +420,18 @@ router.get('/validarMail',(req,res) =>{
                 res.send('Mail ya registrado')}
             else{
                 res.send('Mail valido')
+            }
+        })
+    })
+})
+router.get('/validarNombreCampania',(req,res) =>{
+    req.getConnection((err,conn)=>{
+        nombre=req.query.nombre;
+        conn.query('SELECT * FROM campanias WHERE nombreCampania=?',[nombre],(err,rows)=>{
+            if (rows[0]!=null){
+                res.send('Nombre ya registrado')}
+            else{
+                res.send('valido')
             }
         })
     })

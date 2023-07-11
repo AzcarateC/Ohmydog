@@ -48,6 +48,10 @@
                       <input type="hidden" name="cliente" value='<%= data1[i].email%>' >
                       <td><button class="mi-boton submit">Agregar perro</button></td>
                       </form>
+                      <form action="/descuento" method="GET">
+                        <input type="hidden" name="email" value='<%= data1[i].email%>' >
+                        <td><button class="mi-boton submit"> Ver cupones de descuento</button></td>
+                        </form>
                     <form action="/eliminarCliente" method="POST" onsubmit="return confirmarEliminacion(event)">
                       <input type="hidden" name="elegido" value=<%=data1[i].email%>> 
                     <td><button class="mi-boton submit">Eliminar cliente</button></td>    

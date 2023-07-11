@@ -335,7 +335,8 @@ controller.listarPerrosPerdidos = (req, res) => {
 }
 controller.listarSolicitudes = (req, res) => {
     var user= req.session.mi_sesion
-    if ((!user) || (user.esAdmin==1)){
+    console.log(user[0].esAdmin)
+    if ((!user) || (user[0].esAdmin==1)){
         res.redirect('/')
     }else{
         var sql = "SELECT s.nombre as nombre, telefono,p.nombre as nombrePaseador, p.id as id, p.mail as mail FROM solicitudescontacto s INNER JOIN paseadores p ON s.idPaseador=p.id;"
@@ -762,7 +763,7 @@ controller.agregarCampaña = (req, res) => {
         var objetivo = req.body.objetivo;
         var foto = req.file.filename;
         var sql = 'INSERT INTO `campanias`(`nombreCampania`, `nombreRefugio`, `foto`, `descripcion`, `objetivo`) VALUES (?,?,?,?,?)'
-        conn.query(sql, [nombreCampania, nombreRefugio, foto, descripcion, objetivo], (err, rows) => {
+         conn.query(sql, [nombreCampania, nombreRefugio, foto, descripcion, objetivo], (err, rows) => {
             console.log('s')
             if (err) {
                 res.json(err)
@@ -785,13 +786,12 @@ controller.modificarCampanias = (req, res) => {
     req.getConnection((err, conn) => {
         console.log(req.file);
         var id= req.body.id
-        var nombreCampania = req.body.nombreCampania;
         var nombreRefugio = req.body.nombreRefugio;
         var descripcion = req.body.descripcion;
         var objetivo = req.body.objetivo;
         var foto = req.file ? req.file.filename : req.body.imagenVieja;
-        var sql = 'UPDATE `campanias` SET `nombreCampania`=?,`nombreRefugio`=?,`foto`=?,`descripcion`=?,`objetivo`=? WHERE id=?'
-        conn.query(sql, [nombreCampania, nombreRefugio, foto, descripcion,objetivo , id], (err, rows) => {
+        var sql = 'UPDATE `campanias` SET `nombreRefugio`=?,`foto`=?,`descripcion`=?,`objetivo`=? WHERE id=?'
+        conn.query(sql, [ nombreRefugio, foto, descripcion,objetivo , id], (err, rows) => {
             if (err) {
                 res.json(err)
             } else {
@@ -851,12 +851,93 @@ controller.campanias = (req, res) => {
             if (err) {
                 res.json(err)
             }
-            req.session.adopcion = rows
             res.render('listaCampanias', { data: rows, user })
         });
     });
 }
+controller.donarForm = (req, res) => {
+    id=req.query.id
+    req.getConnection((err, conn) => {
+        var user = req.session.mi_sesion
+        conn.query('SELECT * FROM campanias WHERE id=?',[id], (err, rows) => {
+            console.log(rows[0])
+            if (err) {
+                res.json(err)
+            }
+            res.render('donar', { data: rows[0], user })
+        });
+    });
+}
+controller.donar = (req, res) => {
+    var user= req.session.mi_sesion
+    cliente=user?user[0].email:makeid(10);
+    monto=req.body.monto
+    nombreCampania=req.body.nombreCampania
+    id=req.body.id
+    var sql= 'INSERT INTO `donaciones`(`nombreCampania`, `email`, `montoDonacion`) VALUES (?,?,?)';
+    sql+=';UPDATE `campanias` SET `montoActual`=`montoActual`+? WHERE id=?'
+    sql+=';UPDATE `campanias` SET `finalizada` = 1 WHERE `campanias`.`id` = ? and `campanias`.`montoActual`>= `campanias`.`objetivo`';
+    req.getConnection((err, conn) => {
+        var user = req.session.mi_sesion
+        conn.query(sql,[nombreCampania,cliente,monto,monto,id,id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.redirect('/campanias')
+        });
+    });
+}
+controller.descuentos = (req, res) => {
 
+    var user= req.session.mi_sesion
+    email=req.query.email
+    req.getConnection((err, conn) => {
+        conn.query('SELECT * FROM donaciones WHERE email=? AND canjeado=0;SELECT * FROM `clientes` WHERE email=?',[email,email], (err, rows) => {
+            console.log(rows[1])
+            if (err) {
+                res.json(err)
+            }
+            res.render('descuentos', { data: rows[0],cliente: rows[1], user })
+        });
+    });
+}
+controller.misDescuentos = (req, res) => {
+    var user= req.session.mi_sesion
+    email=req.session.mi_sesion[0].email
+    console.log(email)
+    req.getConnection((err, conn) => {
+        conn.query('SELECT * FROM donaciones WHERE email=? AND canjeado=0',[email], (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.render('misDescuentos', { data: rows, user })
+        });
+    });
+}
+function makeid(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+controller.canjear = (req, res) => {
+    id=req.query.id
+    var sql= 'UPDATE `donaciones` SET `canjeado`=1 WHERE id=?';
+     req.getConnection((err, conn) => {
+        var user = req.session.mi_sesion
+        conn.query(sql,[id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            res.send('Cupon de descuento canjeado exitosamente')
+        });
+    });
+}
 module.exports = controller;
 
 
