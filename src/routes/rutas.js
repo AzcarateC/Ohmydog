@@ -59,8 +59,8 @@ router.get('/modificarpass',(req, res )=>{
     res.render('verificar')
 })
 
-
-
+router.post('/modificarCliente',controller.modificarCliente)
+router.post('/updateCliente',controller.update_cliente)
 
 router.post('/agregarCampania',upload.single('imagen'),controller.agregarCampaña)
 router.get('/agregarCampania',controller.agregarCampañas)
@@ -123,6 +123,7 @@ router.get('/veterinaria_panel', (req, res)=>{
     })
 }
 )
+
 
 router.get('/add_mascota',(req, res) => {
     var cliente = req.query.cliente

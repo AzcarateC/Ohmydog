@@ -15,6 +15,71 @@ controller.list = (req,res)=>{
         })
     })
 }
+controller.modificarCliente =  (req,res)=>{
+    var cliente = req.body.elegido
+    var user = req.session.mi_sesion
+    msj=""
+    data = req.session.adoptados
+    console.log(cliente)
+    req.getConnection((err,conn)=>{
+        sql ="SELECT * FROM clientes where email = ?"
+        conn.query(sql,[cliente], (err,rows)=>{
+            if(err){
+                console.log(err)
+            }
+            var value = rows
+            req.session.clientevalue = cliente
+            res.render('updateCliente',{data1:value,user:user,msj,data:data})
+            
+        });
+    });
+    
+}
+controller.update_cliente = (req,res)=>{
+    var user = req.session.mi_sesion
+    var data = req.session.adoptados
+    var nombre = req.body.nombre
+    var email = req.body.email
+    var password = req.body.password
+    var telefono = req.body.telefono
+    let value = req.session.clientevalue
+    if(validarPassword(password)){
+        req.getConnection((err,conn)=>{
+            console.log("entra")
+            sql1 = "SELECT email FROM clientes where email = ?"
+            conn.query(sql1,[email],(err,rows)=>{
+                if(err){
+                    console.log(err)
+                }
+                console.log(rows)
+                if(rows.length==1)
+                {
+                    if(rows[0].email == value){
+                       
+                        sql = "UPDATE `clientes` SET `nombre`= ?,`email`= ?,`password`= ?,`telefono`= ? WHERE email = ?"
+                        conn.query(sql,[nombre,email,password,telefono,value],(err,rows)=>{});
+                        msj ="Ususario actualizado"
+                        res.render ('vistaContainer',{user:user,data,msj})
+                                
+                    }
+                    msj ="Email ya esta en uso, usuario no actualizado"
+                    res.render ('vistaContainer',{user:user,data,msj})
+                }
+                sql = "UPDATE `clientes` SET `nombre`= ?,`email`= ?,`password`= ?,`telefono`= ? WHERE email = ?"
+                conn.query(sql,[nombre,email,password,telefono,value],(err,rows)=>{});
+                msj ="Ususario actualizado"
+                res.render ('vistaContainer',{user:user,data,msj})
+
+               
+            })
+    });
+}else{
+    var msj="La contraseña debe tener minimo 8 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
+    res.render('updateCliente',{data1:value,user,msj,data})
+}
+
+
+}
 
 controller.verificar= (req,res)=>{
     var mail= req.body.email
@@ -26,7 +91,7 @@ controller.verificar= (req,res)=>{
            
             var data = req.session.adoptado
             var user =""
-            var msj ="Mail o contraseña invalido/s, no se actualizo la contraseña"
+            var msj ="Mail y/o contraseña invalido/s, no se actualizo la contraseña"
             if(rows == 0){
                 res.render('verificar',{msj})
             }else{
@@ -54,7 +119,7 @@ controller.verificar= (req,res)=>{
 });
     }
 function validarPassword(password){
-        let expresion = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const expresion = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         console.log(password)
         let res = expresion.test(password)
         console.log(res)
@@ -203,6 +268,7 @@ controller.listarClientes = (req,res)=>{
             if(err){
                 res.json(err)
             }
+
             console.log(clientes)
             res.render('listaClientes',{
                 data1:clientes,user

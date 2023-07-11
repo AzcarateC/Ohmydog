@@ -1,0 +1,30 @@
+
+<%- include('vistaContainer') %>
+
+<% if (msj) { %>
+    <div class="alert alert-danger" role="alert">
+         <%= msj %>
+     </div>
+    <% }%>
+
+
+<form class=" registro" action="/updateCliente" method="POST">
+    <div class="form-group"> Nombre:
+        <input type="text" class="form-control" name="nombre" value = <%= data1[0].nombre %> required>
+    </div>
+    <div class="form-group">Correo:
+        <input type="text" class="form-control" name="email" value = <%= data1[0].email %> required>
+    </div>
+    <div class="form-group">Contraseña:
+        <input type="text" class="form-control" name="password" value = <%= data1[0].password %> required>
+    </div>
+    <div class="form-group">Telefono:
+        <input type="text" class="form-control" name="telefono" value = <%= data1[0].telefono %> required>
+    </div>
+    <button type="submit" class="btn btn-info-orange">Modificar</button>
+    
+    <a type="button " class="btn btn-info-orange" href="vistaContainer">Cancelar</a>
+
+
+</form>
+<%- include ('partials/_footer') %>
