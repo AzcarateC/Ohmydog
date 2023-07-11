@@ -30,6 +30,7 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 router.get('/elegirClienteTurno',controller.elegirClienteTurno)
 
+router.post('/guardarVeterinariaModificada',controller.guardarVeterinariaModificada)
 router.post('/eliminarDiaVeterinariaTurno',controller.eliminarDiaVeterinariaTurno)
 router.post('/verVeterinariasTurnoDiaX',controller.verVeterinariasTurnoDiaX)
 router.get('/calendarioVeterinariasDeTurno',controller.calendarioVeterinariasDeTurno)
@@ -40,6 +41,8 @@ router.get('/agregarDiaTurnoVeterinariaVentana',controller.agregarDiaTurnoVeteri
 router.post('/agregarDiaTurnoVeterinaria',controller.agregarDiaTurnoVeterinaria)
 router.post('/eliminarVeterinariaDeTurno',controller.eliminarVeterinariaDeTurno)
 
+
+router.post('/modificarVeterinariaDeTurno',controller.modificarVeterinariaDeTurno)
 router.post('/add_adopcion',controller.add_adopcion) 
 router.post('/eliminarCliente',controller.eliminarCliente)
 router.get('/listar',controller.listarClientes)

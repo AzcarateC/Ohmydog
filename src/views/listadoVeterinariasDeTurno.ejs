@@ -30,7 +30,11 @@
                   <tr>
                     <td><%= data1[i].nombre%></td> 
                     <td ><%= data1[i].numero%></td>    
-                    <td ><%= data1[i].direccion%></td>    
+                    <td ><%= data1[i].direccion%></td>   
+                    <form action="/modificarVeterinariaDeTurno" method="POST" >                                    
+                      <input type="hidden" name="veterinaria" value=<%= data1[i].nombre%> >
+                      <td><button class="mi-boton submit" >Modificar</button></td>
+                    </form> 
                     <form action="/eliminarVeterinariaDeTurno" method="POST" onsubmit="return confirmarEliminacion(event)">                                    
                       <input type="hidden" name="veterinaria" value=<%= data1[i].nombre%> >
                       <td><button class="mi-boton submit" >Eliminar</button></td>

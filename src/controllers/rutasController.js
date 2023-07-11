@@ -559,6 +559,29 @@ controller.verVeterinariasTurnoDiaX = (req,res)=>{
     })
 }
 
+controller.guardarVeterinariaModificada = (req,res)=>{
+    const nombre = req.body.nombre;
+    const numero = req.body.telefono;
+    const direccion = req.body.direccion;
+    req.getConnection((err,conn)=>{
+        conn.query("UPDATE veterinarias SET numero=?, direccion = ? WHERE nombre = ?",[numero,direccion,nombre],(err,rows)=>{
+            res.redirect('/verVeterinariasTurnoCargadas')
+        })
+    })
+}
+
+controller.modificarVeterinariaDeTurno  = (req,res) =>{
+    const nombre = req.body.veterinaria
+    req.getConnection((err,conn)=>{
+        user=req.session.mi_sesion
+        conn.query("SELECT * FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+            res.render('modificarVeterinariaTurno',{
+                user,data:rows
+            })
+        })
+    })
+}
+
 controller.eliminarDiaVeterinariaTurno = (req,res)=>{
     const nombre = req.body.veterinaria
     const fecha = req.body.dia
