@@ -460,6 +460,164 @@ controller.eliminarSolicitud = (req, res) => {
         })
     })
 }
+
+controller.agregarVetTurno =(req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        text=null
+        conn.query('SELECT * FROM  veterinarias',(err,rows)=>{         
+            res.render('agregarVeterinariaDeTurno',{
+                user,rows,text});  
+         });
+    })
+}
+
+controller.agregarDiaTurnoVeterinariaVentana =(req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        text=null;
+        conn.query("SELECT * FROM veterinarias",(err,rows)=>{
+            veterinarias = rows
+            res.render('agregarDiaTurnoVeterinaria',{
+            user,text,veterinarias 
+        })    
+        })
+    })
+}
+
+
+
+controller.verVeterinariasTurnoCargadas = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        conn.query("SELECT * FROM veterinarias",(err,rows)=>{
+            res.render('listadoVeterinariasDeTurno',{              
+                user,data1:rows
+            })
+        })
+    })
+}
+controller.eliminarVeterinariaDeTurno = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        const nombre = req.body.veterinaria
+        conn.query("DELETE FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+                res.redirect('/verVeterinariasTurnoCargadas')
+        })
+    })
+}
+
+controller.calendarioVeterinariasDeTurno = (req,res)=>{
+    req.getConnection((err,conn)=>{
+        msj=""
+        conn.query('SELECT * FROM turnodeveterinaria',(err,data)=>{
+            if(err){
+                res.json(err)
+            }
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const daysInMonth = new Date(currentYear, currentMonth , 0).getDate();
+            // Crear el vector "conteoDias" con valores iniciales en cero
+            const conteoDias = new Array(daysInMonth).fill(0);
+          
+            // Recorrer el vector "data" y actualizar el conteo de días
+            for (const date of data) {
+              if (date.dia.getMonth() === currentMonth && date.dia.getFullYear() === currentYear) {
+                const day = date.dia.getDate();
+                conteoDias[day] = conteoDias[day] + 1;
+              }
+            }
+            res.render('calendarioVeterinariasTurno',{
+                data1:conteoDias,user,mesActual:currentMonth
+            });
+        })
+    })
+}
+
+controller.verVeterinariasTurnoDiaX = (req,res)=>{
+    const dia = req.body.dia
+    console.log(dia)
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth();
+    const date = new Date(añoActual, mesActual, dia)
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const fechaFinal = `${year}-${month}-${day}`;
+    console.log(fechaFinal)
+    req.getConnection((err,conn)=> {
+        user = req.session.mi_sesion;
+        conn.query("SELECT * FROM veterinarias JOIN turnodeveterinaria  ON veterinarias.nombre = turnodeveterinaria.nombreVeterinaria WHERE turnodeveterinaria.dia = ?",[fechaFinal],(err,rows)=>{
+            
+            res.render('verVeterinariasTurnoDiaX',{
+                user,data1: rows,fechaFinal
+            })
+        })
+    })
+}
+
+controller.eliminarDiaVeterinariaTurno = (req,res)=>{
+    const nombre = req.body.veterinaria
+    const fecha = req.body.dia
+    req.getConnection((err,conn)=>{
+        conn.query("DELETE FROM turnodeveterinaria WHERE nombreVeterinaria=? AND dia=?",[nombre,fecha],(err,rows)=>{
+            res.redirect('/')
+        })
+    })
+}
+
+controller.agregarVeterinariaDeTurno = (req,res)=> {
+    const nombre = req.body.nombre;
+    const telefono = req.body.telefono;
+    const direccion = req.body.direccion;
+
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        conn.query("SELECT * FROM veterinarias WHERE nombre=?",[nombre],(err,rows)=>{
+            if(rows.length>0){
+                text = "veterinaria de turno ya registrada, pruebe con otra"
+                res.render('agregarVeterinariaDeTurno',{
+                    user,rows,text
+                })
+            }else{
+        conn.query("INSERT INTO veterinarias (nombre, numero, direccion) VALUES (?,?,?)",[nombre,telefono,direccion],(err,rows)=>{
+                text = "veterinaria de turno cargada"
+                res.render('agregarVeterinariaDeTurno',{
+                    user,rows,text
+                })
+        })
+        }   
+        })
+    })
+}
+
+controller.agregarDiaTurnoVeterinaria = (req,res) => {
+    const nombre = req.body.veterinariaElegida;
+    const fechaOriginal = req.body.dia;
+    console.log(fechaOriginal)
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion;
+        conn.query('SELECT * FROM turnodeveterinaria WHERE nombreVeterinaria=? AND  dia=?',[nombre,fechaOriginal],(err,rows)=>{
+            if(rows.length>0){
+                text="La veterinaria "+nombre+ " ya poseía turno para la fecha "+fechaOriginal+", cambie de fecha o de veterinaria";
+                res.render("agregarDiaTurnoVeterinaria",{
+                    user,text
+                })
+            }else{
+                conn.query('INSERT INTO turnodeveterinaria (nombreVeterinaria,dia) VALUES (?,?)',[nombre,fechaOriginal],(err,rows)=>{
+                    text="Se guardo la veterinaria "+nombre+ " para estar de turno en la fecha "+fechaOriginal;
+                    res.render("agregarDiaTurnoVeterinaria",{
+                        user,text
+                    })
+                })
+            }
+        })  
+    })
+}
+
 controller.solicitarPaseador = (req, res) => {
     req.getConnection((err, conn) => {
         var nombre = req.body.nombre
