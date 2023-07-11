@@ -28,38 +28,42 @@ controller.verificar= (req,res)=>{
             var user =""
             var msj ="Mail o contraseña invalido/s, no se actualizo la contraseña"
             if(rows == 0){
-                res.render('vistaContainer',{user,data,msj})
+                res.render('verificar',{msj})
             }else{
             if(rows.length>0){
 
-                if (confirmpas.length>5) {
+                if (confirmpas.length>7) {
                     
-                
                  if(validarPassword(confirmpas)){
                     msj ="Contraseña actualizada"
                     sql2 = "update clientes set password =? where email= ?"
                     conn.query(sql2,[confirmpas,mail],(err,rows)=>{
                             res.render('vistaContainer',{user,data,msj})
                     })
-                 } 
-            }
-            else{
-                msj="La contraseña debe tener minimo 6 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
-                res.render('vistaContainer',{user,data,msj})
+                 }else{
+                    msj="La contraseña debe tener minimo 8 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
+                    res.render('verificar',{msj})
+                }
+            }else{
+                msj="La contraseña debe tener minimo 8 caracteres e incluir 1 letra mayuscula, 1 letra minuscula y 1 numero "
+                res.render('verificar',{msj})
             }
         } 
         
     }});
 });
     }
-    function validarPassword(password){
-        let expresion = /^[a-zA-Z0-9]+$/
-        
-        if(password.match(expresion)) {
-         
-           return true;
+function validarPassword(password){
+        let expresion = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        console.log(password)
+        let res = expresion.test(password)
+        console.log(res)
+        if(res) {
+            
+          return true;
     
         } else {
+            
             return false;
         }
     

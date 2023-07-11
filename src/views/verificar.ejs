@@ -1,5 +1,10 @@
  <%- include('partials/_header') %>
 
+ <% if (msj) { %>
+     <div class="alert alert-danger" role="alert">
+          <%= msj %>
+      </div>
+     <% }%>
 
 <form  class="recuperar" action="/verificar" method="post">
      <div>
