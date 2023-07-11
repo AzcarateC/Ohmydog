@@ -1,0 +1,60 @@
+<%- include ('vistas') %>
+<style>
+   .mi-boton {
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+    }
+</style>
+<body>   
+    <form action="/agregarVeterinariaDeTurno" method="GET" >
+        <button class="mi-boton submit">Agregar otra veterinaria de turno</button> 
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>          
+                <th>Direccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%if (data1){%>
+                  <% for (i=0;i<data1.length;i++){%>
+                   <% if(user[0].esAdmin==0){%> 
+                  <tr>
+                    <td><%= data1[i].nombre%></td> 
+                    <td ><%= data1[i].numero%></td>    
+                    <td ><%= data1[i].direccion%></td>   
+                    <form action="/modificarVeterinariaDeTurno" method="POST" >                                    
+                      <input type="hidden" name="veterinaria" value=<%= data1[i].nombre%> >
+                      <td><button class="mi-boton submit" >Modificar</button></td>
+                    </form> 
+                    <form action="/eliminarVeterinariaDeTurno" method="POST" onsubmit="return confirmarEliminacion(event)">                                    
+                      <input type="hidden" name="veterinaria" value=<%= data1[i].nombre%> >
+                      <td><button class="mi-boton submit" >Eliminar</button></td>
+                    </form>
+                  </tr>  
+                  <%}%>
+                <%}%> 
+            <%}%>   
+        </tbody>
+    </table>
+   <script>
+    function confirmarEliminacion(event,veterinaria) {
+      event.preventDefault();
+          var confirmacion =confirm("¿Seguro que desea eliminar Veterinaria de turno ?")
+          if (confirmacion) {
+            alert("Se elimino la veterinaria de turno")
+            event.target.submit();
+            }
+  }
+</script>
+</body>
+</html>
+<%- include ('partials/_footer') %>

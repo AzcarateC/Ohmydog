@@ -1,0 +1,20 @@
+<%- include ('vistas') %>
+<%if(text){%>
+  <script>
+    alert('<%= text %>');
+  </script>
+  <%}%>
+<form action="/guardarVeterinariaModificada" method="POST" >
+  <label for="nombre">Nombre de la Veterinaria:</label>
+  <input type="text" name="nombre" id="nombre" value=<%=data[0].nombre%> readonly>
+
+  <label for="telefono">Teléfono:</label>
+  <input type="text" name="telefono" id="telefono" value=<%=data[0].numero%>>
+
+  <label for="direccion">Dirección:</label>
+  <input type="text" name="direccion" id="direccion" value=<%=data[0].direccion%>>
+
+  <button class="btn btn-info-orange" type="submit">Guardar</button>
+  <button class="btn btn-info-orange" href="/">Cancelar</button>
+</form>
+<%- include ('partials/_footer') %>

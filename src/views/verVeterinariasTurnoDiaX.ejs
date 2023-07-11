@@ -1,0 +1,84 @@
+<%- include ('vistas') %>
+<style>
+   .mi-boton {
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+    }
+</style>
+<body>   
+    <h3 align="center">Veterinarias de Turno del <%=fechaFinal%></h1>
+    <% if(typeof user !== 'undefined'){%>
+        
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>          
+                <th>Direccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%if (data1){%>
+                  <% for (i=0;i<data1.length;i++){%>
+                   
+                  <tr>
+                    <td><%= data1[i].nombre%></td> 
+                    <td ><%= data1[i].numero%></td>    
+                    <td ><%= data1[i].direccion%></td>    
+                    <% if(user[0].esAdmin==0){%> 
+                      <form action="/eliminarDiaVeterinariaTurno" method="POST" onsubmit="return confirmarEliminacion(event)">                                    
+                            <input type="hidden" name="veterinaria" value=<%= data1[i].nombre%> >
+                            <input type="hidden" name="dia" value=<%=fechaFinal%> >
+                            <td><button class="mi-boton submit" >Eliminar de este dia</button></td>
+                        </form>
+                     <%}%>   
+                  </tr>  
+            <%}%> 
+            <%}%>   
+        </tbody>
+    </table>
+    <%}else{%>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Telefono</th>          
+                    <th>Direccion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if (data1){%>
+                      <% for (i=0;i<data1.length;i++){%>
+                      <tr>
+                        <td><%= data1[i].nombre%></td> 
+                        <td ><%= data1[i].numero%></td>    
+                        <td ><%= data1[i].direccion%></td>    
+                      </tr>  
+                    <%}%> 
+                <%}%>   
+            </tbody>
+        </table>  
+
+    <%}%>
+   <script>
+    function confirmarEliminacion(event,veterinaria) {
+      event.preventDefault();
+          var confirmacion =confirm("¿Seguro que desea quitar veterinaria de esta fecha?")
+          if (confirmacion) {
+            alert("Se elimino la veterinaria de esta fecha de  turno")
+            event.target.submit();
+            }
+            else{
+               alert("Accion cancelada") 
+            }
+  }
+</script>
+</body>
+</html>
+<%- include ('partials/_footer') %>
