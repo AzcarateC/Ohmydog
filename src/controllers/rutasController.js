@@ -753,6 +753,109 @@ controller.adoptado = (req, res) => {
     })
 } 
 
+controller.agregarCampaña = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file)
+        var nombreCampania = req.body.nombreCampania;
+        var nombreRefugio = req.body.nombreRefugio;
+        var descripcion = req.body.descripcion;
+        var objetivo = req.body.objetivo;
+        var foto = req.file.filename;
+        var sql = 'INSERT INTO `campanias`(`nombreCampania`, `nombreRefugio`, `foto`, `descripcion`, `objetivo`) VALUES (?,?,?,?,?)'
+        conn.query(sql, [nombreCampania, nombreRefugio, foto, descripcion, objetivo], (err, rows) => {
+            console.log('s')
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/campanias')
+            }
+        })
+    })
+}
+controller.agregarCampañas = (req, res) => {
+    var user = req.session.mi_sesion
+    if ((!user) || (user.esAdmin == 1)) {
+        res.redirect('/')
+    } else {
+        res.render('agregarCampania', { user: user })
+    }
+}
+
+controller.modificarCampanias = (req, res) => {
+    req.getConnection((err, conn) => {
+        console.log(req.file);
+        var id= req.body.id
+        var nombreCampania = req.body.nombreCampania;
+        var nombreRefugio = req.body.nombreRefugio;
+        var descripcion = req.body.descripcion;
+        var objetivo = req.body.objetivo;
+        var foto = req.file ? req.file.filename : req.body.imagenVieja;
+        var sql = 'UPDATE `campanias` SET `nombreCampania`=?,`nombreRefugio`=?,`foto`=?,`descripcion`=?,`objetivo`=? WHERE id=?'
+        conn.query(sql, [nombreCampania, nombreRefugio, foto, descripcion,objetivo , id], (err, rows) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/campanias')
+            }
+        })
+    })
+}
+controller.modificarCampania = (req, res) => {
+    {
+        var user = req.session.mi_sesion
+        if ((!user) || (user.esAdmin == 1)) {
+            res.redirect('/')
+        } else {
+            id = req.query.id;
+            var sql = 'SELECT * FROM campanias WHERE id = ?';
+            req.getConnection((err, conn) => {
+                conn.query(sql, id, (err, rows) => {
+                    if (err) {
+                        res.json(err)
+                    }
+                    res.render('modificarcampania', {
+                        data: rows,
+                        user: user
+                    });
+                })
+            })
+        }
+    }
+}
+controller.eliminarCampania = (req, res) => {
+    const id = req.body.id;
+    req.getConnection((err, conn) => {
+        conn.query('DELETE FROM campanias WHERE id=?', [id], (err, result) => {
+            if (err) {
+                console.log("no se pudo")
+            }
+            res.redirect('/campanias');
+        })
+    })
+}
+controller.finalizarCampania = (req, res) => {
+    const id = req.body.id;
+    req.getConnection((err, conn) => {
+        conn.query('UPDATE `campanias` SET `finalizada`=1 WHERE id=?', [id], (err, result) => {
+            if (err) {
+                console.log("no se pudo")
+            }
+            res.redirect('/campanias');
+        })
+    })
+}
+controller.campanias = (req, res) => {
+    req.getConnection((err, conn) => {
+        var user = req.session.mi_sesion
+        conn.query('SELECT * FROM campanias', (err, rows) => {
+            if (err) {
+                res.json(err)
+            }
+            req.session.adopcion = rows
+            res.render('listaCampanias', { data: rows, user })
+        });
+    });
+}
 
 module.exports = controller;
 
