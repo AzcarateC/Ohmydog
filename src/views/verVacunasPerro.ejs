@@ -1,0 +1,29 @@
+<%- include ('vistas') %>
+<body>
+  <h2 align="center">Vacunas de <%=perro[0].nombre%> | Perro de <%=perro[0].cliente%></h2>  
+  <div align="center"class="pet-info">
+    <%if(perro[0].a==null){%>
+        <p>Vacuna A: No dada</p> 
+        <%}else{%>
+            <p>Vacuna A:<%=perro[0].a.getFullYear()%>/<%=perro[0].a.getMonth()%>/<%=perro[0].a.getDate()%></p> 
+            <%}%>
+    <%if(perro[0].b==null){%>
+        <p>Vacuna B: No dada</p> 
+    <%}else{%>
+            <p>Vacuna B:<%=perro[0].b.getFullYear()%>/<%=perro[0].b.getMonth()%>/<%=perro[0].b.getDate()%></p> 
+    <%}%>       
+    <%if(perro[0].desparacitacion==null){%>
+            <p>Desparacitacion: No dada</p> 
+    <%}else{%>
+            <p>Desparacitacion:<%=perro[0].desparacitacion.getFullYear()%>/<%=perro[0].desparacitacion.getMonth()%>/<%=perro[0].desparacitacion.getDate()%></p> 
+    <%}%>    
+    <%if(user[0].esAdmin==0){%>                
+    <form action="/modificarVacunasPerroVentana" method="POST">
+        <input type="hidden" name="perro" value="<%=perro[0].nombre%>">
+        <input type="hidden" name="cliente" value="<%=perro[0].cliente%>">
+        <button type="submit" >Actualizar vacunas</button>
+    </form>
+    <%}%>
+  </div>
+</body>
+<%- include ('partials/_footer') %>

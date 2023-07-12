@@ -1,0 +1,51 @@
+<%- include ('vistas') %>
+<h2 align="center">Modificar Vacunas de <%=perro[0].nombre%> | Perro de <%=perro[0].cliente%></h2>  
+  <div align="center"class="pet-info">
+   <form action="/modificarVacunasPerro" method="POST"> 
+
+    <%if(perro[0].a==null){%>
+        <label for="dia" class="form-control">Vacuna A: No dada<%=perro[0].a%> </label>
+            <input type="date" id="dia" name="a" ><br><br>
+        <%}else{%>
+            <label for="dia" class="form-control">Vacuna A: <%=  formatearFecha(perro[0].a)%> </label>
+            <input type="date" id="dia" name="a" value=<%=  formatearFecha(perro[0].a)%>><br><br>
+            <%}%>
+    <%if(perro[0].b==null){%>
+        <label for="dia" class="form-control">Vacuna B: No dada</label>
+        <input type="date" id="dia" name="b" ><br><br>
+    <%}else{%>
+        <label for="dia" class="form-control">Vacuna B: <%=  formatearFecha(perro[0].b)%></label>
+        <input type="date" id="dia" name="b" value=<%=  formatearFecha(perro[0].b)%>><br><br>
+    <%}%>       
+    <%if(perro[0].desparacitacion==null){%>
+        <label for="dia" class="form-control">Desparacitacion: No dada</label>
+        <input type="date" id="dia" name="desparacitacion" ><br><br>
+    <%}else{%>
+        <label for="dia" class="form-control">Desparacitacion: <%=  formatearFecha(perro[0].desparacitacion)%></label>
+        <input type="date" id="dia" name="desparacitacion" value=<%=  formatearFecha(perro[0].desparacitacion)%> ><br><br>
+    <%}%>                    
+
+    <input type="hidden" name="perro" value= <%=perro[0].nombre%> >  
+    <input type="hidden" name="cliente" value= <%=perro[0].cliente%> >           
+    <button type="submit" >Guardar</button>
+    </form>
+
+
+<%- include ('partials/_footer') %>    
+
+<script>
+    function agregarCero(num) {
+      if (num < 10) {
+        return "0" + num;
+      }
+      return num;
+    }
+
+    function formatearFecha(fecha) {
+      const anio = fecha.getFullYear();
+      const mes = agregarCero(fecha.getMonth() + 1); // Los meses van de 0 a 11, por lo que se suma 1
+      const dia = agregarCero(fecha.getDate());
+
+      return anio + "/" + mes + "/" + dia;
+    }
+  </script>

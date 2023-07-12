@@ -228,6 +228,59 @@ controller.misDatos = (req,res) => {
     })
 }
 
+controller.verVacunas = (req,res) =>{
+    const cliente = req.body.cliente
+    const perro = req.body.perro
+    req.getConnection ((err,conn)=>{
+        user = req.session.mi_sesion
+        conn.query("SELECT * FROM mascotas WHERE cliente=? AND nombre=?",[cliente,perro],(err,rows)=>{
+            res.render('verVacunasPerro',{user,perro:rows})
+        })
+    })
+}
+
+controller.modificarVacunasPerroVentana = (req,res)=>{
+    const p = req.body.perro
+    const cliente = req.body.cliente
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        conn.query("SELECT * FROM mascotas  WHERE nombre = ? AND cliente =?",[p,cliente],(err,rows)=>{
+            res.render('modificarVacunasVentana',{user,perro:rows})
+        })
+    })
+
+}
+
+controller.modificarVacunasPerro =(req,res)=>{
+    const p =req.body.perro 
+    var cliente = req.body.cliente
+    console.log(p, cliente)
+    var a= req.body.a
+    if(!a){
+        a=null
+    }
+    console.log(a)
+    var b= req.body.b
+    if(!b){
+        b=null
+    }
+    console.log(b)
+    var d = req.body.desparacitacion
+    if(!d){
+        d=null
+    }
+    console.log(d)
+    req.getConnection((err,conn)=>{
+        user = req.session.mi_sesion
+        conn.query("UPDATE mascotas SET a=?,b=?,desparacitacion=? WHERE nombre=? AND cliente=?",[a,b,d,p,cliente],(err,rows)=>{
+           conn.query("SELECT * FROM mascotas WHERE nombre=? AND cliente=?",[p,cliente],(err,r)=>{
+            res.render('verVacunasPerro',{user,perro:r})
+           })
+        })
+    })
+}
+
+
 controller.verPerrosCliente = (req,res) => {
     const  cliente = req.body.cliente 
     req.getConnection((err,conn)=> {
