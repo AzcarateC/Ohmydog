@@ -75,6 +75,11 @@
           <input type="hidden"  name="cliente" value=<%=rows[0].email%>>
         <p ><span class="label"><%= mascotas[i].nombre %> </span>  <button class="mi-boton">Ver Informacion</button></p> 
       </form>
+      <form action="/verVacunas" method="POST">
+        <input type="hidden" name='perro' value=<%= mascotas[i].nombre %>>
+        <input type="hidden" name="cliente" value=<%= mascotas[i].cliente %>>
+        <button  class="submit boton-acciones" >Vacunas</button>
+      </form>
         <%}%> 
       
     </div>

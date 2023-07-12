@@ -48,6 +48,11 @@
                     <input type="hidden" name='perro' value=<%= mascotas[i].nombre %>><input type="hidden" name="cliente" value=<%= mascotas[i].cliente %>>
                     <button  class="submit boton-acciones" >Ver información</button>
                   </form>
+                  <form action="/verVacunas" method="POST">
+                    <input type="hidden" name='perro' value=<%= mascotas[i].nombre %>>
+                    <input type="hidden" name="cliente" value=<%= mascotas[i].cliente %>>
+                    <button  class="submit boton-acciones" >Vacunas</button>
+                  </form>
               </td>
           </tr>
           <% }%>

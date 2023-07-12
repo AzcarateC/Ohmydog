@@ -30,6 +30,10 @@ router.get('/MisTurnos',controller.misTurnos)
 router.get('/mis_datos',controller.misDatos)
 router.get('/elegirClienteTurno',controller.elegirClienteTurno)
 
+router.post('/verVacunas',controller.verVacunas)
+router.post('/modificarVacunasPerroVentana',controller.modificarVacunasPerroVentana)
+router.post('/modificarVacunasPerro',controller.modificarVacunasPerro)
+
 router.post('/guardarVeterinariaModificada',controller.guardarVeterinariaModificada)
 router.post('/eliminarDiaVeterinariaTurno',controller.eliminarDiaVeterinariaTurno)
 router.post('/verVeterinariasTurnoDiaX',controller.verVeterinariasTurnoDiaX)
