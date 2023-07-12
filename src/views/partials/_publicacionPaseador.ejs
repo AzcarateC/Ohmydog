@@ -14,7 +14,7 @@
                 </div>
                 <div id='rating<%= data.id%>'> Calificaciones= <%= promedio(data.puntos,data.calificaciones)%>/5 (
                         <%=data.calificaciones%> opiniones) </div>
-                <% if( (locals.user) && user[0].esAdmin==1){%>
+                <% if( !(locals.user) || user[0].esAdmin==1){%>
                     <form id="calificar<%= data.id%><%= lista%>"> <input type="text"
                             id="calificacion<%= data.id%><%= lista%>" size="1" maxlength="1"> <button
                             class="btn btn-info-orange"

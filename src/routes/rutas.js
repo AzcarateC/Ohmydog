@@ -76,6 +76,8 @@ router.get('/modificarpass',(req, res )=>{
 router.get('/misDescuentos',controller.misDescuentos)
 router.get('/descuento',controller.descuentos)
 router.get('/canjear',controller.canjear)
+router.get('/canjearCodigo',controller.canjearCodigo)
+
 
 router.get('/donar',controller.donarForm)
 router.post('/donar',controller.donar)
@@ -438,6 +440,24 @@ router.get('/validarMail',(req,res) =>{
                 res.send('Mail ya registrado')}
             else{
                 res.send('Mail valido')
+            }
+        })
+    })
+})
+router.get('/validarCodigo',(req,res) =>{
+    req.getConnection((err,conn)=>{
+        codigo=req.query.codigo;
+        conn.query('SELECT * FROM donaciones WHERE codigo=?',[codigo],(err,rows)=>{
+            if (rows[0]!=null){
+                var respuesta='';
+                if(rows[0].canjeado==1){
+                    respuesta='El codigo ya ha sido canjeado'
+                }else{
+                    respuesta='Codigo valido'
+                }
+                res.send(respuesta)}
+            else{
+                res.send('El codigo ingresado no es valido')
             }
         })
     })

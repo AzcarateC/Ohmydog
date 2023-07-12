@@ -1156,15 +1156,22 @@ controller.donar = (req, res) => {
     nombreCampania=req.body.nombreCampania
     id=req.body.id
     var sql= 'INSERT INTO `donaciones`(`nombreCampania`, `email`, `montoDonacion`) VALUES (?,?,?)';
+    if (user==undefined){sql= 'INSERT INTO `donaciones`(`nombreCampania`, `codigo`, `montoDonacion`) VALUES (?,?,?)';}
+    console.log(sql)
     sql+=';UPDATE `campanias` SET `montoActual`=`montoActual`+? WHERE id=?'
     sql+=';UPDATE `campanias` SET `finalizada` = 1 WHERE `campanias`.`id` = ? and `campanias`.`montoActual`>= `campanias`.`objetivo`';
+    sql+=';SELECT * FROM campanias'
     req.getConnection((err, conn) => {
         var user = req.session.mi_sesion
         conn.query(sql,[nombreCampania,cliente,monto,monto,id,id], (err, rows) => {
+            console.log(rows[0])
             if (err) {
                 res.json(err)
             }
-            res.redirect('/campanias')
+            var msj= 'Gracias por donar. En agradecimiento le otorgamos un cupon de descuento de $'+(monto/10)+' que podra usar en su proxima visita a la veterinaria.';
+            if (user==undefined){msj='Gracias por donar. En agradecimiento le otorgamos un codigo de descuento de'+(monto/10)+' que podra usar en su proxima visita a la veterinaria. Codigo: '+ cliente;}
+            console.log(sql)
+            res.render('listaCampanias', { data: rows[3], user, msj})
         });
     });
 }
@@ -1214,6 +1221,19 @@ controller.canjear = (req, res) => {
         conn.query(sql,[id], (err, rows) => {
             if (err) {
                 res.json(err)
+            }
+            res.send('Cupon de descuento canjeado exitosamente')
+        });
+    });
+}
+controller.canjearCodigo = (req, res) => {
+    id=req.query.codigo
+    var sql= 'UPDATE `donaciones` SET `canjeado`=1 WHERE codigo=?';
+     req.getConnection((err, conn) => {
+        var user = req.session.mi_sesion
+        conn.query(sql,[id], (err, rows) => {
+            if (err) {
+                res.send('Hubo un error')
             }
             res.send('Cupon de descuento canjeado exitosamente')
         });

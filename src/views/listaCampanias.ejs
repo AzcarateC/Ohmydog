@@ -5,6 +5,33 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
   integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <script>
+    function validarCodigo() {
+        var codigo = document.getElementById("codigo").value;
+        if (codigo.length==10){
+            var xmlHttp = new XMLHttpRequest();
+        theUrl= 'http://localhost:3000/validarCodigo?codigo='+codigo;
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        validez = xmlHttp.responseText;
+        console.log(validez)
+        if ((validez == 'Codigo valido')) {
+            document.getElementById("codigo_option_error").style.visibility = "hidden";
+            var xmlHttp = new XMLHttpRequest();
+            theUrl= 'http://localhost:3000/canjearCodigo?codigo='+codigo;
+            xmlHttp.open("GET", theUrl, false); // false for synchronous request
+            xmlHttp.send(null);
+            mensaje = xmlHttp.responseText;
+            alert(mensaje)
+        } else {
+            document.getElementById("codigo_option_error").innerHTML = validez;
+            document.getElementById("codigo_option_error").style.visibility = "visible";
+            
+        }
+        }else{
+            document.getElementById("codigo_option_error").innerHTML = 'Ingrese un codigo de 10 digitos';
+            document.getElementById("codigo_option_error").style.visibility = "visible";
+        }
+    }
     function eliminar(id) {
     confirma = window.confirm("Desea eliminar la campaña de donacion?");
     if (confirma) {
@@ -39,6 +66,23 @@ function finalizar(id) {
 }
 </script> 
 <h1 class="text-center">Campañas de donación.</h1>
+<% if( (locals.user) && user[0].esAdmin==0){%>
+    <div style="visibility:hidden; color:red; " id="codigo_option_error">
+        
+      </div>
+    <form > <label for="codigo">Ingrese un codigo de descuento:</label><br> <input type="text"
+        id="codigo" size="10" maxlength="10"> <button
+        type="button"
+        class="btn btn-info-orange"
+        onclick='validarCodigo()''>Canjear codigo</button>
+</form>
+    
+    <% } %>
+    <% if (msj) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= msj %>
+        </div>
+    <%  } %>
     <ul id="listaCampanias" >
       
         <% 
@@ -74,4 +118,5 @@ function finalizar(id) {
         
               <% } %>
       </ul>
+
 <%- include ('partials/_footer') %>
