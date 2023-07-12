@@ -487,7 +487,24 @@ controller.darTurnos = (req, res) => {
      req.getConnection((err,conn)=>{
          msj=""
          user =req.session.mi_sesion
-         conn.query('SELECT * FROM turnos',(err,rows)=>{
+         // Obtén la fecha actual
+    const fechaActual = new Date();
+
+    // Resta un día a la fecha actual
+    const fechaAnterior = new Date(fechaActual);
+    fechaAnterior.setDate(fechaActual.getDate() - 1);
+
+    // Obtiene los componentes de la fecha anterior
+    const anio = fechaAnterior.getFullYear();
+    const mes = fechaAnterior.getMonth() + 1; // Los meses van de 0 a 11, por lo que se suma 1
+    const dia = fechaAnterior.getDate();
+
+    // Formatea la fecha en el formato "año/mes/dia"
+    const fechaFormateada = `${anio}/${mes.toString().padStart(2, '0')}/${dia.toString().padStart(2, '0')}`;
+
+    // Utiliza la fecha formateada en tu consulta de base de datos
+    const consulta = "SELECT * FROM turnos WHERE dia > ?";
+         conn.query(consulta,[fechaFormateada],(err,rows)=>{
              if(err){
                  res.json(err)
              }
@@ -502,7 +519,24 @@ controller.darTurnos = (req, res) => {
      req.getConnection((err,conn)=>{
          user = req.session.mi_sesion
          email = user[0].email
-         conn.query('SELECT * FROM turnos WHERE paciente = ?',[email],(err,rows)=>{
+               // Obtén la fecha actual
+    const fechaActual = new Date();
+
+    // Resta un día a la fecha actual
+    const fechaAnterior = new Date(fechaActual);
+    fechaAnterior.setDate(fechaActual.getDate() - 1);
+
+    // Obtiene los componentes de la fecha anterior
+    const anio = fechaAnterior.getFullYear();
+    const mes = fechaAnterior.getMonth() + 1; // Los meses van de 0 a 11, por lo que se suma 1
+    const dia = fechaAnterior.getDate();
+
+    // Formatea la fecha en el formato "año/mes/dia"
+    const fechaFormateada = `${anio}/${mes.toString().padStart(2, '0')}/${dia.toString().padStart(2, '0')}`;
+
+    // Utiliza la fecha formateada en tu consulta de base de datos
+    const consulta = "SELECT * FROM turnos WHERE dia > ? AND paciente=?";
+         conn.query(consulta,[fechaFormateada,email],(err,rows)=>{
              res.render('misTurnos',{
                  data:rows,user           
              });
